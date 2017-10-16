@@ -6,10 +6,11 @@
 
 ## Содержание <a name="table-of-contents"></a>
 
+0. [Общие положение](#general)
 1. [Типы]
 1. [Ссылки]
-1. [Объекты]
-1. [Массивы]
+1. [Объекты](#objects)
+1. [Массивы](#arrays)
 1. [Деструктурирующее присваивание](#destructuring)
 1. [Строки](#strings)
 1. [Функции](#functions)
@@ -21,6 +22,342 @@
 1. [Переменные](#variables)
 1. [Подъем переменных]
 1. [Операторы сравнения и равенства]
+
+## Общие положения <a name="general"></a>
+
+**[К содержанию](#table-of-contents)**
+
+## Объекты <a name="objects"></a> [Черновик, необходимо обсуждение]
+<a name="objects--no-new"></a><a name="3.1"></a>
+- [3.1](#objects--no-new) Для объявления объекта используйте литерал
+
+  eslint: [`no-new-objects`](http://eslint.org/docs/rules/no-new-objects.html)
+
+  ```javascript
+  // плохо
+  const item = new Object();
+
+  // хорошо
+  const item = {};
+  ```
+
+<a name="objects--es6-computed-properties"></a><a name="3.2"></a>
+- [3.2](#objects--es6-computed-properties) При создании объектов с динамическими именами свойств используйте вычисляемые имена свойств
+
+  >Почему: использование вычисляемых имен свойств позволяет определить все свойства объекта в одном месте
+
+  ```javascript
+  function getKey (k) {
+    return `a key named ${k}`;
+  }
+
+  // плохо
+  const obj = {
+    id: 5,
+    name: 'San Francisco'
+  };
+  obj[getKey('enabled')] = true;
+
+  // хорошо
+  const obj = {
+    id: 5,
+    name: 'San Francisco',
+    [getKey('enabled')]: true
+  };
+  ```
+
+<a name="objects--es6-object-shorthand"></a><a name="3.3"></a>
+- [3.3](#objects--es6-object-shorthand) Используйте сохращенный синтаксис методов
+
+  eslint: [`object-shorthand`](https://eslint.org/docs/rules/object-shorthand)
+
+  ```javascript
+  // плохо
+  const atom = {
+    value: 1,
+    addValue: function (value) {
+      return atom.value + value;
+    }
+  }
+  // хорошо
+  const atom = {
+    value: 1,
+    addValue (value) {
+      return atom.value + value;
+    }
+  }
+  ```
+
+<a name="objects--es6-object-concise"></a><a name="3.4"></a>
+- [3.4](#objects--es6-object-concise) Используйте сокращенный синтаксис свойств
+
+  eslint: [`object-shorthand`](https://eslint.org/docs/rules/object-shorthand)
+
+  >Почему: такая запись кратка и описательна
+
+  ```javascript
+  // плохо
+  const obj = {
+    nerevar: nerevar
+  };
+
+  // хорошо
+  const obj = {
+    nerevar
+  };
+  ```
+
+<a name="objects--grouped-shorthand"></a><a name="3.5"></a>
+- [3.5](#objects--grouped-shorthand) Группируйте сокращенные свойства в начале объявления объекта
+
+  >Почему: так легче определить какие свойства используют сокращенный синтаксис
+
+  ```javascript
+  const almalexia = 'Almalexia';
+  const sothasil = 'Sotha Sil';
+  const vivec = 'Vivec';
+
+  // плохо
+  const obj = {
+    arena: 1,
+    almalexia,
+    daggerall: 2,
+    sothasil,
+    morrowind: 3,
+    vivec
+  };
+
+  // хорошо
+  const obj = {
+    almalexia,
+    sothasil,
+    vivec,
+    arena: 1,
+    daggerall: 2,
+    morrowind: 3
+  };
+  ```
+
+<a name="objects--quoted-props"></a><a name="3.6"></a>
+- [3.6](#objects--quoted-props) Заключайте в кавычки только те свойства, имена которых не являются корректными идентификаторами
+
+  eslint: [`quote-props`](https://eslint.org/docs/rules/quote-props)
+
+  >Почему: Субъективно легче читать; улучшает подсветку синтаксиса; улучшает оптимизацию разными JS-движками
+
+  ```javascript
+  // плохо
+  const obj = {
+    'foo': 1,
+    'bar': 2,
+    'data-baz': 3
+  };
+
+  // хорошо
+  const obj = {
+    foo: 1,
+    bar: 2,
+    'data-baz': 3
+  };
+  ```
+
+<a name="objects--prototype-builtins"></a><a name="3.7"></a>
+- [3.7](#objects--prototype-builtins) Не вызывайте напрямую методы `Object.prototype` (например, `hasOwnProperty`, `propertyIsEnumerable`, `isPrototypeOf`)
+
+  >Почему: эти свойства могут быть переопределены (`{hasOwnProperties: false}`) или объект может быть нулевым (`Object.create(null)`)
+
+  ```javascript
+  // плохо
+  console.log(object.hasOwnProperty(key));
+
+  // хорошо
+  console.log(Object.prototype.hasOwnProperty.call(object, key));
+
+  // наилучший способ
+  const has = Object.prototype.hasOwnProperty; // кеш
+  // или
+  import has from 'has';
+  // ...
+  console.log(has.call(object, key));
+  ```
+
+<a name="objects--rest-spread"></a><a name="3.8"></a>
+- [3.8](#objects--rest-spread) Используйте `spread`-оператор вместо [`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) для поверхностного копирования объектов; используйте `rest`-оператор для создания объекта с оставшимися свойствами исходного
+
+  ```javascript
+  // очень плохо
+  const original = {a: 1, b: 2};
+  const copy = Object.assign(original, {c: 3}); // этот код меняет original
+  delete copy.a; // этот - тоже
+
+  // плохо
+  const original = {a: 1, b: 2};
+  const copy = Object.assign({}, original, {c: 3}); // copy => {a: 1, b: 2, c: 3}
+
+  // хорошо
+  const original = {a: 1, b: 2};
+  const copy = {...original, c: 3}; // copy => {a: 1, b: 2, c: 3}
+
+  const {a, ...noA} = copy; // noA => {b: 2, c: 3}
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Массивы <a name="arrays"></a> [Черновик, необходимо обсуждение]
+<a name="arrays--literals"></a><a name="4.1"></a>
+- [4.1](#arrays--literals) Для объявления массива используйте литерал
+
+  eslint: [`no-array-constructor`](http://eslint.org/docus/rules/no-array-constructor.html)
+
+  ```javascript
+  // плохо
+  const items = new Array();
+
+  // хорошо
+  const items = [];
+  ```
+
+<a name="arrays--push"></a><a name="4.2"></a>
+- [4.2](#arrays--push) Используйте [Array#push](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/push?v=b) вместо прямого присваивания значений элементам массива
+
+  ```javascript
+  const someStack = [];
+
+  // плохо
+  someStack[someStack.length] = 'some value';
+
+  // хорошо
+  someStack.push('some value');
+  ```
+
+<a name="arrays--es6-array-spreads"></a><a name="4.3"></a>
+- [4.3](#arrays--es6-array-spreads) Для копирования массивов используйте `spread`-оператор (`...`)
+
+  ```javascript
+  // плохо
+  const len = items.length;
+  const itemsCopy = [];
+  let i;
+
+  for (i = 0; i < len; i++) {
+    itemsCopy[i] = items[i];
+  }
+
+  // хорошо
+  const itemsCopy = [...items];
+  ```
+
+<a name="arrays--from"></a><a name="4.4"></a>
+- [4.4](#arrays--from) Чтобы сконвертировать массивоподобный объект в массив используйте `spread`-оператор (`...`) вместо [Array#from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+
+  ```javascript
+  const foo = document.querySelectorAll('.foo');
+  // плохо
+  const nodes = Array.from(foo);
+
+  // хорошо
+  const nodes = [...foo];
+
+<a name="arrays--mapping"></a><a name="4.5"></a>
+- [4.5](#arrays--mapping) Испорльзуйте [Array#from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from) вместо `spread`-оператора (`...`) при маппинге по итерируемым типам
+
+  >Почему: при таком подходе не создается промежуточный массив
+
+  ```javascript
+  // плохо
+  const baz = [...foo].map(bar);
+
+  // хорошо
+  const baz = Array.from(foo, bar);
+  ```
+
+<a name="arrays--callback-return"></a><a name="4.6"></a>
+- [4.6](#arrays--calback-return) Используйте `return` в функции обратного вызова метода массива; если тело функции состоит из одной строки, возвращающей выражение без побочных эффектов, `return` можно опустить (см. [8.2](#arrow-functions--implicit-return))
+
+  eslint: [`array-callback-return`](http://eslint.org/docs/rules/array-callback-return)
+
+  ```javascript
+  // хорошо
+  [1, 2, 3].map(x => {
+    const y = x + 1;
+    return x * y;
+  });
+
+  // хорошо
+  [1, 2, 3].map(x => x + 1);
+
+  // плохо - отсутствие возвращаемого значения приведет к тому, что memo будет undefined после первой итерации
+  const flat = {};
+  [[0, 1], [2, 3], [4, 5]].reduce((memo, item, index) => {
+    const flatten = memo.concat(item);
+    memo[index] = flatten;
+  });
+
+  // хорошо
+  const flat = {};
+  [[0, 1], [2, 3], [4, 5]].reduce((memo, item, index) => {
+    const flatten = memo.concat(item);
+    memo[index] = flatten;
+    return flatten;
+  });
+
+  // плохо
+  inbox.filter(msg => {
+    const {author, subject} = msg;
+    if (subject === 'Mockingbird') {
+      return author === 'Harper Lee'
+    } else {
+      return false;
+    }
+  });
+
+  // хорошо
+  inbox.filter(msg => {
+    const {author, subject} = msg;
+    if (subject === 'Mockingbird') {
+      return author === 'Harper Lee'
+    }
+
+    return false;
+  });
+  ```
+
+<a name="arrays--bracket-newline"></a><a name="4.7"></a>
+- [4.7](#arrays--bracket-newline) В многострочном массиве используйте переводы строк после открывающей скобки и перед закрывающей скобкой
+
+  ```javascript
+  // плохо
+  const arr = [
+    [0, 1], [2, 3], [4, 5]
+  ];
+
+  const objectInArray = [{
+    id: 1
+  }, {
+    id : 2
+  }];
+
+  const numberInArray = [
+    1, 2
+  ];
+
+  // хорошо
+  const arr = [[0, 1], [2, 3], [4, 5]];
+
+  const objectInArray = [
+    {
+      id: 1
+    },
+    {
+      id : 2
+    }
+  ];
+
+  const numberInArray = [
+    1,
+    2
+  ];
+  ```
 
 ## Деструктурирующее присваивание <a name="destructuring"></a>
 
