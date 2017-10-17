@@ -7,23 +7,118 @@
 ## Содержание <a name="table-of-contents"></a>
 
 0. [Общие положение](#general)
-1. [Типы]
-1. [Ссылки]
+1. [Типы](#types)
+1. [Ссылки](#references)
 1. [Объекты](#objects)
 1. [Массивы](#arrays)
 1. [Деструктурирующее присваивание](#destructuring)
 1. [Строки](#strings)
 1. [Функции](#functions)
 1. [Стрелочные функции](#arrow-functions)
-1. [Классы и конструкторы]
+1. [Классы и конструкторы](#constructors)
 1. [Модули](#modules)
-1. [Итераторы и генераторы]
+1. [Итераторы и генераторы](#iterators-and-generators)
 1. [Свойства]
 1. [Переменные](#variables)
 1. [Подъем переменных]
 1. [Операторы сравнения и равенства]
+1. [Блоки]
+1. [Управление выполнением]
+1. [Комментарии]
 
 ## Общие положения <a name="general"></a>
+
+**[К содержанию](#table-of-contents)**
+
+## Типы <a name="types"></a>
+<a name="types--primitives"></a><a name="1.1"></a>
+- [1.1](#types--primitives) **Примитивы**: когда вы работаете с примитивом, вы работаете напрямую с его значением
+
+  - `string`
+  - `number`
+  - `boolean`
+  - `null`
+  - `undefined`
+  - `symbol`
+
+  ```javascript
+  const foo = 1;
+  let bar = foo;
+
+  bar = 9;
+
+  console.log(foo, bar); // 1, 9
+  ```
+
+<a name="types--complex"></a><a name="1.2"></a>
+- [1.2](#types--complex) **Сложные типы**: когда вы работаете со ложными типами, вы работаете со ссылкой на его значение
+
+  - `object`
+  - `array`
+  - `function`
+
+  ```javascript
+  const foo = [1, 2];
+  const bar = foo;
+
+  bar[0] = 9;
+
+  console.log(foo[0], bar[0]); // 9, 9
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Ссылки <a name="references"></a>
+<a name="references--prefer-const"></a><a name="2.1"></a>
+- [2.1](#references--prefer-const) Для всех ссылок используйте `const`, избегайте использования `var`
+
+  eslint: [`prefer-const`](https://eslint.org/docs/rules/prefer-const)
+
+  >Почему: страховка от переопределения ссылок
+
+  ```javascript
+  // плохо
+  var a = 1;
+  var b = 2;
+
+  // хорошо
+  const a = 1;
+  const b = 2;
+  ```
+
+<a name="references--disallow-var"></a><a name="2.2"></a>
+- [2.2](#references--disallow-var) Если необходимо переопределять ссылки, используйте `let` вместо `var`
+
+  eslint: [`no-var`](https://eslint.org/docs/rules/no-var)
+
+  >Почему: у `let` уже область видимости - блок, вместо функции у `var`
+
+  ```javascript
+  // плохо
+  var count = 1;
+  if (true) {
+    count += 1;
+  }
+
+  // хорошо
+  let count = 1;
+  if (true) {
+    count += 1;
+  }
+  ```
+
+<a name="references--block-scope"></a><a name="2.3"></a>
+- [2.3](#references--block-scope) Обратите внимание, что область видимости `let` и `const` - блок
+
+  ```javascript
+  // const и let существуют только в блоках, в которых они объявлены
+  {
+    let a = 1;
+    const b = 1;
+  }
+  console.log(a); // ReferenceError
+  console.log(b); // ReferenceError
+  ```
 
 **[К содержанию](#table-of-contents)**
 
@@ -78,14 +173,14 @@
     addValue: function (value) {
       return atom.value + value;
     }
-  }
+  };
   // хорошо
   const atom = {
     value: 1,
     addValue (value) {
       return atom.value + value;
     }
-  }
+  };
   ```
 
 <a name="objects--es6-object-concise"></a><a name="3.4"></a>
@@ -674,6 +769,175 @@
 
 **[К содержанию](#table-of-contents)**
 
+## Классы и конструкторы <a name="constructors"></a>
+<a name="constructors--use-class"></a><a name="9.1"></a>
+- [9.1](#constructors--use-class) Всегда используйте `class`, избегайте прямого изменения `prototype`
+
+  >Почему: синтаксис классов более краток и прост для понимания
+
+  ```javascript
+  // плохо
+  function Queue (contents = []) {
+    this.queue = [...contents];
+  }
+  Queue.prototype.pop = function () {
+    const value = this.queue[0];
+    this.queue.splice(0, 1);
+    return value;
+  };
+
+  // хорошо
+  class Queue {
+    constructor (contents = []) {
+      this.queue = [...contents];
+    }
+    pop () {
+      const value = this.queue[0];
+      this.queue.splice(0, 1);
+      return value;
+    }
+  };
+  ```
+
+<a name="constructors--extends"></a><a name="9.2"></a>
+- [9.2](#constructors--extends) Используйте `extends` для наследования
+
+  >Почему: это встроенный способ наследования финкциональности прототипа без необходимости ломать `instanceof`
+
+  ```javascript
+  // плохо
+  const inherits = require('inhearits');
+  function PeekableQueue (contents) {
+    Queue.apply(this, contents);
+  }
+  inherits(PeekableQueue, Queue);
+  PeekableQueue.prototype.peek = function () {
+    return this.queue[0];
+  };
+
+  // хорошо
+  class PeekableQueue extends Queue {
+    peek () {
+      return this.queue[0];
+    }
+  }
+  ```
+
+<a name="constructors--chaining"></a><a name="9.3"></a>
+- [9.3](#constructors--chaining) Методы могут возвращать `this` для обеспечения чейнинга
+
+  ```javascript
+  // плохо
+  Telvanni.prototype.fly = function () {
+    this.flying = true;
+    return true;
+  };
+
+  Telvanni.prototype.setHeight = function (height) {
+    this.height = height;
+  };
+
+  const mage = new Telvanni();
+
+  mage.fly(); // => true
+  mage.setHeight(20); // undefined
+
+  // хорошо
+  class Telvanni {
+    fly () {
+      this.flying = true;
+      return this;
+    }
+  
+    setHeight (height) {
+      this.height = height;
+      return this;
+    }
+  }
+
+  const mage = new Telvanni();
+
+  mage.fly()
+    .setHeight(20);
+  ```
+
+<a name="constructors--tostring"></a><a name="9.4"></a>
+- [9.4](#constructors--tostring) Ничего плохого в написании своих методов `toString`, если вы убедились, что они работают нормально и не имеют побочных эффектов
+
+  ```javascript
+  class Redoran {
+    constructor (options = {}) {
+      this.name = options.name || 'no name';
+    }
+
+    getName () {
+      return this.name;
+    }
+
+    toString () {
+      return `Redoran - ${this.getName()}`;
+    }
+  }
+  ```
+
+<a name="constructors--no-useless"></a><a name="9.5"></a>
+- [9.5](#constructors--no-useless) У классов есть конструктор по-умолчанию, если не указан собственный конструктор; пустой конструктор или конструктор, только вызывающий родительский конструктор бесполезен
+
+  eslint: [`no-useless-constructor`](https://eslint.org/docs/rules/no-useless-constructor)
+
+  ```javascript
+  // плохо
+  class Redoran {
+    constructor () {}
+
+    getName () {
+      return this.name;
+    }
+  }
+
+  // плохо
+  class Warrior extends Redoran {
+    constructor (...args) {
+      super(...args);
+    }
+  }
+
+  // хорошо
+  class Warrior extends Redoran {
+    constructor (...args) {
+      super(...args);
+      this.name = 'Nameless Hero';
+    }
+  }
+  ```
+
+<a name="classes--no-duplicate-members"></a><a name="9.6"></a>
+- [9.6](#classes--no-duplicate-members) Избегайте повторов членов класса
+
+  eslint: [`no-dupe-class-members`](https://eslint.org/docs/rules/no-dupe-class-members)
+
+  >Почему: при дублировании членов класса использоваться будет последний, ошибки при этом не будет; в большинстве случаев дублирование - ошибка
+
+  ```javascript
+  // плохо
+  class Foo {
+    bar () { return 1; }
+    bar () { return 2; }
+  }
+
+  // хорошо
+  class Foo {
+    bar () { return 1; }
+  }
+
+  // хорошо
+  class Foo {
+    bar () { return 2; }
+  }
+  ```
+
+**[К содержанию](#table-of-contents)**
+
 ## Модули <a name="modules"></a>
 <a name="modules--use-them"></a><a name="10.1"></a>
 - [10.1](#modules--use-them) Всегда используйте модули (`import`/`export`) вместо нестандартной модульной системы. Вы всегда сможете перевести код в предпочитаемую модульную систему.
@@ -833,6 +1097,20 @@
   import fooLess from 'foo.less';
   import barCss from 'bar.css';
   ```
+
+**[К содержанию](#table-of-contents)**
+
+## Итераторы и генераторы <a name="iterators-and-generators"></a>
+<a name="iterators--nope"></a><a name="11.1"></a>
+- [11.1](#iterators--nope) Не используйте итераторы, предпочитайте функции высшего порядка циклам типа `for-in` и `for-of`
+
+  eslint: [`no-iterator`](https://eslint.org/docs/rules/no-iterator), [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax)
+
+  >Почему: для усиления правила о неизменяемости: с чистыми функциями, которые возращают значение, легче работать чем с побочными эффектами
+
+  >Используйте `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` для перебора массивов и `Object.keys()` / `Object.values()` / `Object.entries()` для создания массивов с целью перебора объекта
+
+
 
 **[К содержанию](#table-of-contents)**
 
