@@ -18,10 +18,10 @@
 1. [Классы и конструкторы](#constructors)
 1. [Модули](#modules)
 1. [Итераторы и генераторы](#iterators-and-generators)
-1. [Свойства]
+1. [Свойства](#properties)
 1. [Переменные](#variables)
-1. [Подъем переменных]
-1. [Операторы сравнения и равенства]
+1. [Подъем](#hoisting)
+1. [Операторы сравнения и равенство](#comparison)
 1. [Блоки]
 1. [Управление выполнением]
 1. [Комментарии]
@@ -31,6 +31,7 @@
 **[К содержанию](#table-of-contents)**
 
 ## Типы <a name="types"></a>
+
 <a name="types--primitives"></a><a name="1.1"></a>
 - [1.1](#types--primitives) **Примитивы**: когда вы работаете с примитивом, вы работаете напрямую с его значением
 
@@ -51,7 +52,7 @@
   ```
 
 <a name="types--complex"></a><a name="1.2"></a>
-- [1.2](#types--complex) **Сложные типы**: когда вы работаете со ложными типами, вы работаете со ссылкой на его значение
+- [1.2](#types--complex) **Сложные типы**: когда вы работаете со сложными типами, вы работаете со ссылкой на его значение
 
   - `object`
   - `array`
@@ -69,6 +70,7 @@
 **[К содержанию](#table-of-contents)**
 
 ## Ссылки <a name="references"></a>
+
 <a name="references--prefer-const"></a><a name="2.1"></a>
 - [2.1](#references--prefer-const) Для всех ссылок используйте `const`, избегайте использования `var`
 
@@ -123,6 +125,7 @@
 **[К содержанию](#table-of-contents)**
 
 ## Объекты <a name="objects"></a> [Черновик, необходимо обсуждение]
+
 <a name="objects--no-new"></a><a name="3.1"></a>
 - [3.1](#objects--no-new) Для объявления объекта используйте литерал
 
@@ -299,6 +302,7 @@
 **[К содержанию](#table-of-contents)**
 
 ## Массивы <a name="arrays"></a> [Черновик, необходимо обсуждение]
+
 <a name="arrays--literals"></a><a name="4.1"></a>
 - [4.1](#arrays--literals) Для объявления массива используйте литерал
 
@@ -770,6 +774,7 @@
 **[К содержанию](#table-of-contents)**
 
 ## Классы и конструкторы <a name="constructors"></a>
+
 <a name="constructors--use-class"></a><a name="9.1"></a>
 - [9.1](#constructors--use-class) Всегда используйте `class`, избегайте прямого изменения `prototype`
 
@@ -806,7 +811,7 @@
 
   ```javascript
   // плохо
-  const inherits = require('inhearits');
+  const inherits = require('inherits');
   function PeekableQueue (contents) {
     Queue.apply(this, contents);
   }
@@ -939,6 +944,7 @@
 **[К содержанию](#table-of-contents)**
 
 ## Модули <a name="modules"></a>
+
 <a name="modules--use-them"></a><a name="10.1"></a>
 - [10.1](#modules--use-them) Всегда используйте модули (`import`/`export`) вместо нестандартной модульной системы. Вы всегда сможете перевести код в предпочитаемую модульную систему.
 
@@ -1101,6 +1107,7 @@
 **[К содержанию](#table-of-contents)**
 
 ## Итераторы и генераторы <a name="iterators-and-generators"></a>
+
 <a name="iterators--nope"></a><a name="11.1"></a>
 - [11.1](#iterators--nope) Не используйте итераторы, предпочитайте функции высшего порядка циклам типа `for-in` и `for-of`
 
@@ -1110,11 +1117,159 @@
 
   >Используйте `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` для перебора массивов и `Object.keys()` / `Object.values()` / `Object.entries()` для создания массивов с целью перебора объекта
 
+  ```javascript
+  const numbers = [1, 2, 3, 4, 5];
 
+  // плохо
+  let sum = 0;
+  for (let num of numbers) {
+    sum += num;
+  }
+  sum === 15;
+
+  // хорошо
+  let sum = 0;
+  numbers.forEach(num => sum += num);
+  sum === 15;
+
+  // наилучший способ
+  const sum = numbers.reduce((total, num) => total + num, 0);
+  sum === 15;
+
+  // плохо
+  const increasedByOne = [];
+  for (let i = 0; i < numbers.length; i++) {
+    increasedByOne.push(numbers[i] + 1);
+  }
+
+  // хорошо
+  const increasedByOne = [];
+  numbers.forEach(num => increasedByOne.push(num + 1));
+
+  // наилучший способ
+  const increasedByOne = numbers.map(num => num + 1);
+  ```
+
+<a name="generators--nope"></a><a name="11.2"></a>
+- [11.2](#generators--nope) Не используйте генераторы пока
+
+  >Почему: они не очень хорошо переводятся в ES5
+
+<a name="generators--spacing"></a><a name="11.3"></a>
+- [11.3](#generators-spacing) Если использование генераторов - необходимость, используйте пробельные символы в сигнатуре функции правильно
+
+  eslint: [`generator-star-spacing`](https://eslint.org/docs/rules/generator-star-spacing)
+
+  >Почему: `function` и `*` - две части одного концептуального ключевого слова: `*` не модификатор `function`, `function*` - уникальная конструкция, отличная от `function`
+
+  ```javascript
+  // плохо
+  function * foo () {
+    // ...
+  }
+
+  // плохо
+  const bar = function * () {
+    // ...
+  };
+
+  // плохо
+  const baz = function *() {
+    // ...
+  };
+
+  // плохо
+  const quux = function*() {
+    // ...
+  };
+
+  // плохо
+  function*foo () {
+    // ...
+  }
+
+  // плохо
+  function *foo () {
+    // ...
+  }
+
+  // очень плохо
+  function
+  *
+  foo() {
+    // ...
+  }
+
+  // очень плохо
+  const wat = function
+  *
+  () {
+    // ...
+  };
+
+  // хорошо
+  function* foo () {
+    // ...
+  }
+
+  // хорошо
+  const foo = function* () {
+    // ...
+  };
+  ```
 
 **[К содержанию](#table-of-contents)**
 
-## Переменные <a name="variables"></a>
+## Свойства <a name="#properties"></a>
+
+<a name="properties--dot"></a><a name="12.1"></a>
+- [12.1](#properties--dot) Используйте «точку» при получении доступа к свойству
+
+  eslint: [`dot-notation`](https://eslint.org/docs/rules/dot-notation)
+
+  ```javascript
+  const kogoruhn = {
+    fortress: true
+  };
+
+  // плохо
+  const isFortress = kogoruhn['fortress'];
+
+  // хорошо
+  const isFortress = kogoruhn.fortress;
+  ```
+
+<a name="properties--bracket"></a><a name="12.2"></a>
+- [12.2](#properties--bracket) Используйте квадратные скобки (`[]`) при получении доступа к свойству с использованием переменной
+
+  ```javascript
+  const kogoruhn = {
+    fortress: true
+  };
+
+  function getProp (prop) {
+    return kogoruhn[prop];
+  }
+
+  const isFortress = getProp('fortress');
+  ```
+
+<a name="properties--es2016-exponentiation-operator"></a><a name="12.3"></a>
+- [12.3](#properties--es2016-expoenentiation-operator) Используйте оператор возведения в степень `**` при подсчете степени
+
+  eslint: [`no-restricted-properties`](https://eslint.org/docs/rules/no-restricted-properties)
+
+  ```javascript
+  // плохо
+  const binary = Math.pow(2, 10);
+
+  // хорошо
+  const binary = 2 ** 10;
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Переменные <a name="variables"></a> [Черновик, необходимо обсуждение]
 
 <a name="variables--const"></a><a name="1.1"></a>
 - [13.1](#variables--const) При объявлении переменных всегда используйте `const` или `let`
@@ -1130,5 +1285,265 @@
   // хорошо
   const persons = ['Almalexia', 'Sotha Sil', 'Vivec'];
   ```
+
+<a name="variables--one-const"></a><a name="13.2"></a>
+- [13.2](#variables--one-const) Используйте `const` или `let` для объявления одной переменной
+
+  eslint: [`one-var`](https://eslint.org/docs/rules/one-var)
+
+  >Почему: так легче добавлять объявления переменных; не придется беспокоиться о замене `;` на `,`; можно пройтись отладчиком по каждой переменной
+
+  ```javascript
+  // плохо
+  const items = getItems(),
+    goSportsTeam = true,
+    dragonball = 'z';
+
+  // плохо
+  // в таком объявлении легко допустить ошибку
+  const items = getItems(),
+    goSportsTeam = true;
+    dragonball = 'z';
+
+  // хорошо
+  const items = getItems();
+  const goSportsTeam = true;
+  const dragonball = 'z';
+  ```
+
+<a name="variables--const-let-group"></a><a name="13.3"></a>
+- [13.3](#variables--const-let-group) Группируйте все объявления `const`, потом группируйте все объявления `let`
+
+  >Почему: помогает при необходимости определить переменную на основе уже объявленных переменных; легче читается
+
+  ```javascript
+  // плохо
+  let i, len, dragonball,
+    items = getItems(),
+    goSportsTeam = true;
+
+  // плохо
+  let i;
+  const items = getItems();
+  let dragonball;
+  const goSportsTeam = true;
+  let len;
+
+  // хорошо
+  const goSportsTeam = true;
+  const items = getItems();
+  let dragonball;
+  let i;
+  let len;
+  ```
+
+<a name="variables--define-where-used"></a><a name="13.4"></a>
+- [13.4](#variables--define-where-used) Присваивайте значения переменным там, где вы их используете, но помещайте их в разумное место
+
+  >Почему: область видимости `let` и `const` - блок, не функция
+
+  ```javascript
+  // плохо - вызов функции без необходимости
+  function checkName (hasName) {
+    const name = getName();
+
+    if (hasName === 'test') {
+      return false;
+    }
+
+    if (name === 'test') {
+      this.setName('');
+      return false;
+    }
+
+    return name;
+  }
+
+  // хорошо
+  function checkName (hasName) {
+    if (hasName === 'test') {
+      return false;
+    }
+
+    const name = getName();
+
+    if (name === 'test') {
+      this.setName('');
+      return false;
+    }
+
+    return name;
+  }
+  ```
+
+<a name="variables--no-chain-assignment"></a><a name="13.5"></a>
+- [13.5](#variables--no-chain-assignment) Не присваивайте значения по цепочке
+
+  >Почему: использование присваивания по цепочке создает неявные глобальные переменные
+
+  ```javascript
+  // плохо
+  (function example () {
+    // JavasScript интерпретирует это как
+    // let a = (b = (c = 1));
+    // ключевое слово let применяется только к 'a'
+    // b и c становятся глобальными переменными
+    let a = b = c = 1;
+  }());
+
+  console.log(a); // выбрасывает ReferenceError
+  console.log(b); // 1
+  console.log(c); // 1
+
+  // хорошо
+  (function example () {
+    let a = 1;
+    let b = 1;
+    let c = 1;
+  }());
+
+  console.log(a); // выбрасывает ReferenceError
+  console.log(b); // выбрасывает ReferenceError
+  console.log(c); // выбрасывает ReferenceError
+
+  // то же самое относится и к `const`
+  ```
+
+<a name="variables--unary-increment-decrement"></a><a name="13.6"></a>
+- [13.6](#variables--unary-increment-decrement) Избегайте использования унарных операторов увеличения и уменьшения (++, --)
+
+  eslint: [`no-plusplus`](https://eslint.org/docs/rules/no-plusplus)
+
+  >Почему: после унарных операторов необходимо автоматически вставлять точку с запятой; если этого не делать, то разница в использовании пробельных символов может привести к ошибке
+
+  ```javascript
+  // плохо
+  const array = [1, 2, 3];
+  let num = 1;
+  num++;
+  --num;
+
+  let sum = 0;
+  let truthyCount = 0;
+  for (let i = 0; i < array.count; i++) {
+    let value = array[i];
+    sum += value;
+    if (value) {
+      truthyCount++;
+    }
+  }
+
+  // хорошо
+  const array = [1, 2, 3];
+  let num = 1;
+  num += 1;
+  num -= 1;
+
+  const sum = array.reduce((a, b) => a + b, 0);
+  const truthyCount = array.filter(Boolean).length;
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Подъем <a name="hoisting"></a>
+
+<a name="hoisting--about"></a><a name="14.1"></a>
+- [14.1](#hoisting--about) Объявления `var` поднимаются к началу области видимости, присвоения им - нет; объявления `const` и `let` обладают временной мертвой зоной ([Temporal Dead Zone](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_Dead_Zone_and_errors_with_let)); также важно знать почему [typeof больше не безопасен](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15)
+
+  ```javascript
+  // мы знаем, что это не будет работать
+  // (предполагается, что notDefined нигде в коде не определен)
+  function example () {
+    console.log(notDefined); // ReferenceError
+  }
+
+  // если создать переменную после ее использования, то такой код будет работать
+  // т.к. объявление переменной поднимается к началу области видимости;
+  // при этом присвоение не поднимается
+  function example () {
+    console.log(declaredButNotAssigned); // undefined
+    var declaredButNotAssigned = true;
+  }
+
+  // интерпретатор поднимает объявление переменной к началу области видимости;
+  // код выше можно переписать так
+  function example () {
+    let declaredButNotAssigned;
+    console.log(declaredButNotAssigned); // undefined
+    declaredButNotAssigned = true;
+  }
+
+  // использование const и let
+  function example () {
+    console.log(declaredButNotAssigned); // ReferenceError
+    console.log(typeof declaredButNotAssigned); // ReferenceError
+    const declaredButNotAssigned = true;
+  }
+  ```
+
+<a name="hoisting--anon-expressions"></a><a name="14.2"></a>
+- [14.2](#hoisting--anon-expressions) Безымянные функциональные выражения поднимают название переменной, но не присвоение функции
+
+  ```javascript
+  function example () {
+    console.log(anonymous); //undefined
+
+    anonymous(); // TypeError (anonymous is not a function)
+
+    var anonymous = function () {
+      console.log('anonymous function expression');
+    }
+  }
+  ```
+
+<a name="hoisting--named-expressions"></a><a name="14.3"></a>
+- [14.3](#hoisting--named-expressions) Именованные функциональные выражения поднимают название переменной, но не название и тело функции
+
+  ```javascript
+  function example () {
+    console.log(named); // undefined
+
+    named(); // TypeError (named is not a function)
+
+    superPower(); // ReferenceError (superPower is not defined)
+
+    var named = function superPower () {
+      console.log('Flying');
+    }
+  }
+
+  function example () {
+    console.log(named); // undefined
+
+    named(); // TypeError (named is not a function)
+
+    var named = function named () {
+      console.log('named');
+    }
+  }
+  ```
+
+<a name="hoisting--declarations"></a><a name="14.4"></a>
+- [14.4](#hoisting--declarations) Объявления функций поднимают как имя, так и тело функции
+
+  ```javascript
+  function example () {
+    superPower(); // Flying
+
+    function superPower () {
+      console.log('Flying');
+    }
+  }
+  ```
+
+## Операторы сравнения и равенство <a name="comparison"></a>
+
+<a name="comparison--eqeqeq"></a><a name="15.1"></a>
+- [15.1](#comparison--eqeqeq) Используйте `===` и `!==` вместо `==` и `!=`
+
+  eslint: [`eqeqeq`](https://eslint.org/docs/rules/eqeqeq)
+
+<a name="comparison--if"></a><a name="15.2"></a>
+- [15.2](#comparison--if) 
 
 **[К содержанию](#table-of-contents)**
