@@ -1,0 +1,25 @@
+{
+  "author": {
+    "email": "vakhlov@gmail.com",
+    "name": "Alexander Vakhlov",
+    "url": ""
+  },
+  "bugs": {
+    "email": "vakhlov@gmail.com",
+    "url": ""
+  },
+  "contributors": [],
+  "description": "react style guide",
+  "keywords": [
+    "jsx",
+    "react",
+    "style guide"
+  ],
+  "license": "ISC",
+  "name": "react-style-guide",
+  "repository": {
+    "type": "git",
+    "url": "git@gitsd.naumen.ru:portal-docs/react-style-guide.gitd"
+  },
+  "version": "1.0.0"
+}
