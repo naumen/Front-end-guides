@@ -22,7 +22,7 @@
 1. [Переменные](#variables)
 1. [Подъем](#hoisting)
 1. [Операторы сравнения и равенство](#comparison)
-1. [Блоки]
+1. [Блоки](#blocks)
 1. [Управление выполнением]
 1. [Комментарии]
 
@@ -531,7 +531,7 @@
 ## Строки <a name="strings"></a>
 
 <a name="strings--quotes"></a><a name="6.1"></a>
-- [6.1](#strings--qiotes) Используйте одинарные кавычки (`''`) для строк
+- [6.1](#strings--quotes) Используйте одинарные кавычки (`''`) для строк
 
   eslint: [`quotes`](http://eslint.org/docs/rules/quotes.html)
 
@@ -1536,7 +1536,7 @@
   }
   ```
 
-## Операторы сравнения и равенство <a name="comparison"></a>
+## Операторы сравнения и равенство <a name="comparison"></a> [Черновик, необходимо обсуждение]
 
 <a name="comparison--eqeqeq"></a><a name="15.1"></a>
 - [15.1](#comparison--eqeqeq) Используйте `===` и `!==` вместо `==` и `!=`
@@ -1544,6 +1544,297 @@
   eslint: [`eqeqeq`](https://eslint.org/docs/rules/eqeqeq)
 
 <a name="comparison--if"></a><a name="15.2"></a>
-- [15.2](#comparison--if) 
+- [15.2](#comparison--if) Условные конструкции, например, `if` вычисляют выражение используя приведение типов по следующим правилам:
+
+  - **Объекты** вычисляются в **true**
+  - **Undefined** вычисляется в **false**
+  - **Null** вычисляется в **false**
+  - **Логические типы** вычисляются напрямую без приведения типов
+  - **Number** вычисляется в **false** если значение **+0**, **-0** или **NaN**, иначе в **true**
+  - **Строки** вычисляются в **false** если значение - пустая строка (`''`), иначе в **true**
+
+  ```javascript
+  if ([0] && []) {
+    // true
+    // массив (даже пустой) - объект; объекты вычисляются в true
+  }
+  ```
+
+<a name="comparison--shortcuts"></a><a name="15.3"></a>
+- [15.3](#comparison--shortcuts) Используйте сокращенный синтаксис для переменных типа `boolean` и полный синтаксис для переменных типа `String` и `Number`
+
+  ```javascript
+  // плохо
+  if (isValid === true) {
+    // ...
+  }
+
+  // хорошо
+  if (isValid) {
+    // ...
+  }
+
+  // плохо
+  if (name) {
+    // ...
+  }
+
+  // хорошо
+  if (name !== '') {
+    // ...
+  }
+
+  // плохо
+  if (collection.length) {
+    // ...
+  }
+
+  // хорошо
+  if (collection.length > 0) {
+    // ...
+  }
+  ```
+
+<a name="comparison--switch-blocks"></a><a name="15.4"></a>
+- [15.4](#comparison--switch-blocks) Используйте фигурные скобки для задания блоков кода в `case` и `default` в случаях когда там есть объявления (`let`, `const`, `function` или `class`)
+
+  eslint: [`no-case-declarations`](https://eslint.org/docs/rules/no-case-declarations)
+
+  >Почему: объявленные переменные видны во всем `switch`, но инициализируются они только в своем `case`; это может вызвать проблемы в случаях когда разные `case` объявляют одинаковые переменные
+
+  ```javascript
+  // плохо
+  switch (foo) {
+    case 1:
+      let x = 1;
+      break;
+    case 2:
+      const y = 2;
+      break;
+    case 3:
+      function f () {
+        // ...
+      }
+      break;
+    default:
+      class C {}
+  }
+
+  // хорошо
+  switch (foo) {
+    case 1: {
+      let x = 1;
+      break;
+    }
+    case 2: {
+      const y = 2;
+      break;
+    }
+    case 3: {
+      function f () {
+        // ...
+      }
+      break;
+    }
+    case 4:
+      foo();
+      break;
+    default: {
+      class C {}
+    }
+  }
+  ```
+
+<a name="comparison--nested-ternaries"></a><a name="15.5"></a>
+- [15.5](#comparison--nested-ternaries) Тернарные выражения не должны вкладываться друг в друга и, в целом, должны быть однострочными
+
+  eslint: [`no-nested-ternary`](https://eslint.org/docs/rules/no-nested-ternary)
+
+  ```javascript
+  // плохо
+  const foo = maybe1 > maybe2
+    ? 'bar'
+    : value1 > value2 ? 'baz' : null;
+
+  const maybeNull = value1 > value2 ? 'baz' : null;
+
+  // лучше
+  const foo = maybe1 > maybe2
+    ? 'bar'
+    : maybeNull;
+
+  // наилучший способ
+  const foo = maybe1 > maybe2 ? 'bar' : maybeNull;
+  ```
+
+<a name="comparison--unneeded-ternary"></a><a name="15.6"></a>
+- [15.6](#comparison--unneeded-ternary) Избегайте ненужных тернарных выражений
+
+  eslint: [`no-unneeded-ternary`](https://eslint.org/docs/rules/no-unneeded-ternary)
+
+  ```javascript
+  // плохо
+  const foo = a ? a : b;
+  const bar = c ? true : false;
+  const baz = c ? false : true;
+
+  // хорошо
+  const foo = a || b;
+  const bar = !!c;
+  const baz = !c;
+  ```
+
+<a name="comparison--no-mixed-operators"></a><a name="15.7"></a>
+- [15.7](#comparison--no-mixed-operators) Оборачивайте операторы в скобки когда они смешаны в утверждении; при смешении арифметических операторов не смешивайте `**` и `%` с ними же или с `+`, `-`, `*` и `/`
+
+  eslint: [`no-mixed-operators`](https://eslint.org/docs/rules/no-mixed-operators)
+
+  >Почему: это улучшает читаемость и проясняет намерения разработчика
+
+  ```javascript
+  // плохо
+  const foo = a && b < 0 || c > 0 || d + 1 === 0;
+
+  // плохо
+  const bar = a ** b - 5 % d;
+
+  // плохо
+  if (a || b && c) {
+    return d;
+  }
+
+  // хорошо
+  const foo = (a && b < 0) || c > 0 || (d + 1 === 0);
+
+  // хорошо
+  const bar = (a ** b) - (5 % d);
+
+  // хорошо
+  if ((a || b) && c) {
+    return d;
+  }
+
+  // хорошо
+  const bar = a + b / c * d;
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Блоки <a name="blocks"></a>
+
+<a name="blocks--braces"></a><a name="16.1"></a>
+- [16.1](#blocks--braces) Используйте фигурные скобки с любыми многострочными блоками
+
+  eslint: [`nonblock-statement-body-position`](https://eslint.org/docs/rules/nonblock-statement-body-position)
+
+  ```javascript
+  // плохо
+  if (test)
+    return false;
+
+  // хорошо
+  if (test) {
+    return false;
+  }
+
+  // плохо
+  function foo () { return false; }
+
+  // хорошо
+  function bar () {
+    return false;
+  }
+  ```
+
+<a name="blocks--cuddled-elses"></a><a name="16.2"></a>
+- [16.2](#blocks--cuddled-elses) Помещайте `else` на одну строку с закрывающей скобкой `if`
+
+  eslint: [`brace-style`](https://eslint.org/docs/rules/brace-style)
+
+  ```javascript
+  // плохо
+  if (test) {
+    thing1();
+    thing2();
+  }
+  else {
+    thing3();
+  }
+
+  // хорошо
+  if (test) {
+    thing1();
+    thing2();
+  } else {
+    thing3();
+  }
+  ```
+
+<a name="blocks--no-else-return"></a><a name="16.3"></a>
+- [16.3](#blocks--no-else-return) Если в блоке `if` всегда используется `return` последний блок `else` не нужен; `return` в блоке `esle if`, который следует за блоком `if`, использующим `return` может быть разделен на несколько блоков `if`
+
+  eslint: [`no-else-return`](https://eslint.org/docs/rules/no-else-return)
+
+  ```javascript
+  // плохо
+  function foo () {
+    if (x) {
+      return x;
+    } else {
+      return y;
+    }
+  }
+
+  // плохо
+  function cats () {
+    if (x) {
+      return x;
+    } else if (y) {
+      return y;
+    }
+  }
+
+  // плохо
+  function dogs () {
+    if (x) {
+      return x;
+    } else {
+      if (y) {
+        return y;
+      }
+    }
+  }
+
+  // хорошо
+  function foo () {
+    if (x) {
+      return x;
+    }
+
+    return y;
+  }
+
+  // хорошо
+  function cats () {
+    if (x) {
+      return x;
+    }
+
+    if (y) {
+      return y;
+    }
+  }
+
+  // хорошо
+  function dogs (x) {
+    if (x) {
+      if (z) {
+        return y;
+      }
+    } else {
+      return z;
+    }
+  }
+  ```
 
 **[К содержанию](#table-of-contents)**
