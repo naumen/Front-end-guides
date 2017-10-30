@@ -6,7 +6,7 @@
 
 ## Содержание <a name="table-of-contents"></a>
 
-0. [Общие положение](#general)
+0. [Общие положения](#general)
 1. [Типы](#types)
 1. [Ссылки](#references)
 1. [Объекты](#objects)
@@ -23,8 +23,16 @@
 1. [Подъем](#hoisting)
 1. [Операторы сравнения и равенство](#comparison)
 1. [Блоки](#blocks)
-1. [Управление выполнением]
-1. [Комментарии]
+1. [Управление выполнением](#control-statements)
+1. [Комментарии](#comments)
+1. [Пробельные символы](#whitespace)
+1. [Запятые](#commas)
+1. [Точки с запятой](#semicolons)
+1. [Явное и неявное приведение типов](#coercion)
+1. [Именование](#naming)
+1. [Методы доступа]
+1. [События]
+1. [jQuery]
 
 ## Общие положения <a name="general"></a>
 
@@ -1835,6 +1843,964 @@
       return z;
     }
   }
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Управление выполнением <a name="control-statements"></a>
+
+<a name="control-statements--formatting"></a><a name="17.1"></a>
+- [17.1](#control-statements--formatting) Если управляющая конструкция (`if`, `while` и пр.) становится слишком длинной и превышает допустимый размер строки, каждое условие (или группа) должно начинаться с новой строки; условные операторы записываются в начале строки
+
+  >Почему: условные операторы выровнены (улучшает читаемость) и стиль написания сильно похож на чейнинг; легче «отключить» условие при помощи комментария
+
+  ```javascript
+  // плохо
+  if ((foo == 123 || bar === 'abc') && doesItLookGoodWhenItBecomesThatLong() && isThisReallyHappening()) {
+    // ...
+  }
+
+  // плохо
+  if (foo === 123 &&
+      bar === 'abc') {
+    // ...
+  }
+
+  // плохо
+  if (foo === 123
+      && bar === 'abc') {
+    // ...
+  }
+
+  // плохо
+  if (
+    foo === 123 &&
+    bar = 'abc'
+  ) {
+    // ...
+  }
+
+  // хорошо
+  if (
+    foo === 123
+    && bar === 'abc'
+  ) {
+    // ...
+  }
+
+  // хорошо
+  if (
+    (foo === 123 && bar === 'abc')
+    && doesItLookGoodWhenItBecomesThatLong()
+    && isThisReallyHappening()
+  ) {
+    // ...
+  }
+
+  // хорошо
+  if (foo === 123 && bar === 'abc') {
+    // ...
+  }
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Комментарии <a name="comments"></a>
+
+<a name="comments--multiline"></a><a name="18.1"></a>
+- [18.1](#comments--multiline) Для многострочных комментариев используйте `/** ... */`
+
+  ```javascript
+  // плохо
+  // make() возвращает новый элемент
+  // соответствующий тегу, переданному в качестве аргумента
+  //
+  // @param {String} tag
+  // @return {Element} element
+  function make (tag) {
+    // ...
+    return element;
+  }
+
+  // хорошо
+  /**
+   * make() возвращает новый элемент
+   * соответствующий тегу, переданному в качестве аргумента
+   *
+   * @param {String} tag
+   * @return {Element} element
+   */
+  function make (tag) {
+    // ...
+    return element;
+  }
+  ```
+
+<a name="comments--singleline"></a><a name="18.2"></a>
+- [18.2](#comments--singleline) Для однострочных комментариев используйте `//`; располагайте комментарий в отдельной строке над комментируемой; вставляйте пустую строку перед комментарием, если только комментарий не первая строка блока
+
+  ```javascript
+  // плохо
+  const active = true; // is current tab
+
+  // хорошо
+  // is current tab
+  const active == true;
+
+  // плохо
+  function getType () {
+    console.log('fetching type...');
+    // set the default type to 'no type'
+    const type = this.type || 'no type';
+
+    return type;
+  }
+
+  // хорошо
+  function getType () {
+    console.log('fetching type...');
+
+    // set the default type to 'no type'
+    const type = this.type || 'no type';
+
+    return type;
+  }
+
+  // хорошо
+  function getType () {
+    // set the default type to 'no type';
+    const type = this.type || 'no type';
+
+    return type;
+  }
+  ```
+
+<a name="comments--spaces"></a><a name="18.3"></a>
+- [18.3](#comments--spaces) Начинайте все комментарии с пробела - так их легче читать
+
+  eslint: [`spaced-comment`](https://eslint.org/docs/rules/spaced-comments)
+
+  ```javascript
+  // плохо
+  //is current tab
+  const active = true;
+
+  // хорошо
+  // is current tab
+  const active = true;
+
+  // плохо
+  /**
+   *make() возвращает новый элемент
+   *соответствующий тегу, переданному в качестве аргумента
+   *
+   *@param {String} tag
+   *@return {Element} element
+   */
+  function make (tag) {
+    // ...
+    return element;
+  }
+
+  // хорошо
+  /**
+   * make() возвращает новый элемент
+   * соответствующий тегу, переданному в качестве аргумента
+   *
+   * @param {String} tag
+   * @return {Element} element
+   */
+  function make (tag) {
+    // ...
+    return element;
+  }
+  ```
+
+<a name="comments--actionitems"></a><a name="18.4"></a>
+- [18.4](#comments--actionitems) Исползование префиксов `FIXME` и `TODO` в комментариях помогает другим разработчикам быстро понять указываете ли вы на проблему, которую надо рассмотреть, или предлагаете решение проблемы, которое надо реализовать 
+
+<a name="comments--fixme"></a><a name="18.5"></a>
+- [18.5](#comments--fixme) Используйте `FIXME` для описания проблемы
+
+  ```javascript
+  class Calculator extends Abacus {
+    constructor () {
+      super();
+
+      // FIXME: не стоит использовать глобальные переменные здесь
+      total = 0;
+    }
+  }
+  ```
+
+<a name="comments--todo"></a><a name="18.6"></a>
+- [18.6](#comments--todo) Используйте `TODO` для описания решений проблем
+
+  ```javascript
+  class Calculator extends Abacus {
+    constructor () {
+      super();
+
+      // TODO: начальное значение total должно задаваться входными параметрами
+      this.total = 0;
+    }
+  }
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Пробельные символы <a name="whitespace"></a> [Черновик, требуется обсуждение]
+
+<a name="whitespace--spaces"></a><a name="19.1"></a>
+- [19.1](#whitespace--spaces) Используйте «мягкие» табы (пробелы) установленные в 2 пробела
+
+  eslint: [`indent`](https://eslint.org/docs/rules/indent)
+
+  ```javascript
+  // плохо
+  function foo () {
+  ····let name;
+  }
+
+  // плохо
+  function foo () {
+  ·let name;
+  }
+
+  // хорошо
+  function foo () {
+  ··let name;
+  }
+  ```
+
+<a name="whitespace--before-blocks"></a><a name="19.2"></a>
+- [19.2](#whitespace--before-blocks) Помещайте один пробел перед открывающей скобкой
+
+  eslint: [`space-before-blocks`](https://eslint.org/docs/rules/space-before-blocks)
+
+  ```javascript
+  // плохо
+  function test (){
+    console.log('test');
+  }
+
+  // хорошо
+  function test () {
+    console.log('test');
+  }
+
+  // плохо
+  dog.set('attr',{
+    age: '1 year',
+    breed: 'Bernese Mountain Dog'
+  });
+
+  // хорошо
+  dog.set('attr', {
+    age: '1 year',
+    breed: 'Bernese Mountain Dog'
+  });
+  ```
+
+<a name="whitespace--around-keywords"></a><a name="19.3"></a>
+- [19.3](#whitespace--around-keywords) Помещайте один пробел перед открывающей скобкой в управляющих выражениях (`if`, `while` и пр.). При вызове функции между именем функции и списком аргументов не должно быть пробелов.
+
+  eslint: [`keyword-spacing`](https://eslint.org/docs/rules/keyword-spacing)
+
+  ```javascript
+  // плохо
+  if(isOk()) {
+    doSomething ();
+  }
+
+  // хорошо
+  if (isOk()) {
+    doSomething();
+  }
+  ```
+
+<a name="whitespace--infix-ops"></a><a name="19.4"></a>
+- [19.4](#whitespace--infix-ops) Обрамляйте операторы пробелами
+
+  eslint: [`space-infix-ops`](https://eslint.org/docs/rules/space-infix-ops)
+
+  ```javascript
+  // плохо
+  const x=y+5;
+
+  // хорошо
+  const x = y + 5;
+  ```
+
+<a name="whitespace--newline-at-end"></a><a name="19.5"></a>
+- [19.5](#whitespace--newline-at-end) В конце файла должен быть символ перевода строки
+
+  eslint: [`eol-last`](https://eslint.org/docs/rules/eol-last)
+
+  ```javascript
+  // плохо
+  import SuperComponent from './SuperComponent';
+  // ...
+  export default SuperComponent;
+  ```
+
+  ```javascript
+  // плохо
+  import SuperComponent from './SuperComponent';
+  // ...
+  export default SuperComponent;⏎
+  ⏎
+  ```
+
+  ```javascript
+  // хорошо
+  import SuperComponent from './SuperComponent';
+  // ...
+  export default SuperComponent;⏎
+  ```
+
+<a name="whitespace--chains"></a><a name="19.6"></a>
+- [19.6](#whitespace--chains) Используйте отступы в длинных цепочках вызовов (более 2 методов). Начинайте с точки, это подчеркивает, что в строке - вызов метода, а не новое утверждение.
+
+  eslint: [`newline-per-chained-call](https://eslint.org/docs/rules/newline-per-chained-call)
+
+  ```javascript
+  // плохо
+  $('#items').find('.selected').highlight().end().find('.open').updateCount();
+
+  // плохо
+  $('#items').
+    find('.selected').
+      highlight().
+      end().
+    find('.open').
+      updateCount();
+
+  // хорошо
+  $('#items')
+    .find('.selected')
+      .highlight()
+      .end()
+    .find('.open')
+      .updateCount();
+
+  // плохо
+  const leds = stage.selectAll('.led').data(data).enter().append('svg:svg').classed('led', true)
+    .attr('width', (radius + margin) * 2).append('svg:g')
+    .attr('transform', `translate(${radius + margin}, ${radius + margin})`)
+    .call(tron.led);
+
+  // хорошо
+  const leds = stage.selectAll('.led')
+      .data(data)
+    .enter().append('svg:svg')
+      .classed('led', true)
+      .attr('width', (radius + margin) * 2)
+    .append('svg:g')
+      .attr('transform', `translate(${radius + margin}, ${radius + margin})`)
+      .call(tron.led);
+
+  // хорошо
+  const leds = stage.selectAll('.led').data(data)
+  ```
+
+<a name="whitespace--after-blocks"></a><a name="19.7"></a>
+- [19.7](#whitespace--after-blocks) Между блоком и следующим утверждением оставляйте пустую строку
+
+  ```javascript
+  // плохо
+  if (foo) {
+    return bar;
+  }
+  return baz;
+
+  // хорошо
+  if (foo) {
+    return bar;
+  }
+
+  return baz;
+
+  // плохо
+  const obj = {
+    foo () {
+    },
+    bar () {
+    }
+  };
+  return obj;
+
+  // хорошо
+  const obj = {
+    foo () {
+    },
+
+    bar () {
+    }
+  };
+
+  return obj;
+
+  // плохо
+  const arr = [
+    function foo () {
+    },
+    function bar () {
+    }
+  ];
+  return arr;
+
+  // хорошо
+  const arr = [
+    function foo () {
+    },
+
+    function bar () {
+    }
+  ];
+
+  return arr;
+  ```
+
+<a name="whitespace--padded-blocks"></a><a name="19.8"></a>
+- [19.8](#whitespace--padded-blocks) Не отбивайте блоки пустыми строками
+
+  eslint: [`padded-blocks`](https://eslint.org/docs/rules/padded-blocks)
+
+  ```javascript
+  // плохо
+  function bar () {
+
+    console.log(foo);
+
+  }
+
+  // плохо
+  if (baz) {
+
+    console.log(qux);
+  } else {
+    console.log(foo);
+
+  }
+
+  // плохо
+  class Foo {
+
+    constructor (bar) {
+      this.bar = bar;
+    }
+  }
+
+  // хорошо
+  function bar () {
+    console.log(foo);
+  }
+
+  // хорошо
+  if (baz) {
+    console.log(qux);
+  } else {
+    console.log(foo);
+  }
+  ```
+
+<a name="whitespace--in-parens"></a><a name="19.9"></a>
+- [19.9](#whitespace--in-parens) Не добавляйте пробелы внутри круглых скобок
+
+  eslint: [`space-in-parens`](https://eslint.org/docs/rules/space-in-parens)
+
+  ```javascript
+  // плохо
+  function bar ( foo ) {
+      // ...
+  }
+
+  // хорошо
+  function bar (foo) {
+    // ...
+  }
+
+  // плохо
+  if ( foo ) {
+    console.log(foo);
+  }
+
+  // хорошо
+  if (foo) {
+    console.log(foo);
+  }
+  ```
+
+<a name="whitespace--in-brackets"></a><a name="19.10"></a>
+- [19.10](#whitespace--in-brackets) Не добавляйте пробелы внутри квадратных скобок
+
+  eslint: [`array-bracket-spacing`](https://eslint.org/docs/rules/array-bracket-spacing)
+
+  ```javascript
+  // плохо
+  const foo = [ 1, 2, 3 ];
+  console.log(foo[ 0 ]);
+
+  // хорошо
+  const foo = [1, 2, 3];
+  console.log(foo[0]);
+  ```
+
+<a name="whitespace--in-braces"></a><a name="19.11"></a>
+- [19.11](#whitespace--in-braces) Добавляйте пробелы внутри фигурных скобок
+
+  eslint: [`object-curly-spacing`](https://esling.org/docs/rules/object-curly-spacing)
+
+  ```javascript
+  // плохо
+  const foo = {clark: 'kent'};
+
+  // хорошо
+  const foo = { clark: 'kent' };
+  ```
+
+<a name="whitespace--max-len"></a><a name="19.12"></a>
+- [19.12](#whitespace--max-len) Избегайте строк, длина которых превышает 100 символов (включая пробелы); [исключение](#strings--line-length) - строки текста, которые не надо переносить
+
+  eslint: [`max-len`](https://eslint.org/docs/rules/max-len)
+
+  >Почему: так удобнее читать и поддерживать код
+
+  ```javascript
+  // плохо
+  const foo = jsonData && jsonData.foo && jsonData.foo.bar && jsonData.foo.bar.baz && jsonData.foo.bar.baz.quux && jsonData.foo.bar.baz.quux.xyzzy;
+
+  // плохо
+  $.ajax({ method: 'POST', url: 'http://example.com', data: { name: 'John' } }).done(() => console.log('Congratulations!')).fail(() => console.log('You have failed this.city.'));
+
+  // хорошо
+  const foo = jsonData
+    && jsonData.foo
+    && jsonData.foo.bar
+    && jsonData.foo.bar.baz
+    && jsonData.foo.bar.baz.quux
+    && jsonData.foo.bar.baz.quux.xyzzy;
+
+  // хорошо
+  $.ajax({
+    method: 'POST',
+    url: 'http://example.com',
+    data: { name: 'John' }
+  })
+    .done(() => console.log('Congratulations!'))
+    .fail(() => console.log('You have failed this.city.'));
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Запятые <a name="commas"></a>
+
+<a name="commas--leading-trailing"></a><a name="20.1"></a>
+- [20.1](#commas--leading-trailing) Не используйте запятые в начале строки
+
+  eslint: [`comma-style`](https://eslint.org/docs/rules/comma-style)
+
+  ```javascript
+  // плохо
+  const story = [
+      once
+    , upon
+    , aTime
+  ];
+
+  // хорошо
+  const story = [
+    once,
+    upon,
+    aTime,
+  ];
+
+  // плохо
+  const hero = {
+      firstName: 'Ada'
+    , lastName: 'Lovelace'
+    , birthYear: 1815
+    , superPower: 'computers'
+  };
+
+  // хорошо
+  const hero = {
+    firstName: 'Ada',
+    lastName: 'Lovelace',
+    birthYear: 1815,
+    superPower: 'computers',
+  };
+  ```
+
+<a name="commas-dangling"></a><a name="20.2"></a>
+- [20.2](#commas-dangling) Используйте висячие запятые
+
+  eslint: [`comma-dangle`](https://eslint.org/docs/rules/comma-dangle)
+
+  >Почему: более чистые `diff`-ы; транспайлеры типа `Babel` уберут лишнюю запятую, поэтому не нужно беспокоиться о совместимости со старыми браузерами
+
+  ```diff
+  // плохо
+  // diff git-а, когда нет висячей запятой
+  const hero = {
+      firtsName: 'Florence',
+  -   lastName: 'Nightingale'
+  +   lastName: 'Nightingale',
+  +   inventorOf: ['coxcomb chart', 'modern nursing']
+  };
+
+  // хорошо
+  // diff git-а, когда используется висячая запятая
+  const hero = {
+      firtsName: 'Florence',
+      lastName: 'Nightingale',
+  +   inventorOf: ['coxcomb chart', 'modern nursing'],
+  };
+  ```
+
+  ```javascript
+  // плохо
+  const hero = {
+    firstName: 'Dana',
+    lastName: 'Scully'
+  };
+
+  const heroes = [
+    'Batman',
+    'Superman'
+  ];
+
+  // хорошо
+  const hero = {
+    firstName: 'Dana',
+    lastName: 'Scully',
+  };
+
+  const heroes = [
+    'Batman',
+    'Superman',
+  ];
+
+  // плохо
+  function createHero (
+    firstName,
+    lastName,
+    inventorOf
+  ) {
+    // ...
+  }
+
+  // хорошо
+  function createHero (
+    firstName,
+    lastName,
+    inventorOf,
+  ) {
+    // ...
+  }
+
+  // хорошо (примечание: не должно быть запятой после '...rest')
+  function createHero (
+    firstName,
+    lastName,
+    inventorOf,
+    ...heroArgs
+  ) {
+    // ...
+  }
+
+  // плохо
+  createHero(
+    firstName,
+    lastName,
+    inventorOf
+  );
+
+  // хорошо
+  createHero(
+    firstName,
+    lastName,
+    inventorOf,
+  );
+
+  // хорошо (примечание: не должно быть запятой после '...rest')
+  createHero(
+    firstName,
+    lastName,
+    inventorOf,
+    ...heroArgs
+  );
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Точки с запятой <a name="semicolons"></a>
+
+<a name="semicolons--required"></a><a name="21.1"></a>
+- [21.1](#semicolons-required) **Используйте**
+
+  eslint: [`semi`](https://eslint.org/docs/rules/semi)
+
+  ```javascript
+  // плохо
+  (function () {
+    const name = 'John Connor'
+    return name
+  })()
+
+  // хорошо
+  (function () {
+    const name = 'John Connor';
+    return name;
+  })();
+
+  // хорошо, но legacy (не допускает использования функции как аргумента при соединении двух файлов с IIFE)
+  ;((() => {
+    const name = 'John Connor';
+    return name;
+  })());
+  ```
+
+  [Дополнительно про точки с запятой и IIFE](https://stackoverflow.com/questions/7365172/semicolon-before-self-invoking-function/7365214#7365214)
+
+**[К содержанию](#table-of-contents)**
+
+## Явное и неявное приведение типов <a name="coercion"></a>
+
+<a name="coercion--explicit"></a><a name="22.1"></a>
+- [22.1](#coercion--explicit) Явное приведение типов осуществляйте в начале утверждения
+
+<a name="coercion--strings"></a><a name="22.2"></a>
+- [22.2](#coercion--strings) Для приведения к строке используйте `String`
+
+  eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
+
+  ```javascript
+  // => this.reviewScore = 9;
+
+  // плохо
+  const totalScore = new String(this.reviewScore); // typeof totalScore 'object', а не 'string'
+
+  // плохо
+  const totalScore = this.reviewScore + ''; // вызывает this.reviewScore.valueOf()
+
+  // плохо
+  const totalScore = this.reviewScore.toString(); // не гарантирует, что будет возвращена строка
+
+  // хорошо
+  const totalScore = String(this.reviewScore);
+  ```
+
+<a name="coercion--numbers"></a><a name="22.3"></a>
+- [22.3](#coercion--numbers) Используйте `Number` для явного приведения типов и `parseInt` (всегда с указанием основания) для преобразования строк
+
+  eslint: [`radix`](https://eslint.org/docs/rules/radix), [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
+
+  ```javascript
+  const inputValue = '4';
+
+  // плохо
+  const val = new Number(inputValue);
+
+  // плохо
+  const val = +inputValue;
+
+  // плохо
+  const val = inputValue >> 0;
+
+  // плохо
+  const val = parseInt(inputValue);
+
+  // хорошо
+  const val = Number(inputValue);
+
+  // хорошо
+  const val = parseInt(inputValue, 10);
+  ```
+
+<a name="coercion--comment-deviations"></a><a name="22.4"></a>
+- [22.4](#coercion--comment-deviations) Если по [причинам производительности](https://jsperf.com/coercion-vs-casting/3) необходимо использовать побитовый сдвиг вместо `parseInt` оставьте комментарий, что и зачем вы делаете
+
+  ```javascript
+  // хорошо
+  /**
+   * из-за parseInt код выполнялся медленно
+   * побитовый сдвиг для преобразования строки в
+   * число работает намного быстрее
+   */
+  const val = inputValue >> 0;
+  ```
+
+<a name="coercion--bitwise"></a><a name="22.5"></a>
+- [22.5](#coercion--bitwise) При использовании побитового сдвига будьте осторожны. Числа представлены [64-битными значениями](https://es5.github.io/#x4.3.19) в то время как операции побитового сдвига всегда возвращают [32-битное целое](https://es5.github.io/#x11.7). Наибольшее 32-битное целое: 2 147 483 647
+
+  ```javascript
+  2147483647 >> 0; // => 2147483647
+  2147483648 >> 0; // => -2147483648
+  2147483649 >> 0; // => -2147483647
+  ```
+
+<a name="coercion--booleans"></a><a name="22.6"></a>
+- [22.6](#coercion--booleans) Для приведения к логическому типу используйте `Boolean`
+
+  eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
+
+  ```javascript
+  const age = 0;
+
+  // плохо
+  const hasAge = new Boolean(age);
+
+  // хорошо
+  const hasAge = Boolean(age);
+
+  // наилучший способ
+  const hasAge = !!age;
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Именование <a name="naming"></a>
+
+<a name="naming--descriptive"></a><a name="23.1"></a>
+- [23.1](#naming--descriptive) Названия должны быть описательны; избегайте названий из одной буквы
+
+  eslint: [`id-length`](https://eslint.org/docs/rules/id-length)
+
+  ```javascript
+  // плохо
+  function q () {
+    // ...
+  }
+
+  // хорошо
+  function query () {
+    // ...
+  }
+  ```
+
+<a name="naming--camelCase"></a><a name="23.2"></a>
+- [23.2](#naming--camelCase) Используйте `camelCase` при именовании объектов, функций и экземпляров классов
+
+  eslint: [`camelcase`](https://eslint.org/docs/rules/camelcase)
+
+  ```javascript
+  // плохо
+  const OBJect = {};
+  const this_is_my_object = {};
+  function c () {}
+
+  // хорошо
+  const thisIsMyObject = {};
+  function thisIsMyFunction () {}
+  ```
+
+<a name="naming--PascalCase"></a><a name="23.3"></a>
+- [23.3](#naming--PascalCase) Используйте `PascalCase` только при именовании конструкторов или классов
+
+  eslint: [`new-cap`](https://eslint.org/docs/rules/new-cap)
+
+  ```javascript
+  // плохо
+  function user (options) {
+    this.name = options.name;
+  }
+
+  const bad = new user({
+    name: 'nope'
+  });
+
+  // хорошо
+  class User {
+    constructor (options) {
+      this.name = options.name;
+    }
+  }
+
+  const good = new User({
+    name: 'yup'
+  });
+  ```
+
+<a name="naming--leading-underscore"></a><a name="23.4"></a>
+- [23.4](#naming--leading-underscore) Не начинайте название с символа подчеркивания и не заканчивайте им
+
+  eslint: [`no-underscore-dangle`](https://eslint.org/docs/rules/no-underscore-dangle)
+
+  >Почему: в JavaScript нет модификаторов доступа к переменным и методам. Хотя, по ощему соглашению, символ подчеркивания в начале имени означает, что переменная `private`, на самом деле она `public` и выступает как часть `API`.
+
+  ```javascript
+  // плохо
+  this.__firstName__ = 'Panda';
+  this._firstName = 'Panda';
+  this.firstName_ = 'Panda';
+
+  // хорошо
+  this.firstName = 'Panda';
+  ```
+
+<a name="naming--self-this"></a><a name="23.5"></a>
+- [23.5](#naming--self-this) Не сохраняйте ссылки на `this`, используйте стрелочные функции или [Function#bind](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
+
+  ```javascript
+  // плохо
+  function foo () {
+    const self = this;
+    return function () {
+      console.log(self);
+    };
+  }
+
+  // плохо
+  function foo () {
+    const that = this;
+    return function () {
+      console.log(that);
+    };
+  }
+
+  // хорошо
+  function foo () {
+    return () => {
+      console.log(this);
+    };
+  }
+  ```
+
+<a name="naming--filename-matches-export"></a><a name="23.6"></a>
+- [23.6](#naming--filename-matches-export) Имя файла должно в точности соответствовать тому, что из него экспортируется
+
+  ```javascript
+  // файл 1
+  class Checkbox {
+    // ...
+  }
+  export default Checkbox;
+
+  // файл 2
+  export default function fortyTwo () { return 42; }
+
+  // файл 3
+  export default function insideDirectory () {}
+
+  // в другом файле
+  // плохо
+  import CheckBox from './checkBox'; // PascalCase в import/export, camelCase в названии файла
+  import FortyTwo from './FortyTwo'; // PascalCase в import и названии файла, camelCase в export
+  import InsideDirectory from './InsideDirectory'; // PascalCase в import и названии файла, camelCase в export
+
+  // плохо
+  import CheckBox from './check_box'; // PascalCase в import/export, snake_ase в названии файла
+  import forty_two from './forty_two'; // snake_case в import и названии файла, camelCase в export
+  import index from './inside_directory/index'; // явное подключение index
+  import insideDirectory from './insideDirectory/index'; // явное подключение index
+
+  // хорошо
+  import Checkbox from './Checkbox'; // PascalCase в import/export и названии файла
+  import fortyTwo from './fortyTwo'; // camelCase в import/export и названии файла
+  import insideDirectory from './insideDirectory'; // camelCase в import/export и названии папки, неявное подключение index
+  // ^ поддерживает оба варианта: insideDirectory.js и insideDirectory/index.js
   ```
 
 **[К содержанию](#table-of-contents)**
