@@ -30,9 +30,12 @@
 1. [Точки с запятой](#semicolons)
 1. [Явное и неявное приведение типов](#coercion)
 1. [Именование](#naming)
-1. [Методы доступа]
-1. [События]
-1. [jQuery]
+1. [Методы доступа](#accessors)
+1. [События](#events)
+1. [jQuery](#jquery)
+1. [Совместимость с ECMAScript 5](#es5-compat)
+1. [Стиль написания ECMAScript 6+ (ES 2015+)](#es6-styles)
+1. [Стандартная библиотека](#standard-library)
 
 ## Общие положения <a name="general"></a>
 
@@ -173,7 +176,7 @@
   ```
 
 <a name="objects--es6-object-shorthand"></a><a name="3.3"></a>
-- [3.3](#objects--es6-object-shorthand) Используйте сохращенный синтаксис методов
+- [3.3](#objects--es6-object-shorthand) Используйте сокращенный синтаксис методов
 
   eslint: [`object-shorthand`](https://eslint.org/docs/rules/object-shorthand)
 
@@ -185,6 +188,7 @@
       return atom.value + value;
     }
   };
+
   // хорошо
   const atom = {
     value: 1,
@@ -626,10 +630,179 @@
 
 **[К содержанию](#table-of-contents)**
 
-## Функции <a name="functions"></a>
+## Функции <a name="functions"></a> [Черновик, требуется обсуждение]
 
-<a name="functions--signature-spacing"></a><a name="7.1"></a>
-- [7.1](#functions--signature-spacing) Пробельные символы в сигнатуре функции
+<a name="functions--declarations"></a><a name="7.1"></a>
+- [7.1](#function--declarations) Используйте функциональные выражения вместо объявлений функций
+
+  eslint: [`func-style`](https://eslint.org/docs/rules/func-style)
+
+  >Почему: объявления функций поднимаются, поэтому слишком легко сослаться на функцию до ее определения в файле. Это вредит читаемости и поддерживаемости. Если вам кажется, что объявление функции настолько большое или сложное, что это мешает понимать остальную часть файла, возможно, стоит выделить его в отдельный модуль. Не забывайте явно именовать выражение, не важно будет ли потом извлекаться из переменной имя (что часто происходит в современных браузерах или при использовании компиляторов типа `Babel`) - это облегчит поиск проблемы в стеке вызовов.
+
+  ```javascript
+  // плохо
+  function foo () {
+    // ...
+  }
+
+  // плохо
+  const foo = function () {
+    // ...
+  }
+
+  // хорошо
+  const short = function longUniqueMoreDescriptiveLexicalFoo () {
+    // ...
+  }
+  ```
+
+<a name="functions--iife"></a><a name="7.2"></a>
+- [7.2](#functions--iife) Оборачивайте скобками немедленно выполняемые функциональные выражения
+
+  eslint: [`wrap-iife`](https://eslint.org/docs/rules/wrap-iife)
+
+  >Почему: немедленно выполняемые функциональные выражения - отдельный модуль. Оборачивание в скобки самого выражения и скобок, указывающих на его вызов, четко указывает на это.
+
+  ```javascript
+  (function () {
+    console.log('iife');
+  }());
+  ```
+
+<a name="functions--in-blocks"></a><a name="7.3"></a>
+- [7.3](#functions--in-blocks) Никогда не объявляйте функции в нефункциональном блоке (if, while и пр.). Вместо этого присваивайте объявление функции переменной. Хотя браузеры и позволяют делать это, они интерпретируют такой код по-разному.
+
+  eslint: [`no-loop-func`](https://eslint.org/docs/rules/no-loop-func.html)
+
+<a name="functions--note-on-block"></a><a name="7.4"></a>
+- [7.4](#functions--note-on-block) ECMA-262 определяет `блок` как набор утверждений. Объявление функции не является утверждением.
+
+  ```javascript
+  // плохо
+  if (currentUser) {
+    function test() {
+      console.log('Плохо');
+    }
+  }
+
+  // хорошо
+  let test;
+  if (currentUser) {
+    test = () => {
+      console.log('Хорошо');
+    };
+  }
+  ```
+
+<a name="functions--arguments-shadow"></a><a name="7.5"></a>
+- [7.5](#functions--arguments-shadow) Никогда не называйте параметр `arguments`. Он перекроет объект `arguments`.
+
+  ```javascript
+  // плохо
+  function foo (name, options, arguments) {
+    // ...
+  }
+
+  // хорошо
+  function foo (name, options, args) {
+    // ...
+  }
+  ```
+
+<a name="functions--es6-rest"></a><a name="7.6"></a>
+- [7.6](#functions--es6-rest) Никогда не используйте `arguments`, используйте `rest`-синтаксис `...`
+
+  eslint: [`prefer-rest-params`](https://eslint.org/docs/rules/prefer-rest-params)
+
+  >Почему: `...` явно указывает на то, какие аргументы используются. Кроме того `...` вернет настоящий массив, а не массивоподобный объект типа `arguments`.
+
+  ```javascript
+  // плохо
+  function concatenateAll() {
+    const args = Array.prototype.slice.call(arguments);
+    return args.join('');
+  }
+
+  // хорошо
+  function concatenateAll(...args) {
+    return args.join('');
+  }
+  ```
+
+<a name="functions--es6-default-parameters"></a><a name="7.7"></a>
+- [7.7](#functions--es6-default-parameters) Используйте синтаксис значений аргументов по умолчанию вместо того, чтобы изменять аргументы
+
+  ```javascript
+  // очень плохо
+  function handleThings (opts) {
+    // Не стоит изменять агрументы функции
+    // Дополнительно: если opts - false, то после такого присваивания opts станет true
+    opts = opts || {};
+    // ...
+  }
+
+  // все еще плохо
+  function handleThings (opts) {
+    if (opts === void 0) {
+      opts = {};
+    }
+    // ...
+  }
+
+  // хорошо
+  function handleThings (opts = {}) {
+    // ...
+  }
+  ```
+
+<a name="functions--default-side-effects"></a><a name="7.8"></a>
+- [7.8](#functions--default-side-effects) Избегайте побочных эффектов в значениях параметров по умолчанию
+
+  ```javascript
+  var b = 1;
+  // плохо
+  function count (a = b++) {
+    console.log(a);
+  }
+
+  count(); // 1
+  count(); // 2
+  count(3); // 3
+  count(); // 3
+  ```
+
+<a name="functions--defaults-last"></a><a name="7.9"></a>
+- [7.9](#functions--defaults-last) Всегда помещайте необязательные параметры в конец
+
+  ```javascript
+  // плохо
+  function handleThings (opts = {}, name) {
+    // ...
+  }
+
+  // хорошо
+  function handleThings (name, opts = {}) {
+    // ...
+  }
+  ```
+
+<a name="functions--constructor"></a><a name="7.10"></a>
+- [7.10](#functions--constructor) Никогда не используйте конструктор `Function` для создания новой функции
+
+  eslint: [`no-new-func`](https://eslint.org/docs/rules/no-new-func)
+
+  >Почему: при создании функции таким способом используется механизм наподобие `eval()`, который открывает уязвимости
+
+  ```javascript
+  // плохо
+  var add = new Function('a', 'b', 'return a + b');
+
+  // все еще плохо
+  var subtract = Function('a', 'b', 'return a - b');
+  ```
+
+<a name="functions--signature-spacing"></a><a name="7.11"></a>
+- [7.11](#functions--signature-spacing) Пробельные символы в сигнатуре функции
 
   eslint: [`space-before-function-paren`](http://eslint.org/docs/rules/space-before-function-paren), [`space-before-blocks`](http://eslint.org/docs/rules/space-before-blocks), [`keyword-spacing`](http://eslint.org/docs/rules/keyword-spacing)
   
@@ -645,6 +818,115 @@
   const x = function () {};
   const y = function a () {};
   ```
+
+<a name="functions--mutate-params"></a><a name="7.12"></a>
+- [7.12](#functions--mutate-params) Никогда не изменяйте параметры
+
+  eslint: [`no-param-reassign`](https://eslint.org/docs/rules/no-reassign-params)
+
+  >Почему: изменение параметров может иметь нежелательные побочные эффекты в вызывающем коде
+
+  ```javascript
+  // плохо
+  function f1 (obj) {
+    obj.key = 1;
+  }
+
+  // хорошо
+  function f2 (obj) {
+    const key = Object.prototype.hasOwnProperty.call(obj.key) ? obj.key : 1;
+  }
+  ```
+
+<a name="functions--reassign-params"></a><a name="7.13"></a>
+- [7.13](#functions--reassign-params) Никогда не переопределяйте параметры
+
+  eslint: [`no-param-reassign`](https://eslint.org/docs/rules/no-reassing-params)
+
+  >Почему: переопределение параметров может привести к неожиданному поведению, особенно во время доступа к `arguments`. Это также может оказывать воздействие на оптимизацию, особенно в `V8`.
+
+  ```javascript
+  // плохо
+  function f1 (a) {
+    a = 1;
+    // ...
+  }
+
+  function f2 (a) {
+    if (!a) {
+      a = 1;
+    }
+    // ...
+  }
+
+  // хорошо
+  function f3 (a) {
+    const b = a || 1;
+    // ...
+  }
+
+  function f4 (a = 1) {
+    // ...
+  }
+  ```
+
+<a name="functions--spread-vs-apply"></a><a name="7.14"></a>
+- [7.14](#functions--spread-vs-apply) Предпочитайте использовать `spread`-оператор (`...`) при вызове вариативных функций
+
+  eslint: [`prefer-spread`](https://eslint.org/docs/rules/prefer-spread)
+
+  >Почему: такой синтаксис проще и чище, не надо передавать контекст и сложнее совместно использовать `new` и `apply`
+
+  ```javascript
+  // плохо
+  const x = [1, 2, 3, 4, 5];
+  console.log.apply(console, x);
+
+  // хорошо
+  const x = [1, 2, 3, 4, 5];
+  console.log(...x);
+
+  // плохо
+  new (Function.prototype.bind.apply(Date, [null, 2018, 8, 5]));
+
+  // хорошо
+  new Date(...[2018, 8, 5]);
+  ```
+
+<a name="functions--signature-invocation-indentation"></a><a name="7.15"></a>
+- [7.15](#functions--signature-invocation-indentation) Фнукции с несколькими сигнатурами или способами вызова, должны подчиняться тем же правилам форматирования, что и прочие списки: каждый элемент списка на своей строке с висящей запятой у последнего элемента.
+
+  ```javascript
+  // плохо
+  function foo (bar,
+                baz,
+                quux) {
+    // ...
+  }
+
+  // хорошо
+  function foo (
+    bar,
+    baz,
+    quux,
+  ) {
+    // ...
+  }
+
+  // плохо
+  console.log(foo,
+    bar,
+    baz);
+
+  // хорошо
+  console.log(
+    foo,
+    bar,
+    baz,
+  );
+  ```
+
+**[К содержанию](#table-of-contents)**
 
 ## Стрелочные функции <a name="arrow-functions"></a>
 
@@ -2017,7 +2299,7 @@
   ```
 
 <a name="comments--actionitems"></a><a name="18.4"></a>
-- [18.4](#comments--actionitems) Исползование префиксов `FIXME` и `TODO` в комментариях помогает другим разработчикам быстро понять указываете ли вы на проблему, которую надо рассмотреть, или предлагаете решение проблемы, которое надо реализовать 
+- [18.4](#comments--actionitems) Исползование префиксов `FIXME` и `TODO` в комментариях помогает другим разработчикам быстро понять указываете ли вы на проблему, которую надо рассмотреть, или предлагаете решение проблемы, которое надо реализовать
 
 <a name="comments--fixme"></a><a name="18.5"></a>
 - [18.5](#comments--fixme) Используйте `FIXME` для описания проблемы
@@ -2803,4 +3085,298 @@
   // ^ поддерживает оба варианта: insideDirectory.js и insideDirectory/index.js
   ```
 
+<a name="naming--camelCase-default-export"></a><a name="23.7"></a>
+- [23.7](#naming--camelCase-default-export) Используйте `camelCase` при экспорте по умолчанию функции. Название файла должно совпадать с названием функции.
+
+  ```function makeStyleGuide () {
+    // ...
+  }
+
+  export default makeStyleGuide;
+  ```
+
+<a name="naming--PascalCase-singleton"></a><a name="23.8"></a>
+- [23.8](#naming--PascalCase-singleton) Используйте `PascalCase` при экспорте конструктора, класса, `singleton`-а, библиотеки функций, простого объекта
+
+  ```javascript
+  const PortalStyleGuide = {
+    es6: {
+    },
+  };
+
+  export default ProtalStyleGuide;
+  ```
+
+<a name="naming--Acronyms-and-Initialisms"></a><a name="23.9"></a>
+- [23.9](#naming--Acronyms-and-Initialisms) Акронимы и аббревиатуры должны быть все в верхнем или все в нижнем регистре
+
+  >Почему: для удобочитаемости
+
+  ```javascript
+  // плохо
+  import SmsContainer from './containers/SmsContainer';
+
+  // плохо
+  const HttpRequests = [
+    // ...
+  ];
+
+  // хорошо
+  import SMSContainer from './containers/SMSContainer';
+
+  // хорошо
+  const HTTPREquests = [
+    // ...
+  ];
+
+  // тоже хорошо
+  const httpRequests = [
+    // ...
+  ];
+
+  // наилучший вариант
+  import TextMessageContainer from './containers/TextMessageContainer';
+
+  // наилучший вариант
+  const requests = [
+    // ...
+  ];
+  ```
+
 **[К содержанию](#table-of-contents)**
+
+## Методы доступа <a name="accessors"></a>
+
+<a name="accessors--not-required"></a><a name="24.1"></a>
+- [24.1](#accessors--not-required) Методы доступа для свойств не обязательны
+
+<a name="accessors--no-getters-setters"></a><a name="24.2"></a>
+- [24.2](#accessors--no-getters-setters) Не используйте методы достпа Javascript (`getter`-ы и `setter`-ы), т.к. они являются причиной неожиданных побочных эффектов, их сложнее тестировать, поддерживать и судить о них. Вместо этого, если вы делаете методы доступа, используйте `getVal()` и `setVal(value)`.
+
+  ```javascript
+  // плохо
+  class Dragon {
+    get age () {
+      // ...
+    }
+
+    set age (value) {
+      // ...
+    }
+  }
+
+  // хорошо
+  class Dragon {
+    getAge () {
+      // ...
+    }
+
+    setAge (value) {
+      // ...
+    }
+  }
+  ```
+
+<a name="accessors--boolean-prefix"></a><a name="24.3"></a>
+- [24.3](#accessors--boolean-prefix) Если свойство типа `boolean` или метод возвращается `boolean` используйте `isVal()` или `hasVal()`
+
+  ```javascript
+  // плохо
+  if (!dragon.age()) {
+    return false;
+  }
+
+  // хорошо
+  if (!dragon.hasAge()) {
+    return false;
+  }
+  ```
+
+<a name="accessors--consistent"></a><a name="24.4"></a>
+- [24.4](#accessors--consistent) Нормально создавать функции `get()` и `set()`, но будьте последовательны
+
+  ```javascript
+  class Jedi {
+    constructor (options = {}) {
+      const lightsaber = options.lightsaber || 'blue';
+      this.set('lightsaber', lightsaber);
+    }
+
+    set (key, value) {
+      this[key] = value;
+    }
+
+    get (key) {
+      retun this[key];
+    }
+  }
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## События <a name="events"></a>
+
+<a name="events--hash"></a><a name="25.1"></a>
+- [25.1](#events) При передаче данных в событие (неважно, обычное событие DOM или что-то более проприетарное типа событий в `Backbone`) используйте объект-литерал (также известный как "хэш") вместо обычного значения. Это позволит последующим участникам легко добавлять данные при передаче их в событие и  избавит от необходимости обновления всех обработчиков события. Например, вместо:
+
+  ```javascript
+  // плохо
+  $(this).trigger('listingUpdated', listing.id);
+
+  // ...
+
+  $(this).on('listingUpdated', (e, listingId) => { /* действия с listingId */ });
+  ```
+
+предпочтите:
+
+  ```javascript
+  // хорошо
+  $(this).trigger('listingUpdated', {listingId: listing.id});
+
+  // ...
+
+  $(this).on('listingUpdated', (e, data) => { /* действия с data.listingId */ });
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## jQuery <a name="jquery"></a>
+
+<a name="jquery--dollar-prefix"></a><a name="26.1"></a>
+- [26.1](#jquery--dollar-prefix) В названии переменной, содержащей объект jQuery, используйте префикс `$`
+
+  ```javascript
+  // плохо
+  const sidebar = $('.sidebar');
+
+  // хорошо
+  const $sidebar = $('.sidebar');
+  ```
+
+<a name="jquery--cache"></a><a name="26.2"></a>
+- [26.2](#jquery--cache) Кешируйте результаты выполнения запросов jQuery
+
+  ```javascript
+  // плохо
+  function setSidebar () {
+    $('.sidebar').hide();
+
+    // ...
+
+    $('.sidebar').css({
+      'background-color': 'pink'
+    });
+  }
+
+  // хорошо
+  function setSidebar () {
+    const $sidebar = $('.sidebar');
+    $sidebar.hide();
+
+    // ...
+
+    $sidebar.css({
+      'background-color': 'pink'
+    });
+  }
+  ```
+
+<a name="jquery--queries"></a><a name="26.3"></a>
+- [26.3](#jquery--queries) Для запросов в DOM используйте каскад `$('.sidebar ul)` или или дочерние селекторы `$('.sidebar > ul')`
+
+<a name="jquery--find"></a><a name="26.4"></a>
+- [26.4](#jquery--find) Используйте `find` для поиска в сохраненных объектах jQuery
+
+  ```javascript
+  // плохо
+  $('ul', '.sidebar').hide();
+
+  // плохо
+  $('.sidebar').find('ul').hide();
+
+  // хорошо
+  $('.sidebar ul').hide();
+
+  // хорошо
+  $('.sidebar > ul').hide();
+
+  // хорошо
+  $sidebar.find('ul').hide();
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Совместимость с ECMAScript 5 <a name="es5-compat"></a>
+
+<a name="es5-compat--kangax"></a>
+- [27.1](#es5-compat--kangax) См. [таблицу совместимости](https://kangax.github.io/es5-compat-table) пользователя [Kangax](https://twitter.com/kangax)
+
+**[К содержанию](#table-of-contents)**
+
+## Стиль написания ECMAScript 6+ (ES 2015+) <a name="es6-styles"></a>
+
+<a name="es6-styles--links"></a><a name="28.1"></a>
+- [28.1](#es6-styles--links) Список ссылок на разделы этого руководства, описывающие особенности ES6+
+
+1. [Стрелочные функции](#arrow-functions)
+1. [Классы и конструкторы](#constructors)
+1. [Сокращенный синтаксис методов объектов](#objects--es6-object-shorthand)
+1. [Сокращенный синтаксис свойств](#objects--es6-object-concise)
+1. [Вычисляемые имена свойств](#objects--es6-computed-properties)
+1. [Строковые шаблоны](#strings--es6-template-literals)
+1. [Деструктурирующее присваивание](#destructuring)
+1. [Значения аргументов по умолчанию](#functions--es6-default-parameters)
+1. [Rest-синтаксис](#functions--es6-rest)
+1. [Оператор расширения в массивах](#arrays--es6-array-spreads)
+1. [Let и const](#references)
+1. [Оператор возведения в степень](#properties--es2016-expoenentiation-operator)
+1. [Итераторы и генераторы](#iterators-and-generators)
+1. [Модули](#modules)
+
+<a name="es6-styles--tc39-proposals"></a><a name="28.2"></a>
+- [28.2](#es6-styles--tc39-proposals) Не используйте [предложения TC39](https://gitgub.io/tc39/proposals), которые не достигли стадии 3
+
+  >Почему: [работа над ними не закончена](https://tc39.github.io/process-document) и они могут быть изменены или вовсе удалены. Фактически они не являются частью JavaScript.
+
+**[К содержанию](#table-of-contents)**
+
+## Стандартная библиотека <a name="standard-library"></a>
+
+[Стандартная библиотека](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects) содержит утилиты, функциональность которых сломана. Они сохранены для обратной совместимости.
+
+<a name="standard-library--isnan"></a><a name="29.1"></a>
+- [29.1](#standard-library--isnan) Используйте `Number.isNan` вместо `isNan`
+
+  eslint: [`no-restricted-globals`](https://eslint.org/docs/rules/no-restricted-globals)
+
+  >Почему: глобальня функция `isNaN` приводит не-числа к числам и возвращает `true` если аргумент приводится к `NaN`. Если нужно именно такое поведение, это должно быть очевидно.
+
+  ```javascript
+  // плохо
+  isNaN('1.2'); // false
+  isNaN('1.2.3'); // true
+
+  // хорошо
+  Number.isNaN('1.2.3'); // false
+  Number.isNaN(Number('1.2.3')); // true
+  ```
+
+<a name="standard-library--isfinite"></a><a name="29.2"></a>
+- [29.2](#standard-library--isfinite) Используйте `Number.isFinite` вместо `isFinite`
+
+  eslint: [`no-restricted-globals`](https://eslint.org/docs/rules/no-restricted-globals)
+
+  >Почему: глобальня функция `isFinite` приводит не-числа к числам и возвращает `true` если аргумент приводится к конечному значению. Если нужно именно такое поведение, это должно быть очевидно.
+
+  ```javascript
+  // плохо
+  isFinite('2e3'); // true
+
+  // хорошо
+  Number.isFinite('2e3'); // false
+  Number.isFinite(parseInt('2e3', 10)); // true
+  ```
+
+**[К содержанию](#table-of-contents)**
+
