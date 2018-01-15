@@ -2444,7 +2444,7 @@
 <a name="whitespace--chains"></a><a name="19.6"></a>
 - [19.6](#whitespace--chains) Используйте отступы в длинных цепочках вызовов (более 2 методов). Начинайте с точки, это подчеркивает, что в строке - вызов метода, а не новое утверждение.
 
-  eslint: [`newline-per-chained-call](https://eslint.org/docs/rules/newline-per-chained-call)
+  eslint: [`newline-per-chained-call`](https://eslint.org/docs/rules/newline-per-chained-call)
 
   ```javascript
   // плохо
@@ -2487,7 +2487,7 @@
   ```
 
 <a name="whitespace--after-blocks"></a><a name="19.7"></a>
-- [19.7](#whitespace--after-blocks) Между блоком и следующим утверждением оставляйте пустую строку
+- [19.7](#whitespace--after-blocks) Между блоком и следующим утверждением оставляйте пустую строку. Если тело блока состоит из блока констант и одной строки кода, необходимости в пустой строке нет.
 
   ```javascript
   // плохо
@@ -2530,6 +2530,7 @@
     function bar () {
     }
   ];
+
   return arr;
 
   // хорошо
@@ -2540,12 +2541,11 @@
     function bar () {
     }
   ];
-
   return arr;
   ```
 
 <a name="whitespace--padded-blocks"></a><a name="19.8"></a>
-- [19.8](#whitespace--padded-blocks) Не отбивайте блоки пустыми строками
+- [19.8](#whitespace--padded-blocks) Не отбивайте блоки пустыми строками. Добавляйте пустые строки между логическими блоками.
 
   eslint: [`padded-blocks`](https://eslint.org/docs/rules/padded-blocks)
 
@@ -2574,6 +2574,22 @@
     }
   }
 
+  // плохо
+  class Bar {
+    // ...
+
+    method (a) {
+      let b;
+      if (a === 1) {
+        b = c();
+      }
+      if (a === '1') {
+        b = d();
+      }
+      return b;
+    }
+  }
+
   // хорошо
   function bar () {
     console.log(foo);
@@ -2584,6 +2600,25 @@
     console.log(qux);
   } else {
     console.log(foo);
+  }
+
+  // хорошо
+  class Bar {
+    // ...
+
+    method (a) {
+      let b;
+
+      if (a === 1) {
+        b = c();
+      }
+
+      if (a === '1') {
+        b = d();
+      }
+
+      return b;
+    }
   }
   ```
 
@@ -3051,7 +3086,7 @@
   ```
 
 <a name="naming--filename-matches-export"></a><a name="23.6"></a>
-- [23.6](#naming--filename-matches-export) Имя файла должно в точности соответствовать тому, что из него экспортируется
+- [23.6](#naming--filename-matches-export) Имя файла должно в точности соответствовать тому, что из него экспортируется по умолчанию
 
   ```javascript
   // файл 1
