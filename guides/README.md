@@ -376,6 +376,7 @@
 
   // хорошо
   const nodes = [...foo];
+  ```
 
 <a name="arrays--mapping"></a><a name="4.5"></a>
 - [4.5](#arrays--mapping) Испорльзуйте [Array#from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from) вместо `spread`-оператора (`...`) при маппинге по итерируемым типам.
