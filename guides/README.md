@@ -3280,7 +3280,7 @@
   $(this).on('listingUpdated', (e, listingId) => { /* действия с listingId */ });
   ```
 
-предпочтите:
+  предпочтите:
 
   ```javascript
   // хорошо
@@ -3296,7 +3296,7 @@
 ## jQuery <a name="jquery"></a>
 
 <a name="jquery--dollar-prefix"></a><a name="26.1"></a>
-- [26.1](#jquery--dollar-prefix) В названии переменной, содержащей объект jQuery, используйте префикс `$`
+- [26.1](#jquery--dollar-prefix) В названии переменной, содержащей объект jQuery, используйте префикс `$`.
 
   ```javascript
   // плохо
@@ -3307,7 +3307,7 @@
   ```
 
 <a name="jquery--cache"></a><a name="26.2"></a>
-- [26.2](#jquery--cache) Кешируйте результаты выполнения запросов jQuery
+- [26.2](#jquery--cache) Кешируйте результаты выполнения запросов jQuery.
 
   ```javascript
   // плохо
@@ -3335,10 +3335,10 @@
   ```
 
 <a name="jquery--queries"></a><a name="26.3"></a>
-- [26.3](#jquery--queries) Для запросов в DOM используйте каскад `$('.sidebar ul)` или или дочерние селекторы `$('.sidebar > ul')`
+- [26.3](#jquery--queries) Для запросов в DOM используйте каскад `$('.sidebar ul)` или или дочерние селекторы `$('.sidebar > ul')`.
 
 <a name="jquery--find"></a><a name="26.4"></a>
-- [26.4](#jquery--find) Используйте `find` для поиска в сохраненных объектах jQuery
+- [26.4](#jquery--find) Используйте `find` для поиска в сохраненных объектах jQuery.
 
   ```javascript
   // плохо
@@ -3362,14 +3362,14 @@
 ## Совместимость с ECMAScript 5 <a name="es5-compat"></a>
 
 <a name="es5-compat--kangax"></a>
-- [27.1](#es5-compat--kangax) См. [таблицу совместимости](https://kangax.github.io/es5-compat-table) пользователя [Kangax](https://twitter.com/kangax)
+- [27.1](#es5-compat--kangax) См. [таблицу совместимости](https://kangax.github.io/es5-compat-table) пользователя [Kangax](https://twitter.com/kangax).
 
 **[К содержанию](#table-of-contents)**
 
 ## Стиль написания ECMAScript 6+ (ES 2015+) <a name="es6-styles"></a>
 
 <a name="es6-styles--links"></a><a name="28.1"></a>
-- [28.1](#es6-styles--links) Список ссылок на разделы этого руководства, описывающие особенности ES6+
+- [28.1](#es6-styles--links) Список ссылок на разделы этого руководства, описывающие особенности ES6+.
 
 1. [Стрелочные функции](#arrow-functions)
 1. [Классы и конструкторы](#constructors)
@@ -3387,7 +3387,7 @@
 1. [Модули](#modules)
 
 <a name="es6-styles--tc39-proposals"></a><a name="28.2"></a>
-- [28.2](#es6-styles--tc39-proposals) Не используйте [предложения TC39](https://gitgub.io/tc39/proposals), которые не достигли стадии 3
+- [28.2](#es6-styles--tc39-proposals) Не используйте [предложения TC39](https://gitgub.io/tc39/proposals), которые не достигли стадии 3.
 
   >Почему: [работа над ними не закончена](https://tc39.github.io/process-document) и они могут быть изменены или вовсе удалены. Фактически они не являются частью JavaScript.
 
@@ -3398,7 +3398,7 @@
 [Стандартная библиотека](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects) содержит утилиты, функциональность которых сломана. Они сохранены для обратной совместимости.
 
 <a name="standard-library--isnan"></a><a name="29.1"></a>
-- [29.1](#standard-library--isnan) Используйте `Number.isNan` вместо `isNan`
+- [29.1](#standard-library--isnan) Используйте `Number.isNan` вместо `isNan`.
 
   eslint: [`no-restricted-globals`](https://eslint.org/docs/rules/no-restricted-globals)
 
@@ -3415,7 +3415,7 @@
   ```
 
 <a name="standard-library--isfinite"></a><a name="29.2"></a>
-- [29.2](#standard-library--isfinite) Используйте `Number.isFinite` вместо `isFinite`
+- [29.2](#standard-library--isfinite) Используйте `Number.isFinite` вместо `isFinite`.
 
   eslint: [`no-restricted-globals`](https://eslint.org/docs/rules/no-restricted-globals)
 
