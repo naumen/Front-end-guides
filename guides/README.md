@@ -1106,9 +1106,9 @@
   ```
 
 <a name="constructors--extends"></a><a name="9.2"></a>
-- [9.2](#constructors--extends) Используйте `extends` для наследования
+- [9.2](#constructors--extends) Используйте `extends` для наследования.
 
-  >Почему: это встроенный способ наследования финкциональности прототипа без необходимости ломать `instanceof`
+  >Почему: это встроенный способ наследования финкциональности прототипа без необходимости ломать `instanceof`.
 
   ```javascript
   // плохо
@@ -1130,26 +1130,26 @@
   ```
 
 <a name="constructors--chaining"></a><a name="9.3"></a>
-- [9.3](#constructors--chaining) Методы могут возвращать `this` для обеспечения чейнинга
+- [9.3](#constructors--chaining) Методы могут возвращать `this` для обеспечения чейнинга.
 
   ```javascript
   // плохо
-  Telvanni.prototype.fly = function () {
+  Mage.prototype.fly = function () {
     this.flying = true;
     return true;
   };
 
-  Telvanni.prototype.setHeight = function (height) {
+  Mage.prototype.setHeight = function (height) {
     this.height = height;
   };
 
-  const mage = new Telvanni();
+  const mage = new Mage();
 
   mage.fly(); // => true
   mage.setHeight(20); // undefined
 
   // хорошо
-  class Telvanni {
+  class Mage {
     fly () {
       this.flying = true;
       return this;
@@ -1161,17 +1161,17 @@
     }
   }
 
-  const mage = new Telvanni();
+  const mage = new Mage();
 
   mage.fly()
     .setHeight(20);
   ```
 
 <a name="constructors--tostring"></a><a name="9.4"></a>
-- [9.4](#constructors--tostring) Ничего плохого в написании своих методов `toString`, если вы убедились, что они работают нормально и не имеют побочных эффектов
+- [9.4](#constructors--tostring) Ничего плохого в написании своих методов `toString`, если вы убедились, что они работают нормально и не имеют побочных эффектов.
 
   ```javascript
-  class Redoran {
+  class Person {
     constructor (options = {}) {
       this.name = options.name || 'no name';
     }
@@ -1181,19 +1181,19 @@
     }
 
     toString () {
-      return `Redoran - ${this.getName()}`;
+      return `Person - ${this.getName()}`;
     }
   }
   ```
 
 <a name="constructors--no-useless"></a><a name="9.5"></a>
-- [9.5](#constructors--no-useless) У классов есть конструктор по-умолчанию, если не указан собственный конструктор; пустой конструктор или конструктор, только вызывающий родительский конструктор бесполезен
+- [9.5](#constructors--no-useless) У классов есть конструктор по-умолчанию, если не указан собственный конструктор; пустой конструктор или конструктор, только вызывающий родительский конструктор бесполезен.
 
   eslint: [`no-useless-constructor`](https://eslint.org/docs/rules/no-useless-constructor)
 
   ```javascript
   // плохо
-  class Redoran {
+  class Animal {
     constructor () {}
 
     getName () {
@@ -1202,23 +1202,23 @@
   }
 
   // плохо
-  class Warrior extends Redoran {
+  class Rabbit extends Animal {
     constructor (...args) {
       super(...args);
     }
   }
 
   // хорошо
-  class Warrior extends Redoran {
+  class Rabbit extends Animal {
     constructor (...args) {
       super(...args);
-      this.name = 'Nameless Hero';
+      this.name = 'Bugs';
     }
   }
   ```
 
 <a name="classes--no-duplicate-members"></a><a name="9.6"></a>
-- [9.6](#classes--no-duplicate-members) Избегайте повторов членов класса
+- [9.6](#classes--no-duplicate-members) Избегайте повторов членов класса.
 
   eslint: [`no-dupe-class-members`](https://eslint.org/docs/rules/no-dupe-class-members)
 
@@ -1266,9 +1266,9 @@
   ```
 
 <a name="modules--no-wildcard"></a><a name="10.2"></a>
-- [10.2](#modules--no-wildcard) Не используйте «звездочку» при импорте
+- [10.2](#modules--no-wildcard) Не используйте «звездочку» при импорте.
 
-  >Почему: это дает уверенность, что есть только один экспорт по-умолчанию
+  >Почему: это дает уверенность, что есть только один экспорт по умолчанию
 
   ```javascript
   // плохо
@@ -1279,7 +1279,7 @@
   ```
 
 <a name="modules--no-export-from-import"></a><a name="10.3"></a>
-- [10.3](#modules--no-export-from-import) Не эспортируйте напрямую из импорта
+- [10.3](#modules--no-export-from-import) Не эспортируйте напрямую из импорта.
 
   >Почему: хотя одна строка и короче, один чистый импорт и один чистый экспорт консистентны
 
@@ -1295,9 +1295,9 @@
   ```
 
 <a name="modules--no-duplicate-imports"></a><a name="10.4"></a>
-- [10.4](#modules--no-duplicate-imports) Единственный импорт для каждого источника
+- [10.4](#modules--no-duplicate-imports) Единственный импорт для каждого источника.
 
-  eslint: [`no-duplicate-imports`](http://eslint.org/docs/rules/no-duplicate-imports)
+  eslint: [`no-duplicate-imports`](https://eslint.org/docs/rules/no-duplicate-imports)
 
   >Почему: код, в котором есть несколько строк импорта из одного и того же источника, тяжелее поддерживать
 
@@ -1312,9 +1312,9 @@
   ```
 
 <a name="modules--no-mutable-exports"></a><a name="10.5"></a>
-- [10.5](#modules--no-mutable-exports) Экспортируйте только константы
+- [10.5](#modules--no-mutable-exports) Экспортируйте только константы.
 
-  eslint: [`import/no-mutable-exports`](http://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md)
+  eslint: [`import/no-mutable-exports`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md)
 
   >Почему: в целом, стоит избегать изменений значений (mutations). В частности - стоит экспортировать только константы. Это обеспечивает предсказуемость результата.
 
@@ -1329,9 +1329,9 @@
   ```
 
 <a name="modules--prefer-default-export"></a><a name="10.6"></a>
-- [10.6](#modules--prefer-default-export) Если в модуле только один экспорт, предпочитайте экспорт по умолчанию именованному экспорту
+- [10.6](#modules--prefer-default-export) Если в модуле только один экспорт, предпочитайте экспорт по умолчанию именованному экспорту.
 
-  eslint: [`import/prefer-default-export`](http://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
+  eslint: [`import/prefer-default-export`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
 
   >Почему: улучшает читаемость и понимаемость кода
 
@@ -1344,9 +1344,9 @@
   ```
 
 <a name="modules--imports-first"></a><a name="10.7"></a>
-- [10.7](#modules--imports-first) Помещайте строки импорта выше строк кода
+- [10.7](#modules--imports-first) Помещайте строки импорта выше строк кода.
 
-  eslint: [`import/first`](http://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/first.md)
+  eslint: [`import/first`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/first.md)
 
   >Почему: импорты поднимаются (hoist), размещение их в начале предупреждает неожиданное поведение
 
@@ -1365,7 +1365,7 @@
   ```
 
 <a name="modules--multiline-imports-over-newlines"></a><a name="10.8"></a>
-- [10.8](#modules--multiline-imports-over-newlines) Многострочные импорты должны форматироваться так же как многострочные массивы или литералы объектов
+- [10.8](#modules--multiline-imports-over-newlines) Многострочные импорты должны форматироваться так же как многострочные массивы или литералы объектов.
 
   >Почему: фигурные скобки импорта следуют тому же стилю форматирования, что и любые другие фигурные скобки блоков (равно как и запятые)
 
@@ -1384,14 +1384,14 @@
     longName6,
     longName7,
     longName8,
-    longName9
+    longName9,
   } from 'module';
   ```
 
 <a name="modules--no-webpack-loader-syntax"></a><a name="10.9"></a>
-- [10.9](#modules--no-webpack-loader-syntax) Не указывайте загрузчики Webpack'а в импортах
+- [10.9](#modules--no-webpack-loader-syntax) Не указывайте загрузчики `Webpack`-а в импортах.
 
-  eslint: [`import/no-webpack-loader-syntax`](http://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-webpack-loader-syntax.md)
+  eslint: [`import/no-webpack-loader-syntax`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-webpack-loader-syntax.md)
 
   >Почему: этот нестандартный синтаксис привязывает код к сборщику; для указания загрузчиков стоит использовать `webpack.config.js`
 
@@ -1410,7 +1410,7 @@
 ## Итераторы и генераторы <a name="iterators-and-generators"></a>
 
 <a name="iterators--nope"></a><a name="11.1"></a>
-- [11.1](#iterators--nope) Не используйте итераторы, предпочитайте функции высшего порядка циклам типа `for-in` и `for-of`
+- [11.1](#iterators--nope) Не используйте итераторы, предпочитайте функции высшего порядка циклам типа `for-in` и `for-of`.
 
   eslint: [`no-iterator`](https://eslint.org/docs/rules/no-iterator), [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax)
 
@@ -1452,12 +1452,12 @@
   ```
 
 <a name="generators--nope"></a><a name="11.2"></a>
-- [11.2](#generators--nope) Не используйте генераторы пока
+- [11.2](#generators--nope) Не используйте генераторы пока.
 
   >Почему: они не очень хорошо переводятся в ES5
 
 <a name="generators--spacing"></a><a name="11.3"></a>
-- [11.3](#generators-spacing) Если использование генераторов - необходимость, используйте пробельные символы в сигнатуре функции правильно
+- [11.3](#generators-spacing) Если использование генераторов - необходимость, используйте пробельные символы в сигнатуре функции правильно.
 
   eslint: [`generator-star-spacing`](https://eslint.org/docs/rules/generator-star-spacing)
 
@@ -1524,39 +1524,39 @@
 ## Свойства <a name="#properties"></a>
 
 <a name="properties--dot"></a><a name="12.1"></a>
-- [12.1](#properties--dot) Используйте «точку» при получении доступа к свойству
+- [12.1](#properties--dot) Используйте «точку» при получении доступа к свойству.
 
   eslint: [`dot-notation`](https://eslint.org/docs/rules/dot-notation)
 
   ```javascript
-  const kogoruhn = {
-    fortress: true
+  const luke = {
+    jedi: true
   };
 
   // плохо
-  const isFortress = kogoruhn['fortress'];
+  const isJedi = kogoruhn['jedi'];
 
   // хорошо
-  const isFortress = kogoruhn.fortress;
+  const isJedi = kogoruhn.jedi;
   ```
 
 <a name="properties--bracket"></a><a name="12.2"></a>
-- [12.2](#properties--bracket) Используйте квадратные скобки (`[]`) при получении доступа к свойству с использованием переменной
+- [12.2](#properties--bracket) Используйте квадратные скобки (`[]`) при получении доступа к свойству с использованием переменной.
 
   ```javascript
-  const kogoruhn = {
-    fortress: true
+  const luke = {
+    jedi: true
   };
 
   function getProp (prop) {
-    return kogoruhn[prop];
+    return luke[prop];
   }
 
-  const isFortress = getProp('fortress');
+  const isJedi = getProp('jedi');
   ```
 
 <a name="properties--es2016-exponentiation-operator"></a><a name="12.3"></a>
-- [12.3](#properties--es2016-expoenentiation-operator) Используйте оператор возведения в степень `**` при подсчете степени
+- [12.3](#properties--es2016-expoenentiation-operator) Используйте оператор возведения в степень `**` при подсчете степени.
 
   eslint: [`no-restricted-properties`](https://eslint.org/docs/rules/no-restricted-properties)
 
@@ -1570,25 +1570,25 @@
 
 **[К содержанию](#table-of-contents)**
 
-## Переменные <a name="variables"></a> [Черновик, необходимо обсуждение]
+## Переменные <a name="variables"></a>
 
 <a name="variables--const"></a><a name="1.1"></a>
-- [13.1](#variables--const) При объявлении переменных всегда используйте `const` или `let`
+- [13.1](#variables--const) При объявлении переменных всегда используйте `const` или `let`.
 
-  eslint: [`no-undef`](http://eslint.org/docs/rules/no-undef), [`prefer-const`](http://eslint.org/docs/rules/prefer-const)
+  eslint: [`no-undef`](https://eslint.org/docs/rules/no-undef), [`prefer-const`](https://eslint.org/docs/rules/prefer-const)
 
   >Почему: использование `var` приводит к глобальным переменным и замусориванию глобальной области видимости
 
   ```javascript
   // плохо
-  var persons = ['Almalexia', 'Sotha Sil', 'Vivec'];
+  superPower = new SuperPower();
 
   // хорошо
-  const persons = ['Almalexia', 'Sotha Sil', 'Vivec'];
+  const superPower = new SuperPower();
   ```
 
 <a name="variables--one-const"></a><a name="13.2"></a>
-- [13.2](#variables--one-const) Используйте `const` или `let` для объявления одной переменной
+- [13.2](#variables--one-const) Используйте `const` или `let` для объявления одной переменной.
 
   eslint: [`one-var`](https://eslint.org/docs/rules/one-var)
 
@@ -1613,7 +1613,7 @@
   ```
 
 <a name="variables--const-let-group"></a><a name="13.3"></a>
-- [13.3](#variables--const-let-group) Группируйте все объявления `const`, потом группируйте все объявления `let`
+- [13.3](#variables--const-let-group) Группируйте все объявления `const`, потом группируйте все объявления `let`.
 
   >Почему: помогает при необходимости определить переменную на основе уже объявленных переменных; легче читается
 
@@ -1639,7 +1639,7 @@
   ```
 
 <a name="variables--define-where-used"></a><a name="13.4"></a>
-- [13.4](#variables--define-where-used) Присваивайте значения переменным там, где вы их используете, но помещайте их в разумное место
+- [13.4](#variables--define-where-used) Присваивайте значения переменным там, где вы их используете, но помещайте их в разумное место.
 
   >Почему: область видимости `let` и `const` - блок, не функция
 
@@ -1678,7 +1678,7 @@
   ```
 
 <a name="variables--no-chain-assignment"></a><a name="13.5"></a>
-- [13.5](#variables--no-chain-assignment) Не присваивайте значения по цепочке
+- [13.5](#variables--no-chain-assignment) Не присваивайте значения по цепочке.
 
   >Почему: использование присваивания по цепочке создает неявные глобальные переменные
 
@@ -1711,7 +1711,7 @@
   ```
 
 <a name="variables--unary-increment-decrement"></a><a name="13.6"></a>
-- [13.6](#variables--unary-increment-decrement) Избегайте использования унарных операторов увеличения и уменьшения (++, --)
+- [13.6](#variables--unary-increment-decrement) Избегайте использования унарных операторов увеличения и уменьшения (++, --).
 
   eslint: [`no-plusplus`](https://eslint.org/docs/rules/no-plusplus)
 
@@ -1749,7 +1749,7 @@
 ## Подъем <a name="hoisting"></a>
 
 <a name="hoisting--about"></a><a name="14.1"></a>
-- [14.1](#hoisting--about) Объявления `var` поднимаются к началу области видимости, присвоения им - нет; объявления `const` и `let` обладают временной мертвой зоной ([Temporal Dead Zone](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_Dead_Zone_and_errors_with_let)); также важно знать почему [typeof больше не безопасен](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15)
+- [14.1](#hoisting--about) Объявления `var` поднимаются к началу области видимости, присвоения им - нет; объявления `const` и `let` обладают временной мертвой зоной ([Temporal Dead Zone](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_Dead_Zone_and_errors_with_let)); также важно знать почему [typeof больше не безопасен](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15).
 
   ```javascript
   // мы знаем, что это не будет работать
@@ -1783,7 +1783,7 @@
   ```
 
 <a name="hoisting--anon-expressions"></a><a name="14.2"></a>
-- [14.2](#hoisting--anon-expressions) Безымянные функциональные выражения поднимают название переменной, но не присвоение функции
+- [14.2](#hoisting--anon-expressions) Безымянные функциональные выражения поднимают название переменной, но не присвоение функции.
 
   ```javascript
   function example () {
@@ -1798,7 +1798,7 @@
   ```
 
 <a name="hoisting--named-expressions"></a><a name="14.3"></a>
-- [14.3](#hoisting--named-expressions) Именованные функциональные выражения поднимают название переменной, но не название и тело функции
+- [14.3](#hoisting--named-expressions) Именованные функциональные выражения поднимают название переменной, но не название и тело функции.
 
   ```javascript
   function example () {
@@ -1825,7 +1825,7 @@
   ```
 
 <a name="hoisting--declarations"></a><a name="14.4"></a>
-- [14.4](#hoisting--declarations) Объявления функций поднимают как имя, так и тело функции
+- [14.4](#hoisting--declarations) Объявления функций поднимают как имя, так и тело функции.
 
   ```javascript
   function example () {
@@ -1837,7 +1837,7 @@
   }
   ```
 
-## Операторы сравнения и равенство <a name="comparison"></a> [Черновик, необходимо обсуждение]
+## Операторы сравнения и равенство <a name="comparison"></a>
 
 <a name="comparison--eqeqeq"></a><a name="15.1"></a>
 - [15.1](#comparison--eqeqeq) Используйте `===` и `!==` вместо `==` и `!=`
@@ -1862,11 +1862,21 @@
   ```
 
 <a name="comparison--shortcuts"></a><a name="15.3"></a>
-- [15.3](#comparison--shortcuts) Используйте сокращенный синтаксис для переменных типа `boolean` и полный синтаксис для переменных типа `String` и `Number`
+- [15.3](#comparison--shortcuts) Используйте сокращенный синтаксис для переменных типа `Boolean`, `String` и `Number`.
 
   ```javascript
   // плохо
   if (isValid === true) {
+    // ...
+  }
+
+  // плохо
+  if (name !== '') {
+    // ...
+  }
+
+  // плохо
+  if (collection.length > 0) {
     // ...
   }
 
@@ -1875,29 +1885,24 @@
     // ...
   }
 
-  // плохо
+  // хорошо
   if (name) {
     // ...
   }
 
   // хорошо
-  if (name !== '') {
-    // ...
-  }
-
-  // плохо
-  if (collection.length) {
+  if (!!name) {
     // ...
   }
 
   // хорошо
-  if (collection.length > 0) {
+  if (collection.length) {
     // ...
   }
   ```
 
 <a name="comparison--switch-blocks"></a><a name="15.4"></a>
-- [15.4](#comparison--switch-blocks) Используйте фигурные скобки для задания блоков кода в `case` и `default` в случаях когда там есть объявления (`let`, `const`, `function` или `class`)
+- [15.4](#comparison--switch-blocks) Используйте фигурные скобки для задания блоков кода в `case` и `default` в случаях, когда там есть объявления (`let`, `const`, `function` или `class`).
 
   eslint: [`no-case-declarations`](https://eslint.org/docs/rules/no-case-declarations)
 
@@ -1947,7 +1952,7 @@
   ```
 
 <a name="comparison--nested-ternaries"></a><a name="15.5"></a>
-- [15.5](#comparison--nested-ternaries) Тернарные выражения не должны вкладываться друг в друга и, в целом, должны быть однострочными
+- [15.5](#comparison--nested-ternaries) Тернарные выражения не должны вкладываться друг в друга и, в целом, должны быть однострочными.
 
   eslint: [`no-nested-ternary`](https://eslint.org/docs/rules/no-nested-ternary)
 
@@ -1969,7 +1974,7 @@
   ```
 
 <a name="comparison--unneeded-ternary"></a><a name="15.6"></a>
-- [15.6](#comparison--unneeded-ternary) Избегайте ненужных тернарных выражений
+- [15.6](#comparison--unneeded-ternary) Избегайте ненужных тернарных выражений.
 
   eslint: [`no-unneeded-ternary`](https://eslint.org/docs/rules/no-unneeded-ternary)
 
@@ -1986,7 +1991,7 @@
   ```
 
 <a name="comparison--no-mixed-operators"></a><a name="15.7"></a>
-- [15.7](#comparison--no-mixed-operators) Оборачивайте операторы в скобки когда они смешаны в утверждении; при смешении арифметических операторов не смешивайте `**` и `%` с ними же или с `+`, `-`, `*` и `/`
+- [15.7](#comparison--no-mixed-operators) Оборачивайте операторы в скобки когда они смешаны в утверждении; при смешении арифметических операторов не смешивайте `**` и `%` с ними же или с `+`, `-`, `*` и `/`.
 
   eslint: [`no-mixed-operators`](https://eslint.org/docs/rules/no-mixed-operators)
 
@@ -2024,7 +2029,7 @@
 ## Блоки <a name="blocks"></a>
 
 <a name="blocks--braces"></a><a name="16.1"></a>
-- [16.1](#blocks--braces) Используйте фигурные скобки с любыми многострочными блоками
+- [16.1](#blocks--braces) Используйте фигурные скобки с любыми многострочными блоками.
 
   eslint: [`nonblock-statement-body-position`](https://eslint.org/docs/rules/nonblock-statement-body-position)
 
@@ -2048,7 +2053,7 @@
   ```
 
 <a name="blocks--cuddled-elses"></a><a name="16.2"></a>
-- [16.2](#blocks--cuddled-elses) Помещайте `else` на одну строку с закрывающей скобкой `if`
+- [16.2](#blocks--cuddled-elses) Помещайте `else` на одну строку с закрывающей скобкой `if`.
 
   eslint: [`brace-style`](https://eslint.org/docs/rules/brace-style)
 
@@ -2072,7 +2077,7 @@
   ```
 
 <a name="blocks--no-else-return"></a><a name="16.3"></a>
-- [16.3](#blocks--no-else-return) Если в блоке `if` всегда используется `return` последний блок `else` не нужен; `return` в блоке `esle if`, который следует за блоком `if`, использующим `return` может быть разделен на несколько блоков `if`
+- [16.3](#blocks--no-else-return) Если в блоке `if` всегда используется `return` последний блок `else` не нужен; `return` в блоке `esle if`, который следует за блоком `if`, использующим `return` может быть разделен на несколько блоков `if`.
 
   eslint: [`no-else-return`](https://eslint.org/docs/rules/no-else-return)
 
