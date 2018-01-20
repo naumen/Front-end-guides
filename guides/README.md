@@ -2148,7 +2148,7 @@
 ## Управление выполнением <a name="control-statements"></a>
 
 <a name="control-statements--formatting"></a><a name="17.1"></a>
-- [17.1](#control-statements--formatting) Если управляющая конструкция (`if`, `while` и пр.) становится слишком длинной и превышает допустимый размер строки, каждое условие (или группа) должно начинаться с новой строки; условные операторы записываются в начале строки
+- [17.1](#control-statements--formatting) Если управляющая конструкция (`if`, `while` и пр.) становится слишком длинной и превышает допустимый размер строки, каждое условие (или группа) должно начинаться с новой строки; условные операторы записываются в начале строки.
 
   >Почему: условные операторы выровнены (улучшает читаемость) и стиль написания сильно похож на чейнинг; легче «отключить» условие при помощи комментария
 
@@ -2235,7 +2235,7 @@
   ```
 
 <a name="comments--singleline"></a><a name="18.2"></a>
-- [18.2](#comments--singleline) Для однострочных комментариев используйте `//`; располагайте комментарий в отдельной строке над комментируемой; вставляйте пустую строку перед комментарием, если только комментарий не первая строка блока
+- [18.2](#comments--singleline) Для однострочных комментариев используйте `//`. Располагайте комментарий в отдельной строке над комментируемой. Вставляйте пустую строку перед комментарием, если только комментарий не первая строка блока.
 
   ```javascript
   // плохо
@@ -2243,7 +2243,7 @@
 
   // хорошо
   // is current tab
-  const active == true;
+  const active = true;
 
   // плохо
   function getType () {
@@ -2274,9 +2274,9 @@
   ```
 
 <a name="comments--spaces"></a><a name="18.3"></a>
-- [18.3](#comments--spaces) Начинайте все комментарии с пробела - так их легче читать
+- [18.3](#comments--spaces) Начинайте все комментарии с пробела - так их легче читать.
 
-  eslint: [`spaced-comment`](https://eslint.org/docs/rules/spaced-comments)
+  eslint: [`spaced-comment`](https://eslint.org/docs/rules/spaced-comment)
 
   ```javascript
   // плохо
@@ -2315,10 +2315,10 @@
   ```
 
 <a name="comments--actionitems"></a><a name="18.4"></a>
-- [18.4](#comments--actionitems) Исползование префиксов `FIXME` и `TODO` в комментариях помогает другим разработчикам быстро понять указываете ли вы на проблему, которую надо рассмотреть, или предлагаете решение проблемы, которое надо реализовать
+- [18.4](#comments--actionitems) Исползование префиксов `FIXME` и `TODO` в комментариях помогает другим разработчикам быстро понять указываете ли вы на проблему, которую надо рассмотреть, или предлагаете решение проблемы, которое надо реализовать.
 
 <a name="comments--fixme"></a><a name="18.5"></a>
-- [18.5](#comments--fixme) Используйте `FIXME` для описания проблемы
+- [18.5](#comments--fixme) Используйте `FIXME` для описания проблемы.
 
   ```javascript
   class Calculator extends Abacus {
@@ -2332,7 +2332,7 @@
   ```
 
 <a name="comments--todo"></a><a name="18.6"></a>
-- [18.6](#comments--todo) Используйте `TODO` для описания решений проблем
+- [18.6](#comments--todo) Используйте `TODO` для описания решений проблем.
 
   ```javascript
   class Calculator extends Abacus {
@@ -2347,10 +2347,10 @@
 
 **[К содержанию](#table-of-contents)**
 
-## Пробельные символы <a name="whitespace"></a> [Черновик, требуется обсуждение]
+## Пробельные символы <a name="whitespace"></a>
 
 <a name="whitespace--spaces"></a><a name="19.1"></a>
-- [19.1](#whitespace--spaces) Используйте «мягкие» табы (пробелы) установленные в 2 пробела
+- [19.1](#whitespace--spaces) Используйте «мягкие» табы (пробелы) установленные в 2 пробела.
 
   eslint: [`indent`](https://eslint.org/docs/rules/indent)
 
@@ -2372,7 +2372,7 @@
   ```
 
 <a name="whitespace--before-blocks"></a><a name="19.2"></a>
-- [19.2](#whitespace--before-blocks) Помещайте один пробел перед открывающей скобкой
+- [19.2](#whitespace--before-blocks) Помещайте один пробел перед открывающей скобкой.
 
   eslint: [`space-before-blocks`](https://eslint.org/docs/rules/space-before-blocks)
 
@@ -2418,7 +2418,7 @@
   ```
 
 <a name="whitespace--infix-ops"></a><a name="19.4"></a>
-- [19.4](#whitespace--infix-ops) Обрамляйте операторы пробелами
+- [19.4](#whitespace--infix-ops) Обрамляйте операторы пробелами.
 
   eslint: [`space-infix-ops`](https://eslint.org/docs/rules/space-infix-ops)
 
@@ -2431,7 +2431,7 @@
   ```
 
 <a name="whitespace--newline-at-end"></a><a name="19.5"></a>
-- [19.5](#whitespace--newline-at-end) В конце файла должен быть символ перевода строки
+- [19.5](#whitespace--newline-at-end) В конце файла должен быть символ перевода строки.
 
   eslint: [`eol-last`](https://eslint.org/docs/rules/eol-last)
 
@@ -2499,7 +2499,7 @@
       .call(tron.led);
 
   // хорошо
-  const leds = stage.selectAll('.led').data(data)
+  const leds = stage.selectAll('.led').data(data);
   ```
 
 <a name="whitespace--after-blocks"></a><a name="19.7"></a>
@@ -2639,7 +2639,7 @@
   ```
 
 <a name="whitespace--in-parens"></a><a name="19.9"></a>
-- [19.9](#whitespace--in-parens) Не добавляйте пробелы внутри круглых скобок
+- [19.9](#whitespace--in-parens) Не добавляйте пробелы внутри круглых скобок.
 
   eslint: [`space-in-parens`](https://eslint.org/docs/rules/space-in-parens)
 
@@ -2666,7 +2666,7 @@
   ```
 
 <a name="whitespace--in-brackets"></a><a name="19.10"></a>
-- [19.10](#whitespace--in-brackets) Не добавляйте пробелы внутри квадратных скобок
+- [19.10](#whitespace--in-brackets) Не добавляйте пробелы внутри квадратных скобок.
 
   eslint: [`array-bracket-spacing`](https://eslint.org/docs/rules/array-bracket-spacing)
 
@@ -2681,9 +2681,9 @@
   ```
 
 <a name="whitespace--in-braces"></a><a name="19.11"></a>
-- [19.11](#whitespace--in-braces) Добавляйте пробелы внутри фигурных скобок
+- [19.11](#whitespace--in-braces) Добавляйте пробелы внутри фигурных скобок.
 
-  eslint: [`object-curly-spacing`](https://esling.org/docs/rules/object-curly-spacing)
+  eslint: [`object-curly-spacing`](https://eslint.org/docs/rules/object-curly-spacing)
 
   ```javascript
   // плохо
@@ -2694,7 +2694,7 @@
   ```
 
 <a name="whitespace--max-len"></a><a name="19.12"></a>
-- [19.12](#whitespace--max-len) Избегайте строк, длина которых превышает 100 символов (включая пробелы); [исключение](#strings--line-length) - строки текста, которые не надо переносить
+- [19.12](#whitespace--max-len) Избегайте строк, длина которых превышает 100 символов (включая пробелы). [Исключение](#strings--line-length) - строки текста, которые не надо переносить
 
   eslint: [`max-len`](https://eslint.org/docs/rules/max-len)
 
@@ -2730,7 +2730,7 @@
 ## Запятые <a name="commas"></a>
 
 <a name="commas--leading-trailing"></a><a name="20.1"></a>
-- [20.1](#commas--leading-trailing) Не используйте запятые в начале строки
+- [20.1](#commas--leading-trailing) Не используйте запятые в начале строки.
 
   eslint: [`comma-style`](https://eslint.org/docs/rules/comma-style)
 
@@ -2767,7 +2767,7 @@
   ```
 
 <a name="commas-dangling"></a><a name="20.2"></a>
-- [20.2](#commas-dangling) Используйте висячие запятые
+- [20.2](#commas-dangling) Используйте висячие запятые.
 
   eslint: [`comma-dangle`](https://eslint.org/docs/rules/comma-dangle)
 
@@ -2902,10 +2902,10 @@
 ## Явное и неявное приведение типов <a name="coercion"></a>
 
 <a name="coercion--explicit"></a><a name="22.1"></a>
-- [22.1](#coercion--explicit) Явное приведение типов осуществляйте в начале утверждения
+- [22.1](#coercion--explicit) Явное приведение типов осуществляйте в начале утверждения.
 
 <a name="coercion--strings"></a><a name="22.2"></a>
-- [22.2](#coercion--strings) Для приведения к строке используйте `String`
+- [22.2](#coercion--strings) Для приведения к строке используйте `String`.
 
   eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
@@ -2926,7 +2926,7 @@
   ```
 
 <a name="coercion--numbers"></a><a name="22.3"></a>
-- [22.3](#coercion--numbers) Используйте `Number` для явного приведения типов и `parseInt` (всегда с указанием основания) для преобразования строк
+- [22.3](#coercion--numbers) Используйте `Number` для явного приведения типов и `parseInt` (всегда с указанием основания) для преобразования строк.
 
   eslint: [`radix`](https://eslint.org/docs/rules/radix), [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
@@ -2966,7 +2966,7 @@
   ```
 
 <a name="coercion--bitwise"></a><a name="22.5"></a>
-- [22.5](#coercion--bitwise) При использовании побитового сдвига будьте осторожны. Числа представлены [64-битными значениями](https://es5.github.io/#x4.3.19) в то время как операции побитового сдвига всегда возвращают [32-битное целое](https://es5.github.io/#x11.7). Наибольшее 32-битное целое: 2 147 483 647
+- [22.5](#coercion--bitwise) При использовании побитового сдвига будьте осторожны. Числа представлены [64-битными значениями](https://es5.github.io/#x4.3.19) в то время как операции побитового сдвига всегда возвращают [32-битное целое](https://es5.github.io/#x11.7). Наибольшее 32-битное целое: 2 147 483 647.
 
   ```javascript
   2147483647 >> 0; // => 2147483647
@@ -2975,7 +2975,7 @@
   ```
 
 <a name="coercion--booleans"></a><a name="22.6"></a>
-- [22.6](#coercion--booleans) Для приведения к логическому типу используйте `Boolean`
+- [22.6](#coercion--booleans) Для приведения к логическому типу используйте `Boolean`.
 
   eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
@@ -2997,7 +2997,7 @@
 ## Именование <a name="naming"></a>
 
 <a name="naming--descriptive"></a><a name="23.1"></a>
-- [23.1](#naming--descriptive) Названия должны быть описательны; избегайте названий из одной буквы
+- [23.1](#naming--descriptive) Названия должны быть описательны, избегайте названий из одной буквы.
 
   eslint: [`id-length`](https://eslint.org/docs/rules/id-length)
 
@@ -3014,7 +3014,7 @@
   ```
 
 <a name="naming--camelCase"></a><a name="23.2"></a>
-- [23.2](#naming--camelCase) Используйте `camelCase` при именовании объектов, функций и экземпляров классов
+- [23.2](#naming--camelCase) Используйте `camelCase` при именовании объектов, функций и экземпляров классов.
 
   eslint: [`camelcase`](https://eslint.org/docs/rules/camelcase)
 
@@ -3030,7 +3030,7 @@
   ```
 
 <a name="naming--PascalCase"></a><a name="23.3"></a>
-- [23.3](#naming--PascalCase) Используйте `PascalCase` только при именовании конструкторов или классов
+- [23.3](#naming--PascalCase) Используйте `PascalCase` только при именовании конструкторов или классов.
 
   eslint: [`new-cap`](https://eslint.org/docs/rules/new-cap)
 
@@ -3057,7 +3057,7 @@
   ```
 
 <a name="naming--leading-underscore"></a><a name="23.4"></a>
-- [23.4](#naming--leading-underscore) Не начинайте название с символа подчеркивания и не заканчивайте им
+- [23.4](#naming--leading-underscore) Не начинайте название с символа подчеркивания и не заканчивайте им.
 
   eslint: [`no-underscore-dangle`](https://eslint.org/docs/rules/no-underscore-dangle)
 
@@ -3074,7 +3074,7 @@
   ```
 
 <a name="naming--self-this"></a><a name="23.5"></a>
-- [23.5](#naming--self-this) Не сохраняйте ссылки на `this`, используйте стрелочные функции или [Function#bind](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind)
+- [23.5](#naming--self-this) Не сохраняйте ссылки на `this`, используйте стрелочные функции или [Function#bind](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 
   ```javascript
   // плохо
@@ -3102,13 +3102,14 @@
   ```
 
 <a name="naming--filename-matches-export"></a><a name="23.6"></a>
-- [23.6](#naming--filename-matches-export) Имя файла должно в точности соответствовать тому, что из него экспортируется по умолчанию
+- [23.6](#naming--filename-matches-export) Имя файла должно в точности соответствовать тому, что из него экспортируется по умолчанию.
 
   ```javascript
   // файл 1
   class Checkbox {
     // ...
   }
+
   export default Checkbox;
 
   // файл 2
@@ -3147,7 +3148,7 @@
   ```
 
 <a name="naming--PascalCase-singleton"></a><a name="23.8"></a>
-- [23.8](#naming--PascalCase-singleton) Используйте `PascalCase` при экспорте конструктора, класса, `singleton`-а, библиотеки функций, простого объекта
+- [23.8](#naming--PascalCase-singleton) Используйте `PascalCase` при экспорте конструктора, класса, `singleton`-а, библиотеки функций, простого объекта.
 
   ```javascript
   const PortalStyleGuide = {
@@ -3159,7 +3160,7 @@
   ```
 
 <a name="naming--Acronyms-and-Initialisms"></a><a name="23.9"></a>
-- [23.9](#naming--Acronyms-and-Initialisms) Акронимы и аббревиатуры должны быть все в верхнем или все в нижнем регистре
+- [23.9](#naming--Acronyms-and-Initialisms) Акронимы и аббревиатуры должны быть все в верхнем или все в нижнем регистре.
 
   >Почему: для удобочитаемости
 
@@ -3199,10 +3200,10 @@
 ## Методы доступа <a name="accessors"></a>
 
 <a name="accessors--not-required"></a><a name="24.1"></a>
-- [24.1](#accessors--not-required) Методы доступа для свойств не обязательны
+- [24.1](#accessors--not-required) Методы доступа для свойств не обязательны.
 
 <a name="accessors--no-getters-setters"></a><a name="24.2"></a>
-- [24.2](#accessors--no-getters-setters) Не используйте методы достпа Javascript (`getter`-ы и `setter`-ы), т.к. они являются причиной неожиданных побочных эффектов, их сложнее тестировать, поддерживать и судить о них. Вместо этого, если вы делаете методы доступа, используйте `getVal()` и `setVal(value)`.
+- [24.2](#accessors--no-getters-setters) Не используйте методы доступа Javascript (`getter`-ы и `setter`-ы), т.к. они являются причиной неожиданных побочных эффектов, их сложнее тестировать, поддерживать и судить о них. Вместо этого, если вы делаете методы доступа, используйте `getVal()` и `setVal(value)`.
 
   ```javascript
   // плохо
@@ -3229,7 +3230,7 @@
   ```
 
 <a name="accessors--boolean-prefix"></a><a name="24.3"></a>
-- [24.3](#accessors--boolean-prefix) Если свойство типа `boolean` или метод возвращается `boolean` используйте `isVal()` или `hasVal()`
+- [24.3](#accessors--boolean-prefix) Если свойство типа `boolean` или метод возвращается `boolean` используйте `isVal()` или `hasVal()`.
 
   ```javascript
   // плохо
@@ -3244,7 +3245,7 @@
   ```
 
 <a name="accessors--consistent"></a><a name="24.4"></a>
-- [24.4](#accessors--consistent) Нормально создавать функции `get()` и `set()`, но будьте последовательны
+- [24.4](#accessors--consistent) Нормально создавать функции `get()` и `set()`, но будьте последовательны.
 
   ```javascript
   class Jedi {
@@ -3258,7 +3259,7 @@
     }
 
     get (key) {
-      retun this[key];
+      return this[key];
     }
   }
   ```
