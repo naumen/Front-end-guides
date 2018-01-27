@@ -283,6 +283,167 @@
   />
   ```
 
+<a name="props--boolean-value"></a><a name="7.2"></a>
+- [7.2](#props--boolean-value) Используйте полный синтаксис для свойств типа `boolean`.
+
+  eslint: [`react/jsx-boolean-value`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md)
+
+  >Почему: для единообразия с синтаксисом остальных свойств
+
+  ```jsx harmony
+  // плохо
+  <Foo hidden />
+
+  // хорошо
+  <Foo hidden={true} />
+  ```
+
+<a name="props--alt"></a><a name="7.3"></a>
+- [7.3](#props--alt) Всегда указывайте атрибут `alt` тега `img`. Если изображение презентационное, `alt` может содержать пустое значение или необходимо указать атрибут `role` со значением `presentation`.
+
+  eslint: [`jsx-a11y/alt-text`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/alt-text.md)
+
+  ```jsx harmony
+  // плохо
+  <img src="hello.jpg" />
+
+  // хорошо
+  <img src="hello.jpg" alt="Me waving hello" />
+
+  // хорошо
+  <img src="hello.jpg" alt="" />
+
+  // хорошо
+  <img src="hello.jpg" role="presentation" />
+  ```
+
+<a name="props--aria-role"></a><a name="7.4"></a>
+- [7.4](#props--aria-role) Используйте только правильные, не абстрактные [роли ARIA](https://www.w3.org/TR/wai-aria/roles#role_definitions).
+
+  eslint: [`jsx-a11y/aria-role`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/aria-role.md)
+
+  ```jsx harmony
+  // плохо - не ARIA-роль
+  <div role="datepicker" />
+
+  // плохо - абстрактная ARIA-роль
+  <div role="range" />
+
+  // хорошо
+  <div role="button" />
+  ```
+
+<a name="props--no-access-key"></a><a name="7.5"></a>
+- [7.5](#props--no-access-key) Не используйте атрибут `accessKey`.
+
+  eslint: [`jsx-a11y/no-access-key`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-access-key.md)
+
+  >Почему: это приводит к ухудшению доступности для пользователей программ чтения с экрана
+
+  ```jsx harmony
+  // плохо
+  <div accessKey="h" />
+
+  // хорошо
+  <div />
+  ```
+
+<a name="props--no-index-as-a-key"></a><a name="7.6"></a>
+- [7.6](#props--no-index-as-a-key) Не используйте индекс массива как значение свойства `key`, предпочитайте уникальный идентификатор.
+
+  >Почему: [это антипаттерн](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318)
+
+  ```jsx harmony
+  // плохо
+  {todos.map((todo, index) => <Todo {...todo} key={index} />)}
+
+  // хорошо
+  {todos.map(todo => <Todo {...todo} key={todo.id} />)}
+  ```
+
+<a name="props--default-props"></a><a name="7.7"></a>
+- [7.7](#props--default-props) Всегда явно определяйте значения свойств по умолчанию для тех свойств, наличие которых не обязательно.
+
+  >Почему: `propTypes` своего рода документация, а предоставление `defaultProps` избавит разработчика, который будет использовать этот код, от излишних предположений. Кроме того, это позволяет опустить некоторые проверки типов.
+
+  ```jsx harmony
+  // плохо
+  function SFC ({foo, bar, children}) {
+    return <div>{foo}{bar}{children}</div>;
+  }
+  SFC.propTypes = {
+    foo: PropTypes.number.isRequired,
+    bar: PropTypes.string,
+    children: PropTypes.node
+  }
+
+  // хорошо
+  function SFC ({foo, bar, children}) {
+    return <div>{foo}{bar}{children}</div>;
+  }
+  SFC.propTypes = {
+    foo: PropTypes.number.isRequired,
+    bar: PropTypes.string,
+    children: PropTypes.node
+  }
+  SFC.defaultProps = {
+    bar: '',
+    children: null
+  }
+  ```
+
+<a name="props--spread"></a><a name="7.8"></a>
+- [7.8](#props--spread) Не злоупотребляйте оператором расширения.
+
+  >Почему: в противном случае можно передать ненужные свойства компонентам. А для `React` версии `15.6.1` и старше вы можете [передать неправильные `HTML`-атрибуты в `DOM`](https://reactjs.org/blog/2017/09/08/dom-attributes-in-react-16.html). 
+
+  Исключения:
+
+  - компоненты высшего порядка (`HOC`), которые передают свойства внутрь дочернего компонента и поднимают `propTypes`
+
+    ```jsx harmony
+    function HOC (WrappedComponent) {
+      return class Proxy extends React.Component {
+        Proxy.propTypes = {
+          text: PropTypes.string,
+          isLoading: PropTypes.bool
+        };
+
+        render () {
+          return <WrappedComponent {...this.props} />;
+        }
+      }
+    }
+    ```
+
+  - при использовании оператора расширения для известных, явно заданных свойств. Это может быть особенно полезно при тестировании `React`-компонентов при помощи конструкции `beforeEach` `Mocha`.
+
+    ```jsx harmony
+    export default function Foo {
+      const props = {
+        text: '',
+        isPublished: false
+      };
+
+      return <div {...props} />;
+    }
+    ```
+  Примечание к использованию: по возможности отфильтровывайте ненужные свойства, а также используйте [prop-types-exact](https://www.npmjs.com/package/prop-types-exact) для профилактики ошибок.
+
+  ```jsx harmony
+  // плохо
+  render () {
+    const {irrelevantProp, ...relevantProps} = this.props;
+    return <WrappedComponent {...this.props} />;
+  }
+
+  // хорошо
+  render () {
+    const {irrelevantProp, ...relevantProps} = this.props;
+    return <WrappedComponent {...relevantProps} />;
+  }
+  ```
+
 **[К содержанию](#table-of-contents)**
 
 ## Порядок в компоненте<a name="order-in-component"></a> (требуется обсуждение 1 из 8)
