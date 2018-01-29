@@ -537,14 +537,107 @@
 ## Методы <a name="methods"></a>
 
 <a name="methods--arrow-to-close-over"></a><a name="11.1"></a>
-- [11.1](#methods--methods--arrow-to-close-over) 
+- [11.1](#methods--methods--arrow-to-close-over) Используйте стрелочные функции для замыкания локальных переменных.
+
+  ```jsx
+  function ItemList (props) {
+    return (
+      <ul>
+        {props.items.map((item, index) => (
+          <Item
+            key={item.key}
+            onClick={() => doSomethingWith(item.name, index)}
+          />
+        ))}
+      </ul>
+    );
+  }
+  ```
+
+<a name="methods--jsx-no-bind"></a><a name="11.2"></a>
+- [11.2](#methods--jsx-no-bind) Указывайте контекст для обработчиков событий в конструкторе.
+
+  eslint: [`react/jsx-no-bind`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
+
+  >Почему: вызов `bind` в методе `render` (и других методах отрисовки) создает новую функцию при каждой отрисовке
+
+  ```jsx
+  // плохо
+  class Foo extends Component {
+    onClick () {
+      // do stuff
+    }
+
+    render () {
+      return <div onClick={this.onClick.bind(this)} />;
+    }
+  }
+
+  // хорошо
+  class Foo extends Component<Props> {
+    constructor (props) {
+      super(props);
+      this.onClick = this.onClick.bind(this);
+    }
+
+    onClick () {
+      // do stuff
+    }
+
+    render () {
+      return <div onClick={this.onClick)} />;
+    }
+  }
+  ```
+
+<a name="methods--no-underscore-for-internal"></a><a name="11.3"></a>
+- [11.3](#methods--no-underscore-for-internal) Не используйте символ подчеркивания `_` в качестве префикса в названиях внутренних методов компонента.
+
+  >Почему: префикс `_` иногда используется в других языках по соглашению для обозначения `private`-метода. В `JavaScript` нет встроенной поддержки области видимости методов, все методы публичные. Независимо от целей, добавление префикса `_` не сделает метод `private`-методом.
+
+  ```jsx
+  // плохо
+  class Foo extends Component {
+    _onClickSubmit () {
+      // do stuff
+    }
+
+    // ...
+  }
+
+  // хорошо
+  class Foo extends Component {
+    onClickSubmit () {
+      // do stuff
+    }
+
+    // ...
+  }
+  ```
+
+<a name="methods--require-render-return"></a><a name="11.4"></a>
+- [11.4](#methods--require-render-return) Всегда возвращайте значение из метода `render`.
+
+  eslint: [`react/require-render-return`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/require-render-return.md)
+
+  ```jsx
+  // плохо
+  render () {
+    (<div />);
+  }
+
+  // хорошо
+  render () {
+    return <div />;
+  }
+  ```
 
 **[К содержанию](#table-of-contents)**
 
-## Порядок в компоненте<a name="order-in-component"></a> (требуется обсуждение 1 из 8)
+## Порядок в компоненте <a name="order-in-component"></a>
 
 <a name="order-in-component--common"></a><a name="12.1"></a>
-- [12.1](#order-in-component--common) Внутри компонента организуем код в следующем порядке:
+- [12.1](#order-in-component--common) Внутри компонента организуйте код в следующем порядке:
 
   1. Указание типов
   2. Указание значений свойств по-умолчанию
@@ -555,12 +648,12 @@
   7. Произвольные `render`-методы
   8. `render`
 
-  Каждый из описанных блоков кода отбивается от предыдущего пустой строкой
+  Каждый из описанных блоков кода отбивается от предыдущего пустой строкой.
 
-  >Почему: для легкой поддержки кода решили сгруппировать код по его назначению (`boilerplate`, `lifecycle`, `handlers`, `helpers`, `renders`)
+  >Почему: для легкой поддержки кода удобно группировать код по его назначению (`boilerplate`, `lifecycle`, `handlers`, `helpers`, `renders`)
 
-<a name="order-in-components--types"></a><a name="12.2"></a>
-- [12.2](#order-in-components--types) Порядок в указании типов: сначала свойства, потом состояние
+<a name="order-in-component--types"></a><a name="12.2"></a>
+- [12.2](#order-in-component--types) Порядок в указании типов: сначала свойства, потом состояние.
 
   >Почему: для единообразия с `Component<Props, State>`
 
@@ -573,8 +666,8 @@
   }
   ```
 
-<a name="order-in-components--defaults"></a><a name="12.3"></a>
-- [12.3](#order-in-components--defaults) При указании значений свойств по-умолчанию используем алфавитный порядок; используем ключевое слово `static`
+<a name="order-in-component--defaults"></a><a name="12.3"></a>
+- [12.3](#order-in-component--defaults) При указании значений свойств по-умолчанию используйте алфавитный порядок; используйте ключевое слово `static`.
 
   >Почему: в отсортированном по алфавиту списке свойств легче ориентироваться
 
@@ -590,8 +683,8 @@
 
   >Не обосновано: использование `static`
 
-<a name="order-in-components--lifecycle-methods"></a><a name="12.4"></a>
-- [12.4](#order-in-components--lifecicle-methods) Порядок методов жизненного цикла следующий:
+<a name="order-in-component--lifecycle-methods"></a><a name="12.4"></a>
+- [12.4](#order-in-component--lifecicle-methods) Порядок методов жизненного цикла следующий:
 
   1. `componentWillMount`
   2. `componentDidMount`
@@ -603,10 +696,8 @@
 
   >Почему: хронологическая сортировка
 
-<a name="order-in-components--methods-order"></a><a name="12.5"></a>
-- [12.5](#order-in-components--methods-order) Сортировка методов (обработчиков событий, вспомогательных методов, `render`-методов) должна соответствовать порядку их использования в коде; не стоит использовать сортировку по алфавиту
-
-  >Почему: порядок использования дает примерное понимание, где в коде находится метод; алфавитная сортировка предполагает перемещение в коде метода в случае переименования, что затрудняет понимание `diff`-ов и приводит в сложностям при слиянии веток
+<a name="order-in-component--methods-order"></a><a name="12.5"></a>
+- [12.5](#order-in-component--methods-order) Используйте сортировку по алфавиту в группах методов (обработчиков событий, вспомогательных методов, `render`-методов).
 
   ```
   // плохо
@@ -614,11 +705,11 @@
     // ...
   }
 
-  renderBody () {
+  renderTitle () {
     // ...
   }
 
-  renderTitle () {
+  renderBody () {
     // ...
   }
 
@@ -636,11 +727,11 @@
     // ...
   }
 
-  renderTitle () {
+  renderBody () {
     // ...
   }
 
-  renderBody () {
+  renderTitle () {
     // ...
   }
 
