@@ -322,7 +322,7 @@
 
   eslint: [`jsx-a11y/aria-role`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/aria-role.md)
 
-  ```jsx harmony
+  ```jsx
   // плохо - не ARIA-роль
   <div role="datepicker" />
 
