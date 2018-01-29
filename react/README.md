@@ -13,10 +13,10 @@
 1. [Кавычки](#quotes)
 1. [Пробельные символы](#spacing)
 1. [Свойства](#props)
-1. [Ссылки]
-1. [Круглые скобки]
-1. [Теги]
-1. [Методы]
+1. [Ссылки](#refs)
+1. [Круглые скобки](#parentheses)
+1. [Теги](#tags)
+1. [Методы](#methods)
 1. [Порядок в компоненте](#order-in-component)
 
 ## Базовые правила <a name="basic-rules"></a>
@@ -446,6 +446,98 @@
     return <WrappedComponent {...relevantProps} />;
   }
   ```
+
+**[К содержанию](#table-of-contents)**
+
+## Ссылки <a name="refs"></a>
+
+<a name="refs--no-string-refs"></a><a name="8.1"></a>
+- [8.1](#refs--no-string-refs) Всегда используйте функции обратного вызова.
+
+  eslint: [`react/no-string-refs`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md)
+
+  ```jsx
+  // плохо
+  <Foo ref="myRef" />
+
+  // хорошо
+  <Foo ref={ref => this.myRef = ref} />
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Круглые скобки <a name="parentheses"></a>
+
+<a name="parentheses--jsx-wrap-multilines"></a><a name="9.1"></a>
+- [9.1](#parentheses--jsx-wrap-multilines) Оборачивайте `JSX`-теги в круглые скобки, когда они занимают несколько строк.
+
+  eslint: [`react/jsx-wrap-multilines`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-wrap-multilines.md)
+
+  ```jsx
+  // плохо
+  render () {
+    return <MyComponent variant="long body" foo="bar">
+             <MyContent />
+           </MyComponent>;
+  }
+
+  // хорошо
+  render () {
+    return (
+      <MyComponent variant="long body" foo="bar">
+        <MyContent />
+      </MyComponent>
+    );
+  }
+
+  // хорошо, если теги умещаются в одну строку
+  render () {
+    const body = <div>Hello</div>;
+    return <MyComponent>{body}</MyComponent>
+  }
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Теги <a name="tags"></a>
+
+<a name="tags--self-closing-comp"></a><a name="10.1"></a>
+- [10.1](#tags--self-closing-comp) Используйте синтаксис самозакрывающихся тегов, если они не принимают другие теги в качестве дочерних.
+
+  eslint: [`react/self-closing-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/self-closing-comp.md)
+
+  ```jsx
+  // плохо
+  <Foo variant="stuff"></Foo>
+
+  // хорошо
+  <Foo variant="stuff" />
+  ```
+
+<a name="tags--jsx-closing-bracker-location"></a><a name="10.2"></a>
+- [10.2](#tags--jsx-closing-bracker-location) Если свойства компонента занимают несколько строк, закрывайте тег компонента на отдельной строке.
+
+  eslint: [`react/jsx-closing-bracker-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md)
+
+  ```jsx
+  // плохо
+  <Foo
+    bar="bar"
+    baz="baz" />
+
+  // хорошо
+  <Foo
+    bar="bar"
+    baz="baz"
+  />
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## Методы <a name="methods"></a>
+
+<a name="methods--arrow-to-close-over"></a><a name="11.1"></a>
+- [11.1](#methods--methods--arrow-to-close-over) 
 
 **[К содержанию](#table-of-contents)**
 
