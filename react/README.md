@@ -46,7 +46,7 @@
 
   eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md)
 
-  ```jsx harmony
+  ```jsx
   // плохо
   const Listing = React.createClass({
     // ...
@@ -69,13 +69,13 @@
 
   eslint: [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
 
-  ```jsx harmony
+  ```jsx
   // плохо
   class Listing extends React.Component {
     render () {
       return <div>{this.props.hello}</div>;
     }
-  };
+  }
 
   // хорошо
   const Listing = ({hello}) => <div>{hello}</div>;
@@ -96,7 +96,7 @@
 
   eslint: [`react/jsx-pascal-case`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-pascal-case.md)
 
-  ```jsx harmony
+  ```jsx
   // плохо
   import formField from './FormField';
 
@@ -115,7 +115,7 @@
 
   >Почему: облегчает работу с `IDE`
 
-  ```jsx harmony
+  ```jsx
   // плохо
   import Footer from './Footer/Footer';
 
@@ -128,7 +128,7 @@
 
   >Почему: `displayName` компонента может использоваться в инструментах разработчика или в сообщениях об ошибках.
 
-  ```jsx harmony
+  ```jsx
   // плохо
   export default function withFoo(WrappedComponent) {
     return function WithFoo(props) {
@@ -157,7 +157,7 @@
 
   >Почему: ожидается, что свойства типа `style` или `className` означают одну конкретное значение. Изменени этого `API` для своих целей делает код менее читабельным и поддерживаемым и может приводить к ошибкам.
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <MyComponent style="fansy" />
 
@@ -177,7 +177,7 @@
 
   eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md), [`react/jsx-closing-tag-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-tag-location.md)
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <Foo superLongParam="bar"
        anotherSuperLognParam="baz" />
@@ -211,7 +211,7 @@
 
   >Почему: в `html` при задании значений атрибутов обычно используются двойные кавычки, в `JSX` стоит придерживаться этого же способа, т.к. он похож на `html` и `jsx`-код часто идет вперемежку с `html`-кодом; использование же одинарных кавычек для строковых значений в `javascript`-коде обеспечивает более чистый и читабельный код
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <Foo bar='bar' />
 
@@ -234,7 +234,7 @@
 
   eslint: [`no-multi-spaces`](https://eslint.org/docs/rules/no-multi-spaces), [`react/jsx-tag-spacing`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-tag-spacing.md)
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <Foo/>
 
@@ -254,7 +254,7 @@
 
   eslint: [`react/jsx-curly-spacing`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-curly-spacing.md)
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <Foo bar={ baz } />
 
@@ -269,7 +269,7 @@
 <a name="props--camelCase"></a><a name="7.1"></a>
 - [7.1](#props--camelCase) Всегда используйте `camelCase` при именовании свойств.
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <Foo
     UserName="John Doe"
@@ -290,7 +290,7 @@
 
   >Почему: для единообразия с синтаксисом остальных свойств
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <Foo hidden />
 
@@ -303,7 +303,7 @@
 
   eslint: [`jsx-a11y/alt-text`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/alt-text.md)
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <img src="hello.jpg" />
 
@@ -340,7 +340,7 @@
 
   >Почему: это приводит к ухудшению доступности для пользователей программ чтения с экрана
 
-  ```jsx harmony
+  ```jsx
   // плохо
   <div accessKey="h" />
 
@@ -353,7 +353,7 @@
 
   >Почему: [это антипаттерн](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318)
 
-  ```jsx harmony
+  ```jsx
   // плохо
   {todos.map((todo, index) => <Todo {...todo} key={index} />)}
 
@@ -366,11 +366,12 @@
 
   >Почему: `propTypes` своего рода документация, а предоставление `defaultProps` избавит разработчика, который будет использовать этот код, от излишних предположений. Кроме того, это позволяет опустить некоторые проверки типов.
 
-  ```jsx harmony
+  ```jsx
   // плохо
   function SFC ({foo, bar, children}) {
     return <div>{foo}{bar}{children}</div>;
   }
+
   SFC.propTypes = {
     foo: PropTypes.number.isRequired,
     bar: PropTypes.string,
@@ -381,11 +382,13 @@
   function SFC ({foo, bar, children}) {
     return <div>{foo}{bar}{children}</div>;
   }
+
   SFC.propTypes = {
     foo: PropTypes.number.isRequired,
     bar: PropTypes.string,
     children: PropTypes.node
   }
+
   SFC.defaultProps = {
     bar: '',
     children: null
@@ -401,7 +404,7 @@
 
   - компоненты высшего порядка (`HOC`), которые передают свойства внутрь дочернего компонента и поднимают `propTypes`
 
-    ```jsx harmony
+    ```jsx
     function HOC (WrappedComponent) {
       return class Proxy extends React.Component {
         Proxy.propTypes = {
@@ -418,7 +421,7 @@
 
   - при использовании оператора расширения для известных, явно заданных свойств. Это может быть особенно полезно при тестировании `React`-компонентов при помощи конструкции `beforeEach` `Mocha`.
 
-    ```jsx harmony
+    ```jsx
     export default function Foo {
       const props = {
         text: '',
@@ -430,7 +433,7 @@
     ```
   Примечание к использованию: по возможности отфильтровывайте ненужные свойства, а также используйте [prop-types-exact](https://www.npmjs.com/package/prop-types-exact) для профилактики ошибок.
 
-  ```jsx harmony
+  ```jsx
   // плохо
   render () {
     const {irrelevantProp, ...relevantProps} = this.props;
