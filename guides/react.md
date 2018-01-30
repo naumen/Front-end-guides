@@ -1,5 +1,9 @@
 # Руководство по стилю кода React
 
+Другие руководства
+
+- [JavaScript](guides/javascript.md)
+
 ## Содержание <a name="table-of-contents"></a>
 
 1. [Базовые правила](#basic-rules)

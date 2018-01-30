@@ -2,7 +2,7 @@
 
 Другие руководства
 
-- [React]
+- [React](guides/react.md)
 
 ## Содержание <a name="table-of-contents"></a>
 
