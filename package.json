@@ -6,10 +6,11 @@
 	},
 	"bugs": {
 		"email": "vakhlov@gmail.com",
-		"url": ""
+		"url": "https://gitsd.naumen.ru/portal-docs/code-style-guide/issues"
 	},
 	"contributors": [],
 	"description": "code style guide",
+	"homepage": "https://gitsd.naumen.ru/portal-docs/code-style-guide",
 	"keywords": [
 		"style guide",
 		"es6",
@@ -19,7 +20,7 @@
 		"jsx"
 	],
 	"license": "ISC",
-	"name": "code-style-guide",
+	"name": "smp-portal-code-style-guide",
 	"repository": {
 		"type": "git",
 		"url": "git@gitsd.naumen.ru:portal-docs/code-style-guide.git"
