@@ -1,9 +1,5 @@
 # Руководство по стилю кода React
 
-## Вопросы для проработки
-- handleClick vs onClick
-- handleClick = () => {} vs this.handleClick = this.handleClick.bind(this)
-
 ## Содержание <a name="table-of-contents"></a>
 
 1. [Базовые правила](#basic-rules)
@@ -554,8 +550,42 @@
   }
   ```
 
+<a name="methods--arrow-vs-bind"></a><a name="11.2"></a>
+- [11.2](#methods--arrow-vs-bind) Старайтесь не использовать [Function#bind](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind), используйте свойства класса и стрелочные функции.
+
+  >Почему: более краткий синтаксис стрелочных функций. Грамотное использование `bind` легко может перейти в использование `bind` внутри методов отрисовки. В некоторых случаях единственной целью конструктора может оказаться передача контекста при помощи `bind`.
+
+  ```jsx
+  // плохо
+  export class Foo extends Component {
+    constructor (props) {
+      super(props);
+      this.onClick = this.onClick.bind(this);
+    }
+
+    onClick () {
+      // do stuff
+    }
+
+    render () {
+      return <div onClick={this.onClick)} />;
+    }
+  }
+
+  // хорошо
+  export class Foo extends Component {
+    onClick = () => {
+      // do stuff
+    };
+
+    render () {
+      return <div onClick={this.onClick)} />;
+    }
+  }
+  ```
+  
 <a name="methods--jsx-no-bind"></a><a name="11.2"></a>
-- [11.2](#methods--jsx-no-bind) Указывайте контекст для обработчиков событий в конструкторе.
+- [11.3](#methods--jsx-no-bind) Если использовать `bind` необходимо, делайте это в конструкторе.
 
   eslint: [`react/jsx-no-bind`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md)
 
@@ -591,7 +621,7 @@
   ```
 
 <a name="methods--no-underscore-for-internal"></a><a name="11.3"></a>
-- [11.3](#methods--no-underscore-for-internal) Не используйте символ подчеркивания `_` в качестве префикса в названиях внутренних методов компонента.
+- [11.4](#methods--no-underscore-for-internal) Не используйте символ подчеркивания `_` в качестве префикса в названиях внутренних методов компонента.
 
   >Почему: префикс `_` иногда используется в других языках по соглашению для обозначения `private`-метода. В `JavaScript` нет встроенной поддержки области видимости методов, все методы публичные. Независимо от целей, добавление префикса `_` не сделает метод `private`-методом.
 
@@ -616,7 +646,7 @@
   ```
 
 <a name="methods--require-render-return"></a><a name="11.4"></a>
-- [11.4](#methods--require-render-return) Всегда возвращайте значение из метода `render`.
+- [11.5](#methods--require-render-return) Всегда возвращайте значение из метода `render`.
 
   eslint: [`react/require-render-return`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/require-render-return.md)
 
