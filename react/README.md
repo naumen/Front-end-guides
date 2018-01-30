@@ -3,7 +3,7 @@
 ## Содержание <a name="table-of-contents"></a>
 
 1. [Базовые правила](#basic-rules)
-1. [Class или компонент без состояния](#classes)
+1. [Класс или компонент без состояния](#classes)
 1. [Именование](#naming)
 1. [Выравнивание](#alignment)
 1. [Кавычки](#quotes)
@@ -35,7 +35,7 @@
 
 **[К содержанию](#table-of-contents)**
 
-## Class или компонент без состояния <a name="classes"></a>
+## Класс или компонент без состояния <a name="classes"></a>
 
 <a name="class-vs-react-create-class"></a><a name="2.1"></a>
 - [2.1](#class-vs-react-create-class) Если в компоненте есть состояние и/или ссылки, используйте `class extends React.Component`; не используйте `React.createClass`.
@@ -82,7 +82,7 @@
 ## Именование <a name="naming"></a>
 
 <a name="naming--extensions"></a><a name="3.1"></a>
-- [3.1](#naming--extensions) Используйте расширение `.jsx` для файлов, содержащий код `React`-компонентов.
+- [3.1](#naming--extensions) Используйте расширение `.jsx` для файлов, содержащих код `React`-компонентов.
 
 <a name="naming--filenames"></a><a name="3.2"></a>
 - [3.2](#naming--filenames) Используйте `PascalCase` для файлов, содержащих код `React`-компонентов.
@@ -151,7 +151,7 @@
 <a name="naming--props"></a><a name="3.6"></a>
 - [3.6](#naming--props) Избегайте использования названий свойств DOM для отличных от первоначальных целей.
 
-  >Почему: ожидается, что свойства типа `style` или `className` означают одну конкретное значение. Изменени этого `API` для своих целей делает код менее читабельным и поддерживаемым и может приводить к ошибкам.
+  >Почему: ожидается, что свойства типа `style` или `className` имеют одну конкретную цель. Изменение этого `API` для своих целей делает код менее читабельным и поддерживаемым и может приводить к ошибкам.
 
   ```jsx
   // плохо
@@ -169,7 +169,7 @@
 ## Выравнивание <a name="alignment"></a>
 
 <a name="alignment--props"></a><a name="4.1"></a>
-- [4.1](#alignment--props) Используйте следующие пример для выравнивания свойств, закрывающей скобки и дочерних компонентов.
+- [4.1](#alignment--props) Используйте следующие примеры для выравнивания свойств, закрывающей скобки и дочерних компонентов.
 
   eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md), [`react/jsx-closing-tag-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-tag-location.md)
 
@@ -314,7 +314,7 @@
   ```
 
 <a name="props--aria-role"></a><a name="7.4"></a>
-- [7.4](#props--aria-role) Используйте только правильные, не абстрактные [роли ARIA](https://www.w3.org/TR/wai-aria/roles#role_definitions).
+- [7.4](#props--aria-role) Используйте только правильные, не абстрактные [роли ARIA](https://www.w3.org/TR/wai-aria-1.1/#role_definitions).
 
   eslint: [`jsx-a11y/aria-role`](https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/aria-role.md)
 
@@ -697,7 +697,7 @@
   ```
 
 <a name="order-in-component--defaults"></a><a name="12.3"></a>
-- [12.3](#order-in-component--defaults) При указании значений свойств по-умолчанию используйте алфавитный порядок; используйте ключевое слово `static`.
+- [12.3](#order-in-component--defaults) При указании значений свойств по умолчанию используйте алфавитный порядок; используйте ключевое слово `static`.
 
   >Почему: в отсортированном по алфавиту списке свойств легче ориентироваться
 
@@ -710,8 +710,6 @@
     type: 'text'
   }
   ```
-
-  >Не обосновано: использование `static`
 
 <a name="order-in-component--lifecycle-methods"></a><a name="12.4"></a>
 - [12.4](#order-in-component--lifecicle-methods) Порядок методов жизненного цикла следующий:
