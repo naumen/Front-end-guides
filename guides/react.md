@@ -1,4 +1,4 @@
-# Руководство по стилю кода React
+# Руководство по стилю кода (React)
 
 Другие руководства
 
@@ -7,7 +7,7 @@
 ## Содержание <a name="table-of-contents"></a>
 
 1. [Базовые правила](#basic-rules)
-1. [Класс или компонент без состояния](#classes)
+1. [Компоненты](#components)
 1. [Именование](#naming)
 1. [Выравнивание](#alignment)
 1. [Кавычки](#quotes)
@@ -18,11 +18,76 @@
 1. [Теги](#tags)
 1. [Методы](#methods)
 1. [Порядок в компоненте](#order-in-component)
+1. [Redux](#redux)
+1. [Утилиты и вспомогательные функции](#utils-and-helpers)
 
 ## Базовые правила <a name="basic-rules"></a>
 
-<a name="basic-rules--no-multi-comp"></a><a name="1.1"></a>
-- [1.1](#basic-rules--no-multi-comp) Один файл - один компонент.
+<a name="basic-rules--component-types"></a><a name="1.1"></a>
+- [1.1](#basic-rules--component-types) Разделяйте компоненты на контейнеры («умные») и представления («глупые»).
+
+|&nbsp;          |контейнеры                   |представления                                               |
+|:---------------|:----------------------------|:-----------------------------------------------------------|
+|Где используются|в начале иерархии компонентов|в середине и конце иерархии компонентов                     |
+|`Redux`         |знают о нем                  |не знают о нем                                              |
+|Получают данные |из хранилища `Redux`         |из переданных свойств                                       |
+|Меняют данные   |вбрасывают действия `Redux`  |вызывают функции обратного вызова, переданные через свойства|
+
+  Такое разделение не является догмой. Иногда подобное разделение не имеет смысла. В других случаях сложно определить к какому типу относится компонент. В последнем случае, вероятно, еще рано делать разделение.
+
+  Если нет возможности четко определить компонент как контейнер, следует отнести его к представлениям.
+
+<a name="basic-rules--container-components"></a><a name="1.2"></a>
+- [1.2](#basic-rules--container-components) При создании компонентов-контейнеров придерживайтесь следующих принципов:
+  + контейнеры определяют логику работы;
+  + могут содержать и контейнеры, и представления, но обычно не содержат никакой разметки, за исключением нескольких оборачивающих `div`-ов, и никогда не содержат стили;
+  + предоставляют данные и поведение другим компонентам, как контейнерам, так и представлениям;
+  + вызывают действия `Redux` и предоставляют их как функции обратного вызова компонентам-представлениям.
+
+<a name="basic-rules--presentational-components"></a><a name="1.3"></a>
+- [1.3](#basic-rules--presentational-components) При создании компонентов-представлений придерживайтесь следующих принципов:
+  + представления отвечают за внешний вид приложения;
+  + могут содержать и контейнеры, и представления, и имеют разметку и стили;
+  + не зависят от остальных частей приложения, таких как действия `Redux` или состояние приложения;
+  + не определяют, как данные загружаются или изменяются;
+  + получают данные и функции обратного вызова только через свойства;
+  + редко имеют свое состояние, а когда имеют - оно отражает состояние пользовательского интерфейса, а не содержит данные;
+  + должны быть написаны как функциональные компоненты до тех пор, пока им не нужно состояние, методы жизненного цикла или оптимизация производительности.
+
+<a name="basic-rules--component-folder"></a><a name="1.4"></a>
+- [1.4](#basic-rules--component-folder) Организация файлов компонента: используйте подход `feature first`:
+  + создайте две папки: одну для компонентов-контейнеров, другую для компонентов-представлений. Например `src/containers` и `src/components`.
+  + изолируйте все, что относится к компоненту в одной папке, названной в соответствии с компонентом:
+
+    ```text
+    ...
+    |  |-containers
+    |  |  |-SomeFeatureContainer
+    |  |  |  |-tests
+    |  |  |  |  |-actions.test.js
+    |  |  |  |  |-index.test.js
+    |  |  |  |  \-reducer.test.js
+    |  |  |  |-actions.js
+    |  |  |  |-constants.js
+    |  |  |  |-index.js
+    |  |  |  |-styles.less
+    |  |  |  |-reducer.js
+    |  |  |  \-SomeFeatureContainer.jsx
+    |  |  |
+    |  |  |-YetAnotherFeatureContainer
+    ...
+    ```
+
+  + папки компонентов могут содержать папки подкомпонентов, организованные тамик же образом, если эти подкомпоненты напрямую относятся к основному компоненту
+
+  >Почему: лучшая переиспользуемость
+
+**[К содержанию](#table-of-contents)**
+
+## Компоненты <a name="components"></a>
+
+<a name="components--no-multi-comp"></a><a name="2.1"></a>
+- [2.1](#components--no-multi-comp) Один файл - один компонент.
 
   eslint: [`react/no-multi-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-multi-comp.md)
 
@@ -37,12 +102,8 @@
   ...
   ```
 
-**[К содержанию](#table-of-contents)**
-
-## Класс или компонент без состояния <a name="classes"></a>
-
-<a name="class-vs-react-create-class"></a><a name="2.1"></a>
-- [2.1](#class-vs-react-create-class) Если в компоненте есть состояние и/или ссылки, используйте `class extends React.Component`; не используйте `React.createClass`.
+<a name="components--class-vs-react-create-class"></a><a name="2.2"></a>
+- [2.2](#components--class-vs-react-create-class) Если в компоненте есть состояние и/или ссылки, используйте `class extends React.Component`; не используйте `React.createClass`.
 
   eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md)
 
@@ -64,8 +125,8 @@
   };
   ```
 
-<a href="class-vs-stateless"></a><a name="2.2"></a>
-- [2.2](#class-vs-stateless) Если в компоненте нет состояния и ссылок, используйте обычную функцию, а не классы `es6`.
+<a href="components--class-vs-stateless"></a><a name="2.3"></a>
+- [2.3](#components--class-vs-stateless) Если в компоненте нет состояния и ссылок, используйте обычную функцию, а не классы `es6`.
 
   eslint: [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
 
@@ -79,6 +140,81 @@
 
   // хорошо
   const Listing = ({hello}) => <div>{hello}</div>;
+  ```
+
+<a href="components--extend-width-composition-or-hoc"></a><a name="2.4"></a>
+- [2.4](#components--extend-width-composition-or-hoc) Расширяйте компоненты при помощи композиции или компонентов высшего порядка.
+    + Композиция обеспечивается использованием `this.props.children`.
+
+      ```jsx
+      <Modal>
+        <ModalTitle>Modal Title</ModalTitle>
+        <ModalBody>
+          Some content
+        </ModalBody>
+      </Modal>
+      ```
+
+    + Компонент высшего порядка - это функция, которая оборачивает существующий компонент в другой компонент. При этом могут выполняться следующие действия:
+        - выполнение кода до и после вызова оборачиваемого компонента;
+        - блокировка вывода оборачиваемого компонента по условию;
+        - обновление свойств, передаваемых оборачиваемому компоненту и добавление новых свойств;
+        - преобразование вывода оборачиваемого компонента (например, оборачивание в дополнительную разметку).
+
+<a name="components--expose-component-state"></a><a name="2.5"></a>
+- [2.5](#components--expose-component-state) Выставляйте внутреннее состояние компонента наружу через свойства и описания типов. Это позволит внешнему коду устанавливать начальное значение состояния и реагировать на изменения в компоненте.
+
+  ```jsx
+  // плохо
+  class FlipCard extends Component {
+    constructor (props) {
+      super(props);
+      this.state = {
+        flipped: false
+      };
+    }
+
+    toggleFlip = () => {
+      this.setState({
+        flipped: !this.state.flipped
+      });
+    };
+
+    render () {
+      const {flipped} = this.state;
+      return (
+        <div className={flipped ? 'showBack' : 'showFront'}>
+          <sapn className="flipControl" onClick={this.toggleFlip} />
+        </div>
+      );
+    }
+  }
+
+  // хорошо
+  class FlipCard extends Component {
+    constructor (props) {
+      super(props);
+      this.state = {
+        flipped: props.flipped || false
+      };
+    }
+
+    toggleFlip = () => {
+      const {onFlip} = this.props;
+      this.setState({
+        flipped: !this.state.flipped
+      }, () => onFlip && onFlip(this.state.flipped));
+    };
+
+    render () {
+      const {flipped} = this.state;
+      return (
+        <div className={flipped ? 'showBack' : 'showFront'}>
+          <sapn className="flipControl" onClick={this.toggleFlip} />
+        </div>
+      );
+    }
+  }
   ```
 
 **[К содержанию](#table-of-contents)**
@@ -718,6 +854,8 @@
 <a name="order-in-component--lifecycle-methods"></a><a name="12.4"></a>
 - [12.4](#order-in-component--lifecicle-methods) Порядок методов жизненного цикла следующий:
 
+  Для `react` версии `16.2` и ниже:
+
   1. `componentWillMount`
   2. `componentDidMount`
   3. `componentWillReceiveProps`
@@ -725,6 +863,15 @@
   5. `componentWillUpdate`
   6. `componentDidUpdate`
   7. `componentWillUnmount`
+
+  Для `react` версии `16.3` и выше:
+
+  1. `getDerivedStateFromProps`
+  2. `componentDidMount`
+  3. `shouldComponentUpdate`
+  4. `getSnapshotBeforeUpdate`
+  5. `componentDidUpdate`
+  6. `componentWillUnmount`
 
   >Почему: хронологическая сортировка
 
@@ -776,5 +923,188 @@
     );
   }
   ```
+
+**[К содержанию](#table-of-contents)**
+
+## Redux <a name="redux"></a>
+
+<a name="redux--organization"></a><a name="13.1"></a>
+- [13.1](#redux--organization) Располагайте файлы действий, констант, типов и пр. рядом с файлом редьюсера.
+
+  ```text
+  src/redux-modules/
+    awesomeFunctionality/
+      actions.js              # действия
+      awesomeFunctionality.js # редьюсер
+      constants.js            # константы
+      defaults.js             # предзаполненные состояния
+      index.js                # экспорт редьюсера по умолчанию
+      types.js                # типы
+  ```
+
+<a name="redux--use-thunk"></a><a name="13.2"></a>
+- [13.2](#redux--use-thunk) Используйте `redux-thunk` и `async`/`await` для реализации асинхронных генераторов действий.
+
+  >Почему: `async`/`await` позволяет писать более читаемый, по сравнению с цепочками `Promise`-ов код
+
+  ```javascript
+  // плохо
+  const someComplexAction = (dispatch) => {
+    dispatch(requestAction);
+
+    fetch(/* ... */)
+      .then(ahndleResponse)
+      .then(
+        json => dispatch(successAction),
+        error => dispatch(errorAction)
+      );
+  };
+
+  // хорошо
+  const someComplexAction = async (dispatch) => {
+    dispatch(requestAction);
+
+    try {
+      const json = await fetch(/* ... */);
+      dispatch(successAction);
+    } catch (error) {
+      dispatch(errorAction);
+    }
+  };
+  ```
+
+<a name="redux--no-get-state-in-actions"></a><a name="13.3"></a>
+- [13.3](#redux--no-get-state-in-actions) Старайтесь не использовать `getState` внутри асинхронного генератора действия.
+
+  >Почему: в случае использования `getState` генератор действия будет связан с состоянием приложения. Если приложение решит изменить состояние (например, отработают редьюсеры) генератор действия перестанет работать.
+
+  ```jsx
+  // хрупкое решение
+  const loadSomething = id => (dispatch, getState) => {
+    if (!getState().items.includes(id)) {
+      const something = await fetch(/* ... */);
+      dispatch(addSomething(something));
+    }
+  }
+  ```
+
+  Можно использовать разные подходы для решения задачи:
+
+  + перенести логику в компонент-контейнер
+
+    ```jsx
+    // хорошо
+    const Container extends Component {
+      handleEvent (id) {
+        const {items, loadSomething} = this.props;
+        if (!items.includes(id)) {
+          loadSomething(id);
+        }
+      }
+    }
+    ```
+
+  + передать необходиму часть состояния приложения как параметр
+
+    ```jsx
+    // хорошо
+    const loadSomething = (id, items) => (dispatch) => {
+      if (!items.includes(id) {
+        const something = await fetch(/* ... */);
+        dispatch(addSomething(something));
+      }
+    }
+    ```
+
+  + если логика принятия решения используется в нескольких местах, вынести получение участка состояния приложения в функцию, а в генератор действия передавать ключ, по которому можно получить нужную часть состояния
+
+    ```jsx
+    const getStateIn = (state, path) => _.get(state, path);
+
+    const loadSomething = (id, path) => (dispacth, getState) => {
+      if (!getStateIn(getState(), path)) {
+        const something = await fetch(/* ... */);
+        dispatch(addSomething(something));
+      }
+    }
+
+    // ...
+
+    loadSomething(42, 'state.awesome.items');
+    ```
+
+<a name="redux--reducers-reuse"></a><a name="13.4"></a>
+- [13.4](#redux--reducers-reuse) Редьюсер нельзя переиспользовать без реализации редьюсера высшего порядка.
+
+  ```jsx
+  // не будет работать
+  const poll = (state, action) => {
+    switch (action.type) {
+      ...
+    }
+  }
+
+  const polls = combineReducers({
+    closed: poll,
+    open: poll
+  });
+
+  // правильное решение
+  const limited = (reducer, predicate) => (state, action) => {
+    if (predicate(action)) {
+        return reducer(state, action);
+    }
+
+    return state;
+  }
+
+  const polls = combineReducers({
+    closed: limited(poll, action => action.name === 'closed'),
+    open: limited(poll, action => action.name === 'open'),
+  });
+  ```
+
+<a name="redux--selectors"></a><a name="13.5"></a>
+- [13.5](#redux--selectors) Используйте селекторы и помещайте их рядом с редьюсерами.
+
+  Редьюсеры представляют срез состояния приложения, селекторы же являются языком запросов к этому срезу на уровне компонентов. Используйте селекторы для ослабления связи между моделью и представлением.
+
+  ```jsx
+  // плохо
+  const mapStateToProps = state => ({
+    prop1: state.awesome1.prop1,
+    prop2: state.awesome2.awesome3.prop4
+  });
+
+  // хорошо
+  const selectProp1 = state => state.awesome1.prop1;
+  const selectProp2 = state => state.awesome2.awesome3.prop4;
+
+  // ...
+
+  const mapStateToProps = state => ({
+    prop1: selectProp1(state),
+    prop2: seelctProp2(state)
+  });
+  ```
+
+  Если структура состояния приложения поменяется, необходимо будет внести изменения в селекторах, а не во всех компонентах, использующих этот участок состояния.
+
+<a name="redux--naming"></a><a name="13.6"></a>
+- [13.6](#redux--naming) Придерживайтесь следующих правил именования:
+    + типы действий: *[СУЩЕСТВИТЕЛЬНОЕ]_[ГЛАГОЛ]*
+    + генераторы действий: *[глагол]_[Существительное]*
+    + селекторы: *get[Существительное]*, *select[Существительное]*
+
+**[К содержанию](#table-of-contents)**
+
+## Утилиты и вспомогательные функции <a name="utils-and-helpers"></a>
+
+<a name="utils-and-helpers--common-rules"></a><a name="14.1"></a>
+- [14.1](#utils-and-helpers--common-rules) При написании утилит и вспомогательных функций придерживайтесь следующих правил:
+  + группируйте функции в соответствии с их назначением;
+  + используйтие именованный экспорт, не используйте экспорт по умолчанию;
+  + утилиты должны быть чистыми функциями;
+  + утилиты должны быть переиспользуемыми, но иметь только одну задачу.
 
 **[К содержанию](#table-of-contents)**
