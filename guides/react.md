@@ -4,8 +4,8 @@
 
 Другие руководства:
 
-- [по стилю кода JavaScript](guides/javascript.md)
-- [по самообучению](guides/frontend-roadmap.md)
+- [по стилю кода JavaScript](javascript.md)
+- [по самообучению](frontend-roadmap.md)
 
 ## Содержание <a name="table-of-contents"></a>
 

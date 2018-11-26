@@ -2,8 +2,8 @@
 
 Другие руководства:
 
-- [по стилю кода JavaScript](guides/javascript.md)
-- [по стилю кода React/Redux](guides/react.md)
+- [по стилю кода JavaScript](javascript.md)
+- [по стилю кода React/Redux](react.md)
 
 [Дорожная карта веб-разработчика (kamranahmedse)](https://github.com/kamranahmedse/developer-roadmap)
 

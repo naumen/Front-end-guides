@@ -4,8 +4,8 @@
 
 Другие руководства:
 
-- [по стилю кода React/Redux](guides/react.md)
-- [по самообучению](guides/frontend-roadmap.md)
+- [по стилю кода React/Redux](react.md)
+- [по самообучению](frontend-roadmap.md)
 
 ## Содержание <a name="table-of-contents"></a>
 
