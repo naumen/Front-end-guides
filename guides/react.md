@@ -1,8 +1,11 @@
-# Руководство по стилю кода (React)
+# Руководство по стилю кода React/Redux
 
-Другие руководства
+В основе этого документа лежат [руководство по стилю кода React Airbnb](https://github.com/airbnb/javascript/tree/master/react) и [руководство по стилю кода React/Redux iraycd](https://github.com/iraycd/React-Redux-Styleguide). Это руководство не является точным переводом и в нем есть отличия от оригиналов.
 
-- [JavaScript](guides/javascript.md)
+Другие руководства:
+
+- [по стилю кода JavaScript](guides/javascript.md)
+- [по самообучению](guides/frontend-roadmap.md)
 
 ## Содержание <a name="table-of-contents"></a>
 

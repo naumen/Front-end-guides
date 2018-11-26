@@ -1,4 +1,5 @@
-# Руководство по стилю кода
+# Руководства
 
-- [JavaScript](guides/javascript.md)
-- [React](guides/react.md)
+- [по стилю кода JavaScript](guides/javascript.md)
+- [по стилю кода React/Redux](guides/react.md)
+- [по самообучению](guides/frontend-roadmap.md)

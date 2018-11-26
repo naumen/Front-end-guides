@@ -6,24 +6,25 @@
 	},
 	"bugs": {
 		"email": "vakhlov@gmail.com",
-		"url": "https://gitsd.naumen.ru/portal-docs/code-style-guide/issues"
+		"url": "https://github.com/naumen/Front-end-guides/issues"
 	},
 	"contributors": [],
-	"description": "code style guide",
-	"homepage": "https://gitsd.naumen.ru/portal-docs/code-style-guide",
+	"description": "Naumen's front-end style guides",
+	"homepage": "https://github.com/naumen/Front-end-guides",
 	"keywords": [
 		"style guide",
 		"es6",
 		"javascript",
 		"es2015",
 		"react",
+		"redux",
 		"jsx"
 	],
-	"license": "ISC",
-	"name": "smp-portal-code-style-guide",
+	"license": "MIT",
+	"name": "Front-end style guides",
 	"repository": {
 		"type": "git",
-		"url": "git@gitsd.naumen.ru:portal-docs/code-style-guide.git"
+		"url": "git@github.com:naumen/Front-end-guides.git"
 	},
 	"version": "1.0.0"
 }
