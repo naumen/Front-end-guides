@@ -1093,8 +1093,35 @@
 
   Если структура состояния приложения поменяется, необходимо будет внести изменения в селекторах, а не во всех компонентах, использующих этот участок состояния.
 
-<a name="redux--naming"></a><a name="13.6"></a>
-- [13.6](#redux--naming) Придерживайтесь следующих правил именования:
+<a name="redux--passing-dispatch"></a><a name="13.6"></a>
+- [13.6](#redux--passing-dispatch) Если `mapDispatchToProps` используется только для передачи `dispatch` в генераторы действий, отдайте предпочтение простому объекту, имена свойств которого совпадают с названиями генераторов действий.
+
+  >Почему: код становится проще и легче читается. Привязку `dispatch` к генераторам действий выполнит функция `connect`.
+
+  ```jsx
+  // плохо
+  const mapDispatchToProps = dispatch => bindActionCreators(
+    {loadComments, loadPostContent},
+    dispatch
+  );
+
+  /* ... */
+
+  export default connect(null, mapDispatchToProps)(MyComponent);
+
+  // хорошо
+  const functions = {
+    loadComments
+    loadPostContent,
+  }
+
+  /* ... */
+
+  export default connect(null, functions)(MyComponent)
+  ```
+
+<a name="redux--naming"></a><a name="13.7"></a>
+- [13.7](#redux--naming) Придерживайтесь следующих правил именования:
     + типы действий: *[СУЩЕСТВИТЕЛЬНОЕ]_[ГЛАГОЛ]*
     + генераторы действий: *[глагол]_[Существительное]*
     + селекторы: *get[Существительное]*, *select[Существительное]*
