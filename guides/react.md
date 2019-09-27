@@ -883,7 +883,7 @@
 
   ```
   // плохо
-  render Crumbs () {
+  renderCrumbs () {
     // ...
   }
 
@@ -905,7 +905,7 @@
   }
 
   // хорошо
-  render Crumbs () {
+  renderCrumbs () {
     // ...
   }
 
