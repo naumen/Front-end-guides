@@ -28,6 +28,7 @@
     - [Использование JavaScript-хуков](#using-javascript-hooks)
 1. [Less](#less)
     - [Общие положения](#less-common-terms)
+    - [Форматирование](#formatting-less)
     - [Именование селекторов](#less-naming)
     - [Вложенность](#nesting)
     - [Переменные](#variables)
@@ -208,7 +209,7 @@ a {
   ```css
   /* плохо */
   .block {
-    box-shadow: 5px 5px 0px 0px #289FED,10px 10px 0px 0px #5FB8FF;
+    box-shadow: 5px 5px 0 0 #289FED,10px 10px 0 0 #5FB8FF;
     margin : 0 20px;
     padding: 10px 0
   }
@@ -220,7 +221,7 @@ a {
 
   /* хорошо */
   .block {
-    box-shadow: 5px 5px 0px 0px #289FED, 10px 10px 0px 0px #5FB8FF;
+    box-shadow: 5px 5px 0 0 #289FED, 10px 10px 0 0 #5FB8FF;
     margin: 0 20px;
     padding: 10px 0
   }
@@ -238,14 +239,14 @@ a {
 
   ```css
   .block {
-    box-shadow: 5px 5px 0px 0px #289FED,
-      10px 10px 0px 0px #5FB8FF;
+    box-shadow: 5px 5px 0 0 #289FED,
+      10px 10px 0 0 #5FB8FF;
   }
 
   .block {
     box-shadow:
-      5px 5px 0px 0px #289FED,
-      10px 10px 0px 0px #5FB8FF;
+      5px 5px 0 0 #289FED,
+      10px 10px 0 0 #5FB8FF;
   }
   ```
 
@@ -493,7 +494,7 @@ a {
   /* плохо */
   .block {
     flex-basis: auto;
-    flex-grow: 0
+    flex-grow: 0;
     /* IE */
     flex-shrink: 1;
   }
@@ -501,7 +502,7 @@ a {
   /* хорошо */
   .block {
     flex-basis: auto;
-    flex-grow: 0
+    flex-grow: 0;
     flex-shrink: 1; /* IE */
   }
   ```
@@ -605,8 +606,94 @@ a {
 
 **[К содержанию](#table-of-contents)**
 
-## Less <a name="less"></a>
+## Less <a name="less"></a><a name="3"></a>
 
-### Общие положения <a name="less-common-terms"></a>
+### Общие положения <a name="less-common-terms"></a><a name="3.1"></a>
+
+Соглашения, описанные в этом разделе основаны на соглашениях о стиле кода `CSS` и дополняют их.
+
+### Форматирование <a name="formatting-less"></a><a name="3.2"></a>
+
+<a name="formatting-less--vertical-indentation"></a><a name="3.2.1"></a>
+- [3.2.1](#formatting-less--vertical-indentation) Вложенные правила отделяем пустой строкой от свойств родительского правила.
+
+  >Почему: для удобочитаемости.
+
+  ```less
+  /* плохо */
+  a {
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  /* хорошо */
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  ```
+  
+### Именование селекторов <a name="less-naming"></a><a name="3.3"></a>
+
+<a name="less-naming--no-bem"></a><a name="3.3.1"></a>
+- [3.3.1](#less-naming--no-bem) Не используем БЭМ.
+
+  >Почему: используем [`css`-модули](https://github.com/css-modules/css-modules).
+
+<a name="less-naming--camel-case"></a><a name="3.3.2"></a>
+- [3.3.2](#less-naming--camel-case) Записываем названия классов в селекторах только в `camelCase`.
+
+  >Почему: это упрощает их использование, т.к. можно использовать точечную нотацию.
+
+### Вложенность <a name="nesting"></a><a name="3.4"></a>
+
+<a name="nesting--avoid-parent-selector-usage"></a><a name="3.4.1"></a>
+- [3.4.1](#nesting--avoid-parent-selector-usage) Не используем «родительский селектор» для генерации названий классов.
+
+  >Почему: `IDE` не распознает такие случаи и выдает предупреждения.
+
+  ```less
+  /* плохо */
+  .button {
+    /* ... */
+
+    &Ok {
+      /* ... */
+    }
+
+    &Cancel {
+      /* ... */
+    }
+  }
+
+  /* хорошо */
+  .button {
+    /* ... */
+  }
+
+  .buttonOk {
+    /* ... */
+  }
+
+  .buttonCancel {
+    /* ... */
+  }
+  ```
+
+### Переменные <a name="variables"></a><a name="3.5"></a>
+
+<a name="variables--reasonable"></a><a name="3.5.1"></a>
+- [3.5.1](#variables--reasonable) Подходим разумно к использованию переменных:
+    - выносим в переменные цвета, временные характеристики анимаций, значения свойств, связанных со шрифтами;
+    - одно вхождение не повод вынести в переменную;
+    - два вхождения - повод вынести в локальную переменную;
+    - более двух вхождений - стоит вынести значение в отдельную переменнную в отдельной файле переменных.
+
+  >Почему: чтобы сохранить рассудок
 
 **[К содержанию](#table-of-contents)**
