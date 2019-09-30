@@ -4,6 +4,7 @@
 
 - [по стилю кода JavaScript](javascript.md)
 - [по стилю кода React/Redux](react.md)
+- [по стилю кода CSS/Less](css-less.md)
 
 [Дорожная карта веб-разработчика (kamranahmedse)](https://github.com/kamranahmedse/developer-roadmap)
 

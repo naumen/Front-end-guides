@@ -5,6 +5,7 @@
 Другие руководства:
 
 - [по стилю кода React/Redux](react.md)
+- [по стилю кода CSS/Less](css-less.md)
 - [по самообучению](frontend-roadmap.md)
 
 ## Содержание <a name="table-of-contents"></a>
