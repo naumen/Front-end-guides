@@ -74,7 +74,7 @@
 
   bar[0] = 9;
 
-  console.log(foo[0], bar[0]); // 9, 2
+  console.log(foo[0], bar[0]); // 9, 9
   ```
 
 **[К содержанию](#table-of-contents)**
