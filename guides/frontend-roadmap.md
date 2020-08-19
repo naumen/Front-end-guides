@@ -11,8 +11,6 @@
 ## JavaScript и ES6
 
 - [учебник JavaScript](http://learn.javascript.ru/)
-- [плейлист "ECMAScript 2015" (.getInstance)](https://www.youtube.com/watch?v=NJo_pv-mH-I&list=PLM8AIkTGTsH_YtwTA1sc1WmC8K15QL21q)
-- [плейлист "Основы ES6" (CodeDojo)](https://www.youtube.com/watch?v=4YfsAz-sNAo&list=PLqHlAwsJRxAOpWPtj2T6HhSzX-lKmKV2q)
 
 ## Node.js и Npm
 
