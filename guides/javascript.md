@@ -2363,10 +2363,10 @@
     return objects.reduce((total, item) => total+= item[attrName], 0);
   }
   
-   // Хорошо
+  // хорошо
   /**
    * Возвращает сумму значений в атрибутах `attrName` из списка `objects`.
-   * @param {Object[]} list - список объектов произвольного типа, которые содержат атрибут attrName.
+   * @param {Object[]} list - список объектов произвольного типа, которые содержат атрибут `attrName`.
    * @param {string} attrName - код атрибута объекта для подсчета суммы.
    * @returns {number} - сумма значений в атрибутах `attrName` из списка `objects`.
    */
@@ -2785,7 +2785,7 @@
   tags.append(errorTagDivElement);
   ```
 
-  // Хорошо
+  // хорошо
   const successTagDivElement = document.createElement('div');
   successTagDivElement.innerText = 'Success';
   successTagDivElement.onClick = handleSuccessClick;
@@ -2798,7 +2798,7 @@
   tags.append(errorTagDivElement);
   ```
   
-  // Хорошо
+  // хорошо
   const successTagDivElement = document.createElement('div');
   const errorTagDivElement = document.createElement('div');
 
@@ -3298,20 +3298,19 @@
     // ...
   };
 
-  // Ужасно
+  // ужасно
   const a = someCheck();
   const ha = someCheck();
   
-  // Плохо
+  // плохо
   const attribute = someCheck();
   
   // Допустимо, если константа инициализирована в контексте функционального блока до 10 строк.
   const hasAttribute = someCheck();
 
-  // Хорошо
+  // хорошо
   const isBusinessObjectHasAttribute = someCheck();
-  
-  
+
   // ужасно
   const cols = getColumns(usersTable);
   const width = calcTotal(cols, 'width');
@@ -3319,7 +3318,7 @@
   const cols2 = getColumns(colorsTable);
   const cols2Width = calcTotal(cols2, 'width');
 
-  // Хорошо
+  // хорошо
   const usersTableColumns = getColumns(usersTable);
   const usersTableTotalWidth = calcTotal(usersTableColumns, 'width');
 
