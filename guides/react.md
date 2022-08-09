@@ -115,6 +115,7 @@
   // плохо
   const Listing = React.createClass({
     // ...
+
     render () {
       return <div>{this.state.hello}</div>;
     }
@@ -123,6 +124,7 @@
   // хорошо
   class Listing extends React.Component {
     // ...
+
     render () {
       return <div>{this.state.hello}</div>;
     }
@@ -173,6 +175,7 @@
   class FlipCard extends Component {
     constructor (props) {
       super(props);
+
       this.state = {
         flipped: false
       };
@@ -186,6 +189,7 @@
 
     render () {
       const {flipped} = this.state;
+
       return (
         <div className={flipped ? 'showBack' : 'showFront'}>
           <sapn className="flipControl" onClick={this.toggleFlip} />
@@ -198,6 +202,7 @@
   class FlipCard extends Component {
     constructor (props) {
       super(props);
+
       this.state = {
         flipped: props.flipped || false
       };
@@ -205,6 +210,7 @@
 
     toggleFlip = () => {
       const {onFlip} = this.props;
+
       this.setState({
         flipped: !this.state.flipped
       }, () => onFlip && onFlip(this.state.flipped));
@@ -212,6 +218,7 @@
 
     render () {
       const {flipped} = this.state;
+
       return (
         <div className={flipped ? 'showBack' : 'showFront'}>
           <sapn className="flipControl" onClick={this.toggleFlip} />
@@ -704,6 +711,7 @@
   export class Foo extends Component {
     constructor (props) {
       super(props);
+
       this.onClick = this.onClick.bind(this);
     }
 
@@ -751,6 +759,7 @@
   class Foo extends Component<Props> {
     constructor (props) {
       super(props);
+
       this.onClick = this.onClick.bind(this);
     }
 
@@ -884,7 +893,7 @@
 
   ```
   // плохо
-  render Crumbs () {
+  renderCrumbs () {
     // ...
   }
 
@@ -906,7 +915,7 @@
   }
 
   // хорошо
-  render Crumbs () {
+  renderCrumbs () {
     // ...
   }
 
@@ -1001,6 +1010,7 @@
     const Container extends Component {
       handleEvent (id) {
         const {items, loadSomething} = this.props;
+
         if (!items.includes(id)) {
           loadSomething(id);
         }

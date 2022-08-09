@@ -108,12 +108,14 @@
   ```javascript
   // плохо
   var count = 1;
+
   if (true) {
     count += 1;
   }
 
   // хорошо
   let count = 1;
+
   if (true) {
     count += 1;
   }
@@ -1637,6 +1639,7 @@
   // хорошо
   const goSportsTeam = true;
   const items = getItems();
+
   let dragonball;
   let i;
   let len;
@@ -1740,6 +1743,7 @@
 
   // хорошо
   const array = [1, 2, 3];
+
   let num = 1;
   num += 1;
   num -= 1;
@@ -2177,7 +2181,7 @@
   // плохо
   if (
     foo === 123 &&
-    bar = 'abc'
+    bar === 'abc'
   ) {
     // ...
   }
@@ -2346,6 +2350,28 @@
       // TODO: начальное значение total должно задаваться входными параметрами
       this.total = 0;
     }
+  }
+  ```
+
+
+<a name="comments--todo"></a><a name="18.7"></a>
+- [18.7](#comments--todo) Используйте [jsDoc](https://jsdoc.app) для документирования функций. Все утилитарные функции должны быть документированы.
+
+  ```javascript
+  // плохо
+  const calcTotal = (objects, attrName) => {
+    return objects.reduce((total, item) => total+= item[attrName], 0);
+  }
+  
+  // хорошо
+  /**
+   * Возвращает сумму значений в атрибутах `attrName` из списка `objects`.
+   * @param {Object[]} list - список объектов произвольного типа, которые содержат атрибут `attrName`.
+   * @param {string} attrName - код атрибута объекта для подсчета суммы.
+   * @returns {number} - сумма значений в атрибутах `attrName` из списка `objects`.
+   */
+  const calcTotal = (list, attrName) => {
+    return list.reduce((total, item) => total += item[attrName], 0);
   }
   ```
 
@@ -2729,6 +2755,61 @@
     .fail(() => console.log('You have failed this.city.'));
   ```
 
+
+<a name="whitespace--max-len"></a><a name="19.12"></a>
+- [19.12](#whitespace--empty-lines-in-logic-blocks) Группируйте логические блоки, отбивая их друг от друга пустой строкой
+
+  >Почему: так удобнее читать и поддерживать код
+
+  ```javascript
+  // ужасно
+  const successTagDivElement = document.createElement('div');
+  const errorTagDivElement = document.createElement('div');
+  successTagDivElement.innerText = 'Success';
+  successTagDivElement.onClick = handleSuccessClick;
+  errorTagDivElement.innerText = 'Error';
+  errorTagDivElement.onClick = handleErrorClick;
+  tags.append(successTagDivElement);
+  tags.append(errorTagDivElement);
+  ```
+
+  // плохо
+  const successTagDivElement = document.createElement('div');
+  const errorTagDivElement = document.createElement('div');
+
+  successTagDivElement.innerText = 'Success';
+  successTagDivElement.onClick = handleSuccessClick;
+  errorTagDivElement.innerText = 'Error';
+  errorTagDivElement.onClick = handleErrorClick;
+  tags.append(successTagDivElement);
+  tags.append(errorTagDivElement);
+  ```
+
+  // хорошо
+  const successTagDivElement = document.createElement('div');
+  successTagDivElement.innerText = 'Success';
+  successTagDivElement.onClick = handleSuccessClick;
+
+  const errorTagDivElement = document.createElement('div');
+  errorTagDivElement.innerText = 'Error';
+  errorTagDivElement.onClick = handleErrorClick;
+  
+  tags.append(successTagDivElement);
+  tags.append(errorTagDivElement);
+  ```
+  
+  // хорошо
+  const successTagDivElement = document.createElement('div');
+  const errorTagDivElement = document.createElement('div');
+
+  successTagDivElement.innerText = 'Success';
+  successTagDivElement.onClick = handleSuccessClick;
+  tags.append(successTagDivElement);
+
+  errorTagDivElement.innerText = 'Error';
+  errorTagDivElement.onClick = handleErrorClick;
+  tags.append(errorTagDivElement);
+  ```
 **[К содержанию](#table-of-contents)**
 
 ## Запятые <a name="commas"></a>
@@ -3197,6 +3278,52 @@
   const requests = [
     // ...
   ];
+  ```
+
+<a name="naming--camelCase-default-export"></a><a name="23.10"></a>
+- [23.10](#naming--purpose-in-variable-name) Наименование должно отражать суть (назначение) именуемой переменной, класса, метода в контексте приложения.
+
+  >Почему: для удобочитаемости и упрощения масштабирования.
+
+  ```javascript
+  // плохо
+  const def = {
+    title: 'Default user',
+    // ...
+  };
+
+  // хорошо
+  const defaultUser = {
+    title: 'Default user',
+    // ...
+  };
+
+  // ужасно
+  const a = someCheck();
+  const ha = someCheck();
+  
+  // плохо
+  const attribute = someCheck();
+  
+  // Допустимо, если константа инициализирована в контексте функционального блока до 10 строк.
+  const hasAttribute = someCheck();
+
+  // хорошо
+  const isBusinessObjectHasAttribute = someCheck();
+
+  // ужасно
+  const cols = getColumns(usersTable);
+  const width = calcTotal(cols, 'width');
+
+  const cols2 = getColumns(colorsTable);
+  const cols2Width = calcTotal(cols2, 'width');
+
+  // хорошо
+  const usersTableColumns = getColumns(usersTable);
+  const usersTableTotalWidth = calcTotal(usersTableColumns, 'width');
+
+  const colorsTableColumns = getColumns(colorsTable);
+  const colorsTableTotalWidth = calcTotal(colorsTableColumns, 'width');
   ```
 
 **[К содержанию](#table-of-contents)**
