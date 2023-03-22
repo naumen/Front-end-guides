@@ -1,6 +1,6 @@
 # Руководство по стилю кода JavaScript
 
-В основе этого документа лежит [руководство по стилю кода Javascript Airbnb](https://github.com/airbnb/javascript). Это руководство не является точным переводом и в нем есть отличия от оригинала. 
+В основе этого документа лежит [руководство по стилю кода Javascript Airbnb](https://github.com/airbnb/javascript). Это руководство не является точным переводом и в нем есть отличия от оригинала.
 
 Другие руководства:
 
@@ -820,7 +820,7 @@
 - [7.11](#functions--signature-spacing) Пробельные символы в сигнатуре функции
 
   eslint: [`space-before-function-paren`](https://eslint.org/docs/rules/space-before-function-paren), [`space-before-blocks`](https://eslint.org/docs/rules/space-before-blocks), [`keyword-spacing`](https://eslint.org/docs/rules/keyword-spacing)
-  
+
   >Почему: паттерн для поиска определения функции отличается от паттерна поиска ее использования. Разделение ключевых слов и редактируемого кода.
 
   ```javascript
@@ -2711,16 +2711,16 @@
   ```
 
 <a name="whitespace--in-braces"></a><a name="19.11"></a>
-- [19.11](#whitespace--in-braces) Добавляйте пробелы внутри фигурных скобок.
+- [19.11](#whitespace--in-braces) Не добавляйте пробелы внутри фигурных скобок.
 
   eslint: [`object-curly-spacing`](https://eslint.org/docs/rules/object-curly-spacing)
 
   ```javascript
   // плохо
-  const foo = {clark: 'kent'};
+  const foo = { clark: 'kent' };
 
   // хорошо
-  const foo = { clark: 'kent' };
+  const foo = {clark: 'kent'};
   ```
 
 <a name="whitespace--max-len"></a><a name="19.12"></a>
@@ -2797,7 +2797,7 @@
   tags.append(successTagDivElement);
   tags.append(errorTagDivElement);
   ```
-  
+
   // хорошо
   const successTagDivElement = document.createElement('div');
   const errorTagDivElement = document.createElement('div');
@@ -2852,44 +2852,14 @@
   ```
 
 <a name="commas-dangling"></a><a name="20.2"></a>
-- [20.2](#commas-dangling) Используйте висячие запятые.
+- [20.2](#commas-dangling) Не используйте висячие запятые.
 
   eslint: [`comma-dangle`](https://eslint.org/docs/rules/comma-dangle)
 
-  >Почему: более чистые `diff`-ы; транспайлеры типа `Babel` уберут лишнюю запятую, поэтому не нужно беспокоиться о совместимости со старыми браузерами
-
-  ```diff
-  // плохо
-  // diff git-а, когда нет висячей запятой
-  const hero = {
-      firtsName: 'Florence',
-  -   lastName: 'Nightingale'
-  +   lastName: 'Nightingale',
-  +   inventorOf: ['coxcomb chart', 'modern nursing']
-  };
-
-  // хорошо
-  // diff git-а, когда используется висячая запятая
-  const hero = {
-      firtsName: 'Florence',
-      lastName: 'Nightingale',
-  +   inventorOf: ['coxcomb chart', 'modern nursing'],
-  };
-  ```
+  >Почему: выглядит грамматически неправильно и отвлекает. Хотя при использовании висячих запятых `diff`-ы более чистые, на практике редки случаи, когда `diff`-ы без висячих запятых создавали сложности.
 
   ```javascript
   // плохо
-  const hero = {
-    firstName: 'Dana',
-    lastName: 'Scully'
-  };
-
-  const heroes = [
-    'Batman',
-    'Superman'
-  ];
-
-  // хорошо
   const hero = {
     firstName: 'Dana',
     lastName: 'Scully',
@@ -2900,11 +2870,22 @@
     'Superman',
   ];
 
+  // хорошо
+  const hero = {
+    firstName: 'Dana',
+    lastName: 'Scully'
+  };
+
+  const heroes = [
+    'Batman',
+    'Superman'
+  ];
+
   // плохо
   function createHero (
     firstName,
     lastName,
-    inventorOf
+    inventorOf,
   ) {
     // ...
   }
@@ -2913,7 +2894,7 @@
   function createHero (
     firstName,
     lastName,
-    inventorOf,
+    inventorOf
   ) {
     // ...
   }
@@ -2932,14 +2913,14 @@
   createHero(
     firstName,
     lastName,
-    inventorOf
+    inventorOf,
   );
 
   // хорошо
   createHero(
     firstName,
     lastName,
-    inventorOf,
+    inventorOf
   );
 
   // хорошо (примечание: не должно быть запятой после '...rest')
@@ -3562,4 +3543,3 @@
   ```
 
 **[К содержанию](#table-of-contents)**
-
