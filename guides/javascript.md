@@ -39,6 +39,7 @@
 1. [Совместимость с ECMAScript 5](#es5-compat)
 1. [Стиль написания ECMAScript 6+ (ES 2015+)](#es6-styles)
 1. [Стандартная библиотека](#standard-library)
+1. [TypeScript](#typescript)
 
 ## Типы <a name="types"></a>
 
@@ -3542,6 +3543,51 @@
   // хорошо
   Number.isFinite('2e3'); // false
   Number.isFinite(parseInt('2e3', 10)); // true
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+## TypeScript <a name="typescript"></a>
+
+<a name="typescript--types-vs-interfaces"></a><a name="30.1"></a>
+
+- [30.1](#typescript--types-vs-interfaces) Используйте типы для описания данных и операций с ними, функций, "внутреннего" поведения, а интерфейсы - для гарантии реализации "внешнего" поведения и расширения имеющихся типов и интерфейсов. В затруднительных ситуациях предпочтение стоит отдать типам.
+
+  >Почему: типы более понятны, а их возможности шире. Подробнее см. [почему стоит использовать типы вместо интерфейсов](../rationales/types-vs-interfaces.md).
+
+  **MyComponent.types.ts**
+
+  ```typescript
+  export type OwnProps = {
+    // OwnProps - тип потому, что обычно в свойствах передаются
+    // данные или функции-обработчики событий.
+  }
+
+  export type ConnectedProps = {
+    // ConnectedProps - тип потому, что тут всегда данные.
+  }
+
+  export interface IBehaviorName {
+    // IBehaviorName - интерфейс потому, что тут добавляется "внешнее"
+    // поведение компоненту, который, в теории, можно заменить другим
+    // компонентом, реализующим тот же интерфейс
+  }
+
+  export type Props = OwnProps & ConnectedProps & IBehaviorName
+  ```
+
+  **selectors.ts**
+
+  ```typescript
+  const props = (state: AppState): ConnectedProps => ({
+    /* ... */
+  })
+
+  const functions: IBehaviorName = {
+    function1,
+    function2,
+    // ...
+  }
   ```
 
 **[К содержанию](#table-of-contents)**
