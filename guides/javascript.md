@@ -3307,6 +3307,31 @@
   const colorsTableTotalWidth = calcTotal(colorsTableColumns, 'width');
   ```
 
+<a name="naming-functions"></a><a name="23.11"></a>
+- [23.11](#naming-functions) Наименование должно начинаться с глагола, который отражает то, чем является функция.
+
+  > Почему: название, начинающееся с глагола, сразу даёт понять назначение функции.
+
+  ```javascript
+  // плохо
+  const itemGetter = () => {
+    // code
+  }
+
+  const clickHanlder = () => {
+    // code
+  }
+
+  // хорошо
+  const getItem = () => {
+    // code
+  }
+
+  const handleClick = () => {
+    // code
+  }
+  ```
+
 **[К содержанию](#table-of-contents)**
 
 ## Методы доступа <a name="accessors"></a>
