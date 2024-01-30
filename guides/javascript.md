@@ -2379,8 +2379,8 @@
 
 ## Пробельные символы <a name="whitespace"></a>
 
-<a name="whitespace--spaces"></a><a name="19.1"></a>
-- [19.1](#whitespace--spaces) Используйте «мягкие» табы (пробелы) установленные в 2 пробела.
+<a name="tabs-over-spaces"></a><a name="19.1"></a>
+- [19.1](#tabs-over-spaces) Используйте табы вместо пробелов.
 
   eslint: [`indent`](https://eslint.org/docs/rules/indent)
 
@@ -2397,7 +2397,7 @@
 
   // хорошо
   function foo () {
-  ··let name;
+  ⇥let name;
   }
   ```
 
