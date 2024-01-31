@@ -2379,8 +2379,10 @@
 
 ## Пробельные символы <a name="whitespace"></a>
 
-<a name="whitespace--spaces"></a><a name="19.1"></a>
-- [19.1](#whitespace--spaces) Используйте «мягкие» табы (пробелы) установленные в 2 пробела.
+<a name="whitespaces--tabs-over-spaces"></a><a name="19.1"></a>
+- [19.1](#whitespaces--tabs-over-spaces) Используйте табуляцию для отступов и пробелы для выравнивания.
+
+  >Почему: ширина табов может быть разной, но кодовая база при этом неизменна.
 
   eslint: [`indent`](https://eslint.org/docs/rules/indent)
 
@@ -2397,7 +2399,7 @@
 
   // хорошо
   function foo () {
-  ··let name;
+  ⇥let name;
   }
   ```
 
