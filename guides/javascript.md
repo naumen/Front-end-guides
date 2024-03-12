@@ -3066,9 +3066,11 @@
   ```
 
 <a name="coercion--booleans"></a><a name="22.6"></a>
-- [22.6](#coercion--booleans) Для приведения к логическому типу используйте `Boolean`.
+- [22.6](#coercion--booleans) Для приведения к логическому типу используйте `!!` или `Boolean`, в зависимости от того, что лучше влияет на удобочитаемость.
 
   eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
+
+  >Почему: `new Boolean` создает объект-обертку, что повышает вероятность ошибок (`!!(new Boolean(false)) // true`)
 
   ```javascript
   const age = 0;
@@ -3081,6 +3083,7 @@
 
   // наилучший способ
   const hasAge = !!age;
+  const filteredArr = arr.filter(Boolean);
   ```
 
 **[К содержанию](#table-of-contents)**
