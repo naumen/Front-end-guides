@@ -1263,13 +1263,14 @@
   const SuperModule = require('./SuperModule');
   module.exports = SuperModule.AwesomeFeature;
 
-  // нормально
-  import SuperModule from './SuperModule';
-  export default SuperModule.AwesomeFeature;
+  // хорошо
+  import {AwesomeFeature} from './SuperModule';
+  export {
+    AwesomeFeature
+  };
 
   // отлично
-  import {AwesomeFeature} from './SuperModule';
-  export default AwesomeFeature;
+  export {AwesomeFeature} from './SuperModule';
   ```
 
 <a name="modules--no-wildcard"></a><a name="10.2"></a>
@@ -1285,20 +1286,31 @@
   import SuperModule from './SuperModule';
   ```
 
-<a name="modules--no-export-from-import"></a><a name="10.3"></a>
-- [10.3](#modules--no-export-from-import) Не эспортируйте напрямую из импорта.
+<a name="modules--no-default-export"></a><a name="10.3"></a>
+- [10.3](#modules--no-default-export) Не используйте экспорт по умолчанию.
 
-  >Почему: хотя одна строка и короче, один чистый импорт и один чистый экспорт консистентны
+  >Почему: экспорт/импорт по умолчанию усложняет рефакторинг и использование `IDE`; отсутствие импортов по умолчанию сделает блок импортов более однородным
 
   ```javascript
   // плохо
   // файл AwesomeFeature.js
   export {AwesomeFeature as default} from './SuperModule';
 
-  // хорошо
+  // плохо
   // файл AwesomeFeature.js
   import {AwesomeFeature} from './SuperModule';
   export default AwesomeFeature;
+
+  // хорошо
+  // файл AwesomeFeature.js
+  import {AwesomeFeature} from './SuperModule';
+  export {
+    AwesomeFeature
+  };
+
+  // отлично
+  // файл AwesomeFeature.js
+  export {AwesomeFeature} from './SuperModule';
   ```
 
 <a name="modules--no-duplicate-imports"></a><a name="10.4"></a>
@@ -1328,26 +1340,30 @@
   ```javascript
   // плохо
   let foo = 'bar';
-  export {foo};
+  export {
+    foo
+  };
 
   // хорошо
   const foo = 'bar';
-  export {foo};
+  export {
+    foo
+  };
   ```
 
-<a name="modules--prefer-default-export"></a><a name="10.6"></a>
-- [10.6](#modules--prefer-default-export) Если в модуле только один экспорт, предпочитайте экспорт по умолчанию именованному экспорту.
+<a name="modules--prefer-declaration-export"></a><a name="10.6"></a>
+- [10.6](#modules--prefer-declaration-export) Даже если в модуле только один экспорт, предпочитайте экспорт объявления экспорту по умолчанию.
 
-  eslint: [`import/prefer-default-export`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
+  eslint: [`import/no-default-export`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-default-export.md)
 
-  >Почему: улучшает читаемость и понимаемость кода
+  >Почему: экспорт/импорт по умолчанию затрудняет рефакторинг и использование `IDE`; отсутствие импортов по умолчанию сделает блок импортов более однородным
 
   ```javascript
   // плохо
-  export function foo () {};
+  export default function foo () {};
 
   // хорошо
-  export default function foo () {};
+  export function foo () {};
   ```
 
 <a name="modules--imports-first"></a><a name="10.7"></a>
@@ -2472,14 +2488,18 @@
   // плохо
   import SuperComponent from './SuperComponent';
   // ...
-  export default SuperComponent;
+  export {
+    SuperComponent
+  };
   ```
 
   ```javascript
   // плохо
   import SuperComponent from './SuperComponent';
   // ...
-  export default SuperComponent;⏎
+  export {
+    SuperComponent
+  };⏎
   ⏎
   ```
 
@@ -2487,7 +2507,9 @@
   // хорошо
   import SuperComponent from './SuperComponent';
   // ...
-  export default SuperComponent;⏎
+  export {
+    SuperComponent
+  };⏎
   ```
 
 <a name="whitespace--chains"></a><a name="19.6"></a>
@@ -3171,61 +3193,30 @@
   ```
 
 <a name="naming--filename-matches-export"></a><a name="23.6"></a>
-- [23.6](#naming--filename-matches-export) Имя файла должно в точности соответствовать тому, что из него экспортируется по умолчанию.
+- [23.6](#naming--filename-matches-export) Имя файла должно соответствовать тому, что из него экспортируется.
 
   ```javascript
-  // файл 1
-  class Checkbox {
+  // плохо
+  // файл Radio.js
+  export class Checkbox {
     // ...
   }
-
-  export default Checkbox;
-
-  // файл 2
-  export default function fortyTwo () { return 42; }
-
-  // файл 3
-  export default function insideDirectory () {}
-
-  // в другом файле
-  // плохо
-  import CheckBox from './checkBox'; // PascalCase в import/export, camelCase в названии файла
-  import FortyTwo from './FortyTwo'; // PascalCase в import и названии файла, camelCase в export
-  import InsideDirectory from './InsideDirectory'; // PascalCase в import и названии файла, camelCase в export
-
-  // плохо
-  import CheckBox from './check_box'; // PascalCase в import/export, snake_ase в названии файла
-  import forty_two from './forty_two'; // snake_case в import и названии файла, camelCase в export
-  import index from './inside_directory/index'; // явное подключение index
-  import insideDirectory from './insideDirectory/index'; // явное подключение index
 
   // хорошо
-  import Checkbox from './Checkbox'; // PascalCase в import/export и названии файла
-  import fortyTwo from './fortyTwo'; // camelCase в import/export и названии файла
-  import insideDirectory from './insideDirectory'; // camelCase в import/export и названии папки, неявное подключение index
-  // ^ поддерживает оба варианта: insideDirectory.js и insideDirectory/index.js
-  ```
-
-<a name="naming--camelCase-default-export"></a><a name="23.7"></a>
-- [23.7](#naming--camelCase-default-export) Используйте `camelCase` при экспорте по умолчанию функции. Название файла должно совпадать с названием функции.
-
-  ```function makeStyleGuide () {
+  // файл Checkbox.js
+  export class Checkbox {
     // ...
   }
-
-  export default makeStyleGuide;
   ```
 
 <a name="naming--PascalCase-singleton"></a><a name="23.8"></a>
 - [23.8](#naming--PascalCase-singleton) Используйте `PascalCase` при экспорте конструктора, класса, `singleton`-а, библиотеки функций, простого объекта.
 
   ```javascript
-  const PortalStyleGuide = {
+  export const PortalStyleGuide = {
     es6: {
     },
   };
-
-  export default ProtalStyleGuide;
   ```
 
 <a name="naming--Acronyms-and-Initialisms"></a><a name="23.9"></a>
@@ -3264,7 +3255,7 @@
   ];
   ```
 
-<a name="naming--camelCase-default-export"></a><a name="23.10"></a>
+<a name="naming--purpose-in-variable-name"></a><a name="23.10"></a>
 - [23.10](#naming--purpose-in-variable-name) Наименование должно отражать суть (назначение) именуемой переменной, класса, метода в контексте приложения.
 
   >Почему: для удобочитаемости и упрощения масштабирования.
