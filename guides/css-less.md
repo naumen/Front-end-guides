@@ -26,6 +26,7 @@
     - [Использование медиа-запросов](#media-queries)
     - [Возможности CSS 3](#css-3)
     - [Использование JavaScript-хуков](#using-javascript-hooks)
+    - [Использование сокращенного синтаксиса свойств](#using-shorthand-properties)
 1. [Less](#less)
     - [Общие положения](#less-common-terms)
     - [Форматирование](#formatting-less)
@@ -603,6 +604,118 @@ a {
     /* ... */
   }
   ```
+
+**[К содержанию](#table-of-contents)**
+
+### Использование сокращенного синтаксиса свойств <a name="using-shorthand-properties"></a><a name="2.13"></a>
+
+<a name="using-shorthand-properties--selectively"></a><a name="2.13.1"></a>
+- [2.13.1](#using-shorthand-properties--selectively) Выборочно используем сокращенный синтаксис свойств.
+
+  >Почему: сокращенный синтаксис некоторых свойств достаточно сложен; его использование препятствует лучшему пониманию `CSS`; в динамике может приводить к лишним перерисовкам и перекомпоновкам.
+
+  Свойства, для которых решили использовать сокращенный синтаксис:
+  - `background`,
+  - `background-position`,
+  - `border`,
+  - `border-block`,
+  - `border-block-end`,
+  - `border-block-start`,
+  - `border-{side}`,
+  - `border-radius`,
+  - `border-width`,
+  - `columns`,
+  - `inset`,
+  - `margin`,
+  - `outline`,
+  - `overflow`,
+  - `padding`,
+  - `padding-block`,
+  - `padding-inline`,
+  - `text-decoration`,
+  - `text-emphasis`,
+  - `-webkit-text-stroke`,
+  - `transition`.
+
+  Примеры допустимых форм записи:
+
+  ```css
+  .someClassName {
+    background: #639;
+    background: #639 url(image.jpg);
+    background: #639 url(image.jpg) no-repeat;
+    background: #639 url(image.jpg) no-repeat 0 0;
+    background: url(image.jpg);
+    background: url(image.jpg) no-repeat;
+    background: url(image.jpg) no-repeat 0 0;
+
+    background-position: 50% 50%;
+
+    border: 10px solid #639;
+
+    border-bottom: 10px solid #639;
+    border-left: 10px solid #639;
+    border-right: 10px solid #639;
+    border-top: 10px solid #639;
+
+    border-block: 3px;
+    border-block: 3px solid #639;
+
+    border-block-end: 3px;
+    border-block-end: 3px solid #639;
+
+    border-block-start: 3px;
+    border-block-start: 3px solid #639;
+
+    border-radius: 10px;
+    border-radius: 10px 5px;
+    border-radius: 10px 5px 8px 6px;
+
+    border-width: 10px;
+    border-width: 10px 5px;
+    border-width: 10px 5px 8px 6px;
+
+    columns: 2 200px;
+
+    inset: 10px;
+    inset: 10px 15px;
+    inset: 10px 15px 20px 25px;
+
+    margin: 10px;
+    margin: 10px 5px;
+    margin: 10px 5px 8px 6px;
+
+    outline: 2px solid #639;
+
+    overflow: hidden;
+
+    padding: 10px;
+    padding: 10px 5px;
+    padding: 10px 5px 8px 6px;
+
+    padding-block: 10px;
+    padding-block: 10px 20px;
+
+    padding-inline: 10px;
+    padding-inline: 10px 20px;
+
+    text-decoration: underline;
+    text-decoration: underline wavy;
+    text-decoration: underline dotted #639;
+
+    text-emphasis: filled #639;
+    text-emphasis: filled double-circle #639;
+    text-emphasis: 'x';
+
+    -webkit-text-stroke: 2px #639;
+
+    transition: top 3s ease-in-out;
+    transition: top 3s ease-in-out 1s;
+    transition: display 3s allow-discrete;
+  }
+  ```
+
+  Использование сокращенного синтаксиса не обязательна, разработчик волен сам решать сокращенную или полную форму использовать в своем коде.
 
 **[К содержанию](#table-of-contents)**
 
