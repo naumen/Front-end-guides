@@ -278,7 +278,7 @@
 <a name="objects--prototype-builtins"></a><a name="3.7"></a>
 - [3.7](#objects--prototype-builtins) Не вызывайте напрямую методы `Object.prototype` (например, `hasOwnProperty`, `propertyIsEnumerable`, `isPrototypeOf`).
 
-  >Почему: эти свойства могут быть переопределены (`{hasOwnProperties: false}`) или объект может быть нулевым (`Object.create(null)`).
+  >Почему: эти свойства могут быть переопределены, или объект может быть нулевым.
 
   ```javascript
   // плохо
@@ -289,10 +289,33 @@
 
   // наилучший способ
   const has = Object.prototype.hasOwnProperty; // кеш
-  // или
+  // далее
   import has from 'has';
   // ...
   console.log(has.call(object, key));
+  ```
+  Примеры:
+
+  ```javascript
+  // Нулевой объект
+  const nullObj = Object.create(null);
+  // При обращении к несуществующему ключу напрямую получим ошибку "Uncaught TypeError: nullObj.hasOwnProperty is not a function"
+  console.log(nullObj.hasOwnProperty('a'))
+  // Если обратиться к несуществующему ключу с привязкой контекста, то получим false вместо ошибки
+  console.log(Object.prototype.hasOwnProperty.call(nullObj, 'a'))
+  // Обычный объект
+  const obj = {a: 1, b: 2};
+  // Переопределим hasOwnProperty
+  Object.prototype.hasOwnProperty = false
+  // При обращении к реально существующему ключу напрямую получим ошибку "Uncaught TypeError: nullObj.hasOwnProperty is not a function"
+  console.log(obj.hasOwnProperty('a'))
+  // Если обратиться к реально существующему ключу с привязкой контекста, то получим ошибку "Uncaught TypeError: Object.prototype.hasOwnProperty.call is not a function"
+  console.log(Object.prototype.hasOwnProperty.call(obj, 'a'))
+  // В этом случае спасает кеширование, т.е. предварительное сохранение метода в переменную
+  const has = Object.prototype.hasOwnProperty
+  // Теперь даже если hasOwnProperty был переопределён, его реализация сохранена в переменной has
+  // Вызываем has обязательно с привязкой контекста, чтобы не возникало ошибок даже с нулевым объектом
+  console.log(has.call(obj, 'a'))
   ```
 
 <a name="objects--rest-spread"></a><a name="3.8"></a>
