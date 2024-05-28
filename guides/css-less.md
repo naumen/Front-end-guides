@@ -27,6 +27,7 @@
     - [Возможности CSS 3](#css-3)
     - [Использование JavaScript-хуков](#using-javascript-hooks)
     - [Использование сокращенного синтаксиса свойств](#using-shorthand-properties)
+    - [Значения цветов](#colors-naming)
 1. [Less](#less)
     - [Общие положения](#less-common-terms)
     - [Форматирование](#formatting-less)
@@ -732,6 +733,40 @@ a {
   .someClassName {
     border-width: 10px 5px 8px; /* 3 значения */
     border-width: 10px 5px 10px 5px; /* избыточное указание всех значений */
+  }
+  ```
+
+**[К содержанию](#table-of-contents)**
+
+### Значения цветов (hex-код) <a name="colors-naming"></a><a name="2.14"></a>
+
+<a name="colors-naming--uppercase"></a><a name="2.14.1"></a>
+- [2.14.1](#colors-naming--uppercase) Значения цветов пишем в верхнем регистре.
+
+  ```css
+  /* плохо */
+  .button {
+    background-color: #f5f5f5;
+  }
+
+  /* хорошо */
+  .button {
+    background-color: #F5F5F5;
+  }
+  ```
+
+<a name="colors-naming--length"></a><a name="2.14.2"></a>
+- [2.14.2](#colors-naming--length) Значения цветов сокращаем, когда это возможно.
+
+  ```css
+  /* плохо */
+  .button {
+    background-color: #FFFFFF;
+  }
+
+  /* хорошо */
+  .button {
+    background-color: #FFF;
   }
   ```
 
