@@ -27,7 +27,7 @@
     - [Возможности CSS 3](#css-3)
     - [Использование JavaScript-хуков](#using-javascript-hooks)
     - [Использование сокращенного синтаксиса свойств](#using-shorthand-properties)
-    - [Значения цветов](#colors-naming)
+    - [HEX-значения цветов](#color--hex-values)
 1. [Less](#less)
     - [Общие положения](#less-common-terms)
     - [Форматирование](#formatting-less)
@@ -738,10 +738,10 @@ a {
 
 **[К содержанию](#table-of-contents)**
 
-### Значения цветов (hex-код) <a name="colors-naming"></a><a name="2.14"></a>
+### HEX-значения цветов <a name="color--hex-values"></a><a name="2.14"></a>
 
-<a name="colors-naming--uppercase"></a><a name="2.14.1"></a>
-- [2.14.1](#colors-naming--uppercase) Значения цветов пишем в верхнем регистре.
+<a name="color--hex-values-case"></a><a name="2.14.1"></a>
+- [2.14.1](#color--hex-values-case) hex-значения цветов пишем в верхнем регистре.
 
   ```css
   /* плохо */
@@ -755,8 +755,8 @@ a {
   }
   ```
 
-<a name="colors-naming--length"></a><a name="2.14.2"></a>
-- [2.14.2](#colors-naming--length) Значения цветов сокращаем, когда это возможно.
+<a name="color--hex-values-length"></a><a name="2.14.2"></a>
+- [2.14.2](#color--hex-values-length) hex-значения цветов сокращаем, когда это возможно.
 
   ```css
   /* плохо */
