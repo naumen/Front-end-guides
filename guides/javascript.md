@@ -288,34 +288,31 @@
   console.log(Object.prototype.hasOwnProperty.call(object, key));
 
   // наилучший способ
-  const has = Object.prototype.hasOwnProperty; // кеш
-  // далее
+  // файл helpers.js
+  export const has = Object.prototype.hasOwnProperty; // кеш
+
+  // файл script.js
   import has from 'has';
   // ...
   console.log(has.call(object, key));
   ```
-  Примеры:
 
   ```javascript
-  // Нулевой объект
+  // плохо: при исполнении кода будет выброшена ошибка из-за того, что объект оказался нулевым (null)
   const nullObj = Object.create(null);
-  // При обращении к несуществующему ключу напрямую получим ошибку "Uncaught TypeError: nullObj.hasOwnProperty is not a function"
-  console.log(nullObj.hasOwnProperty('a'))
-  // Если обратиться к несуществующему ключу с привязкой контекста, то получим false вместо ошибки
-  console.log(Object.prototype.hasOwnProperty.call(nullObj, 'a'))
-  // Обычный объект
+  console.log(nullObj.hasOwnProperty('a')); // Uncaught TypeError: nullObj.hasOwnProperty is not a function
+  console.log(Object.prototype.hasOwnProperty.call(nullObj, 'a')); // false
+
+  // плохо: при исполнении кода будет выброшена ошибка в случае, если метод подменен
   const obj = {a: 1, b: 2};
-  // Переопределим hasOwnProperty
-  Object.prototype.hasOwnProperty = false
-  // При обращении к реально существующему ключу напрямую получим ошибку "Uncaught TypeError: nullObj.hasOwnProperty is not a function"
-  console.log(obj.hasOwnProperty('a'))
-  // Если обратиться к реально существующему ключу с привязкой контекста, то получим ошибку "Uncaught TypeError: Object.prototype.hasOwnProperty.call is not a function"
-  console.log(Object.prototype.hasOwnProperty.call(obj, 'a'))
-  // В этом случае спасает кеширование, т.е. предварительное сохранение метода в переменную
-  const has = Object.prototype.hasOwnProperty
-  // Теперь даже если hasOwnProperty был переопределён, его реализация сохранена в переменной has
-  // Вызываем has обязательно с привязкой контекста, чтобы не возникало ошибок даже с нулевым объектом
-  console.log(has.call(obj, 'a'))
+  Object.prototype.hasOwnProperty = false;
+  console.log(obj.hasOwnProperty('a')); // Uncaught TypeError: nullObj.hasOwnProperty is not a function
+  console.log(Object.prototype.hasOwnProperty.call(obj, 'a')); // Uncaught TypeError: Object.prototype.hasOwnProperty.call is not a function
+
+  // хорошо: при исполнении кода ошибки отсутствуют, работа не зависит от того, является ли объект нулевым
+  const has = Object.prototype.hasOwnProperty;
+  Object.prototype.hasOwnProperty = false; // ссылка на метод сохранена в переменной has
+  console.log(has.call(obj, 'a'));
   ```
 
 <a name="objects--rest-spread"></a><a name="3.8"></a>
