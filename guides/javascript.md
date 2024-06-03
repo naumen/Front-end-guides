@@ -278,7 +278,7 @@
 <a name="objects--prototype-builtins"></a><a name="3.7"></a>
 - [3.7](#objects--prototype-builtins) Не вызывайте напрямую методы `Object.prototype` (например, `hasOwnProperty`, `propertyIsEnumerable`, `isPrototypeOf`).
 
-  >Почему: эти свойства могут быть переопределены (`{hasOwnProperties: false}`) или объект может быть нулевым (`Object.create(null)`).
+  >Почему: эти свойства могут быть переопределены, или объект может быть нулевым.
 
   ```javascript
   // плохо
@@ -288,11 +288,31 @@
   console.log(Object.prototype.hasOwnProperty.call(object, key));
 
   // наилучший способ
-  const has = Object.prototype.hasOwnProperty; // кеш
-  // или
+  // файл helpers.js
+  export const has = Object.prototype.hasOwnProperty; // кеш
+
+  // файл script.js
   import has from 'has';
   // ...
   console.log(has.call(object, key));
+  ```
+
+  ```javascript
+  // плохо: при исполнении кода будет выброшена ошибка из-за того, что объект оказался нулевым (null)
+  const nullObj = Object.create(null);
+  console.log(nullObj.hasOwnProperty('a')); // Uncaught TypeError: nullObj.hasOwnProperty is not a function
+  console.log(Object.prototype.hasOwnProperty.call(nullObj, 'a')); // false
+
+  // плохо: при исполнении кода будет выброшена ошибка в случае, если метод подменен
+  const obj = {a: 1, b: 2};
+  Object.prototype.hasOwnProperty = false;
+  console.log(obj.hasOwnProperty('a')); // Uncaught TypeError: nullObj.hasOwnProperty is not a function
+  console.log(Object.prototype.hasOwnProperty.call(obj, 'a')); // Uncaught TypeError: Object.prototype.hasOwnProperty.call is not a function
+
+  // хорошо: при исполнении кода ошибки отсутствуют, работа не зависит от того, является ли объект нулевым
+  const has = Object.prototype.hasOwnProperty;
+  Object.prototype.hasOwnProperty = false; // ссылка на метод сохранена в переменной has
+  console.log(has.call(obj, 'a'));
   ```
 
 <a name="objects--rest-spread"></a><a name="3.8"></a>
