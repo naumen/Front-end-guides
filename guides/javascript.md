@@ -31,6 +31,7 @@
 1. [Пробельные символы](#whitespace)
 1. [Запятые](#commas)
 1. [Точки с запятой](#semicolons)
+1. [Кавычки](#quotes)
 1. [Явное и неявное приведение типов](#coercion)
 1. [Именование](#naming)
 1. [Методы доступа](#accessors)
@@ -3010,13 +3011,72 @@
 
 **[К содержанию](#table-of-contents)**
 
+## Кавычки <a name="quotes"></a>
+
+<a name="quotes--types"></a><a name="22.1"></a>
+- [22.1](#quotes--types) Используйте одинарные кавычки и машинописный обратный апостроф (`backtick`).
+
+  >Почему: одинарные кавычки проще ввести и считать. Обратные апострофы — необходимость, т.к. являются частью синтаксиса шаблонных строк. Дополнительно обратные апострофы используются в комментариях.
+
+<a name="quotes--single"></a><a name="22.2"></a>
+- [22.2](#quotes--single) Используйте одинарные кавычки для строковых констант.
+
+  >Почему: проще в использовании (вводе), быстро идентифицируют обернутую в них часть как код.
+
+  ```javascript
+  // плохо
+  const name = "Винни Пух";
+
+  // плохо
+  const name = `Винни Пух`;
+
+  // хорошо
+  const name = 'Винни Пух';
+  ```
+
+<a name="quotes--backticks"></a><a name="22.3"></a>
+- [22.3](#quotes--backticks) Используйте обратные апострофы в шаблонных строках и для визуального выделения аббревиатур, параметров функций, терминов в комментариях и `jsDoc`.
+
+  >Почему: с одной стороны, обратные апострофы являются частью синтаксиса шаблонных строк и при использовании вне комментария в строковой константе `IDE` подскажет, что от шаблонной строки можно отказаться. С другой стороны инструменты могут поддерживать визуальное выделение обернутых в обратные апострофы строк в комментариях, что облегчает чтение и понимание этих комментариев.
+
+  ```javascript
+  // плохо
+  const greeting = `Привет!`;
+
+  // хорошо
+  const greeting = 'Привет!';
+
+  // плохо
+  /**
+   * ...
+   * @param id - "uuid" объекта
+   * ...
+   */
+
+  // нормально
+  /**
+   * ...
+   * @param id - uuid объекта
+   * ...
+   */
+
+  // хорошо
+  /**
+   * ...
+   * @param id - `uuid` объекта
+   * ...
+   */
+  ```
+
+**[К содержанию](#table-of-contents)**
+
 ## Явное и неявное приведение типов <a name="coercion"></a>
 
-<a name="coercion--explicit"></a><a name="22.1"></a>
-- [22.1](#coercion--explicit) Явное приведение типов осуществляйте в начале утверждения.
+<a name="coercion--explicit"></a><a name="23.1"></a>
+- [23.1](#coercion--explicit) Явное приведение типов осуществляйте в начале утверждения.
 
-<a name="coercion--strings"></a><a name="22.2"></a>
-- [22.2](#coercion--strings) Для приведения к строке используйте `String`.
+<a name="coercion--strings"></a><a name="23.2"></a>
+- [23.2](#coercion--strings) Для приведения к строке используйте `String`.
 
   eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
@@ -3036,8 +3096,8 @@
   const totalScore = String(this.reviewScore);
   ```
 
-<a name="coercion--numbers"></a><a name="22.3"></a>
-- [22.3](#coercion--numbers) Используйте `Number` для явного приведения типов и `parseInt` (всегда с указанием основания) для преобразования строк.
+<a name="coercion--numbers"></a><a name="23.3"></a>
+- [23.3](#coercion--numbers) Используйте `Number` для явного приведения типов и `parseInt` (всегда с указанием основания) для преобразования строк.
 
   eslint: [`radix`](https://eslint.org/docs/rules/radix), [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
@@ -3063,8 +3123,8 @@
   const val = parseInt(inputValue, 10);
   ```
 
-<a name="coercion--comment-deviations"></a><a name="22.4"></a>
-- [22.4](#coercion--comment-deviations) Если по [причинам производительности](https://jsperf.com/coercion-vs-casting/3) необходимо использовать побитовый сдвиг вместо `parseInt` оставьте комментарий, что и зачем вы делаете
+<a name="coercion--comment-deviations"></a><a name="23.4"></a>
+- [23.4](#coercion--comment-deviations) Если по [причинам производительности](https://jsperf.com/coercion-vs-casting/3) необходимо использовать побитовый сдвиг вместо `parseInt` оставьте комментарий, что и зачем вы делаете
 
   ```javascript
   // хорошо
@@ -3076,8 +3136,8 @@
   const val = inputValue >> 0;
   ```
 
-<a name="coercion--bitwise"></a><a name="22.5"></a>
-- [22.5](#coercion--bitwise) При использовании побитового сдвига будьте осторожны. Числа представлены [64-битными значениями](https://es5.github.io/#x4.3.19) в то время как операции побитового сдвига всегда возвращают [32-битное целое](https://es5.github.io/#x11.7). Наибольшее 32-битное целое: 2 147 483 647.
+<a name="coercion--bitwise"></a><a name="23.5"></a>
+- [23.5](#coercion--bitwise) При использовании побитового сдвига будьте осторожны. Числа представлены [64-битными значениями](https://es5.github.io/#x4.3.19) в то время как операции побитового сдвига всегда возвращают [32-битное целое](https://es5.github.io/#x11.7). Наибольшее 32-битное целое: 2 147 483 647.
 
   ```javascript
   2147483647 >> 0; // => 2147483647
@@ -3085,8 +3145,8 @@
   2147483649 >> 0; // => -2147483647
   ```
 
-<a name="coercion--booleans"></a><a name="22.6"></a>
-- [22.6](#coercion--booleans) Для приведения к логическому типу используйте `!!` или `Boolean`, в зависимости от того, что лучше влияет на удобочитаемость.
+<a name="coercion--booleans"></a><a name="23.6"></a>
+- [23.6](#coercion--booleans) Для приведения к логическому типу используйте `!!` или `Boolean`, в зависимости от того, что лучше влияет на удобочитаемость.
 
   eslint: [`no-new-wrappers`](https://eslint.org/docs/rules/no-new-wrappers)
 
@@ -3110,8 +3170,8 @@
 
 ## Именование <a name="naming"></a>
 
-<a name="naming--descriptive"></a><a name="23.1"></a>
-- [23.1](#naming--descriptive) Названия должны быть описательны, избегайте названий из одной буквы.
+<a name="naming--descriptive"></a><a name="24.1"></a>
+- [24.1](#naming--descriptive) Названия должны быть описательны, избегайте названий из одной буквы.
 
   eslint: [`id-length`](https://eslint.org/docs/rules/id-length)
 
@@ -3127,8 +3187,8 @@
   }
   ```
 
-<a name="naming--camelCase"></a><a name="23.2"></a>
-- [23.2](#naming--camelCase) Используйте `camelCase` при именовании объектов, функций и экземпляров классов.
+<a name="naming--camelCase"></a><a name="24.2"></a>
+- [24.2](#naming--camelCase) Используйте `camelCase` при именовании объектов, функций и экземпляров классов.
 
   eslint: [`camelcase`](https://eslint.org/docs/rules/camelcase)
 
@@ -3143,8 +3203,8 @@
   function thisIsMyFunction () {}
   ```
 
-<a name="naming--PascalCase"></a><a name="23.3"></a>
-- [23.3](#naming--PascalCase) Используйте `PascalCase` только при именовании конструкторов или классов.
+<a name="naming--PascalCase"></a><a name="24.3"></a>
+- [24.3](#naming--PascalCase) Используйте `PascalCase` только при именовании конструкторов или классов.
 
   eslint: [`new-cap`](https://eslint.org/docs/rules/new-cap)
 
@@ -3170,8 +3230,8 @@
   });
   ```
 
-<a name="naming--leading-underscore"></a><a name="23.4"></a>
-- [23.4](#naming--leading-underscore) Не начинайте название с символа подчеркивания и не заканчивайте им.
+<a name="naming--leading-underscore"></a><a name="24.4"></a>
+- [24.4](#naming--leading-underscore) Не начинайте название с символа подчеркивания и не заканчивайте им.
 
   eslint: [`no-underscore-dangle`](https://eslint.org/docs/rules/no-underscore-dangle)
 
@@ -3187,8 +3247,8 @@
   this.firstName = 'Panda';
   ```
 
-<a name="naming--self-this"></a><a name="23.5"></a>
-- [23.5](#naming--self-this) Не сохраняйте ссылки на `this`, используйте стрелочные функции или [Function#bind](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
+<a name="naming--self-this"></a><a name="24.5"></a>
+- [24.5](#naming--self-this) Не сохраняйте ссылки на `this`, используйте стрелочные функции или [Function#bind](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
 
   ```javascript
   // плохо
@@ -3215,8 +3275,8 @@
   }
   ```
 
-<a name="naming--filename-matches-export"></a><a name="23.6"></a>
-- [23.6](#naming--filename-matches-export) Имя файла должно соответствовать тому, что из него экспортируется.
+<a name="naming--filename-matches-export"></a><a name="24.6"></a>
+- [24.6](#naming--filename-matches-export) Имя файла должно соответствовать тому, что из него экспортируется.
 
   ```javascript
   // плохо
@@ -3232,8 +3292,8 @@
   }
   ```
 
-<a name="naming--PascalCase-singleton"></a><a name="23.7"></a>
-- [23.7](#naming--PascalCase-singleton) Используйте `PascalCase` при экспорте конструктора, класса, `singleton`-а, библиотеки функций, простого объекта.
+<a name="naming--PascalCase-singleton"></a><a name="24.7"></a>
+- [24.7](#naming--PascalCase-singleton) Используйте `PascalCase` при экспорте конструктора, класса, `singleton`-а, библиотеки функций, простого объекта.
 
   ```javascript
   export const PortalStyleGuide = {
@@ -3242,8 +3302,8 @@
   };
   ```
 
-<a name="naming--Acronyms-and-Initialisms"></a><a name="23.8"></a>
-- [23.8](#naming--Acronyms-and-Initialisms) Акронимы и аббревиатуры должны быть все в верхнем или все в нижнем регистре.
+<a name="naming--Acronyms-and-Initialisms"></a><a name="24.8"></a>
+- [24.8](#naming--Acronyms-and-Initialisms) Акронимы и аббревиатуры должны быть все в верхнем или все в нижнем регистре.
 
   >Почему: для удобочитаемости
 
@@ -3278,8 +3338,8 @@
   ];
   ```
 
-<a name="naming--purpose-in-variable-name"></a><a name="23.9"></a>
-- [23.9](#naming--purpose-in-variable-name) Наименование должно отражать суть (назначение) именуемой переменной, класса, метода в контексте приложения.
+<a name="naming--purpose-in-variable-name"></a><a name="24.9"></a>
+- [24.9](#naming--purpose-in-variable-name) Наименование должно отражать суть (назначение) именуемой переменной, класса, метода в контексте приложения.
 
   >Почему: для удобочитаемости и упрощения масштабирования.
 
@@ -3328,11 +3388,11 @@
 
 ## Методы доступа <a name="accessors"></a>
 
-<a name="accessors--not-required"></a><a name="24.1"></a>
-- [24.1](#accessors--not-required) Методы доступа для свойств не обязательны.
+<a name="accessors--not-required"></a><a name="25.1"></a>
+- [25.1](#accessors--not-required) Методы доступа для свойств не обязательны.
 
-<a name="accessors--no-getters-setters"></a><a name="24.2"></a>
-- [24.2](#accessors--no-getters-setters) Не используйте методы доступа Javascript (`getter`-ы и `setter`-ы), т.к. они являются причиной неожиданных побочных эффектов, их сложнее тестировать, поддерживать и судить о них. Вместо этого, если вы делаете методы доступа, используйте `getVal()` и `setVal(value)`.
+<a name="accessors--no-getters-setters"></a><a name="25.2"></a>
+- [25.2](#accessors--no-getters-setters) Не используйте методы доступа Javascript (`getter`-ы и `setter`-ы), т.к. они являются причиной неожиданных побочных эффектов, их сложнее тестировать, поддерживать и судить о них. Вместо этого, если вы делаете методы доступа, используйте `getVal()` и `setVal(value)`.
 
   ```javascript
   // плохо
@@ -3358,8 +3418,8 @@
   }
   ```
 
-<a name="accessors--boolean-prefix"></a><a name="24.3"></a>
-- [24.3](#accessors--boolean-prefix) Если свойство типа `boolean` или метод возвращается `boolean` используйте `isVal()` или `hasVal()`.
+<a name="accessors--boolean-prefix"></a><a name="25.3"></a>
+- [25.3](#accessors--boolean-prefix) Если свойство типа `boolean` или метод возвращается `boolean` используйте `isVal()` или `hasVal()`.
 
   ```javascript
   // плохо
@@ -3373,8 +3433,8 @@
   }
   ```
 
-<a name="accessors--consistent"></a><a name="24.4"></a>
-- [24.4](#accessors--consistent) Нормально создавать функции `get()` и `set()`, но будьте последовательны.
+<a name="accessors--consistent"></a><a name="25.4"></a>
+- [25.4](#accessors--consistent) Нормально создавать функции `get()` и `set()`, но будьте последовательны.
 
   ```javascript
   class Jedi {
@@ -3397,8 +3457,8 @@
 
 ## События <a name="events"></a>
 
-<a name="events--hash"></a><a name="25.1"></a>
-- [25.1](#events) При передаче данных в событие (неважно, обычное событие DOM или что-то более проприетарное типа событий в `Backbone`) используйте объект-литерал (также известный как "хэш") вместо обычного значения. Это позволит последующим участникам легко добавлять данные при передаче их в событие и  избавит от необходимости обновления всех обработчиков события. Например, вместо:
+<a name="events--hash"></a><a name="26.1"></a>
+- [26.1](#events) При передаче данных в событие (неважно, обычное событие DOM или что-то более проприетарное типа событий в `Backbone`) используйте объект-литерал (также известный как "хэш") вместо обычного значения. Это позволит последующим участникам легко добавлять данные при передаче их в событие и  избавит от необходимости обновления всех обработчиков события. Например, вместо:
 
   ```javascript
   // плохо
@@ -3424,8 +3484,8 @@
 
 ## jQuery <a name="jquery"></a>
 
-<a name="jquery--dollar-prefix"></a><a name="26.1"></a>
-- [26.1](#jquery--dollar-prefix) В названии переменной, содержащей объект jQuery, используйте префикс `$`.
+<a name="jquery--dollar-prefix"></a><a name="27.1"></a>
+- [27.1](#jquery--dollar-prefix) В названии переменной, содержащей объект jQuery, используйте префикс `$`.
 
   ```javascript
   // плохо
@@ -3435,8 +3495,8 @@
   const $sidebar = $('.sidebar');
   ```
 
-<a name="jquery--cache"></a><a name="26.2"></a>
-- [26.2](#jquery--cache) Кешируйте результаты выполнения запросов jQuery.
+<a name="jquery--cache"></a><a name="27.2"></a>
+- [27.2](#jquery--cache) Кешируйте результаты выполнения запросов jQuery.
 
   ```javascript
   // плохо
@@ -3463,11 +3523,11 @@
   }
   ```
 
-<a name="jquery--queries"></a><a name="26.3"></a>
-- [26.3](#jquery--queries) Для запросов в DOM используйте каскад `$('.sidebar ul)` или или дочерние селекторы `$('.sidebar > ul')`.
+<a name="jquery--queries"></a><a name="27.3"></a>
+- [27.3](#jquery--queries) Для запросов в DOM используйте каскад `$('.sidebar ul)` или или дочерние селекторы `$('.sidebar > ul')`.
 
-<a name="jquery--find"></a><a name="26.4"></a>
-- [26.4](#jquery--find) Используйте `find` для поиска в сохраненных объектах jQuery.
+<a name="jquery--find"></a><a name="27.4"></a>
+- [27.4](#jquery--find) Используйте `find` для поиска в сохраненных объектах jQuery.
 
   ```javascript
   // плохо
@@ -3491,14 +3551,14 @@
 ## Совместимость с ECMAScript 5 <a name="es5-compat"></a>
 
 <a name="es5-compat--kangax"></a>
-- [27.1](#es5-compat--kangax) См. [таблицу совместимости](https://kangax.github.io/es5-compat-table) пользователя [Kangax](https://twitter.com/kangax).
+- [28.1](#es5-compat--kangax) См. [таблицу совместимости](https://kangax.github.io/es5-compat-table) пользователя [Kangax](https://twitter.com/kangax).
 
 **[К содержанию](#table-of-contents)**
 
 ## Стиль написания ECMAScript 6+ (ES 2015+) <a name="es6-styles"></a>
 
-<a name="es6-styles--links"></a><a name="28.1"></a>
-- [28.1](#es6-styles--links) Список ссылок на разделы этого руководства, описывающие особенности ES6+.
+<a name="es6-styles--links"></a><a name="29.1"></a>
+- [29.1](#es6-styles--links) Список ссылок на разделы этого руководства, описывающие особенности ES6+.
 
 1. [Стрелочные функции](#arrow-functions)
 1. [Классы и конструкторы](#constructors)
@@ -3515,8 +3575,8 @@
 1. [Итераторы и генераторы](#iterators-and-generators)
 1. [Модули](#modules)
 
-<a name="es6-styles--tc39-proposals"></a><a name="28.2"></a>
-- [28.2](#es6-styles--tc39-proposals) Не используйте [предложения TC39](https://gitgub.io/tc39/proposals), которые не достигли стадии 3.
+<a name="es6-styles--tc39-proposals"></a><a name="29.2"></a>
+- [29.2](#es6-styles--tc39-proposals) Не используйте [предложения TC39](https://gitgub.io/tc39/proposals), которые не достигли стадии 3.
 
   >Почему: [работа над ними не закончена](https://tc39.github.io/process-document) и они могут быть изменены или вовсе удалены. Фактически они не являются частью JavaScript.
 
@@ -3526,8 +3586,8 @@
 
 [Стандартная библиотека](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects) содержит утилиты, функциональность которых сломана. Они сохранены для обратной совместимости.
 
-<a name="standard-library--isnan"></a><a name="29.1"></a>
-- [29.1](#standard-library--isnan) Используйте `Number.isNan` вместо `isNan`.
+<a name="standard-library--isnan"></a><a name="30.1"></a>
+- [30.1](#standard-library--isnan) Используйте `Number.isNan` вместо `isNan`.
 
   eslint: [`no-restricted-globals`](https://eslint.org/docs/rules/no-restricted-globals)
 
@@ -3543,8 +3603,8 @@
   Number.isNaN(Number('1.2.3')); // true
   ```
 
-<a name="standard-library--isfinite"></a><a name="29.2"></a>
-- [29.2](#standard-library--isfinite) Используйте `Number.isFinite` вместо `isFinite`.
+<a name="standard-library--isfinite"></a><a name="30.2"></a>
+- [30.2](#standard-library--isfinite) Используйте `Number.isFinite` вместо `isFinite`.
 
   eslint: [`no-restricted-globals`](https://eslint.org/docs/rules/no-restricted-globals)
 
@@ -3563,9 +3623,9 @@
 
 ## TypeScript <a name="typescript"></a>
 
-<a name="typescript--types-vs-interfaces"></a><a name="30.1"></a>
+<a name="typescript--types-vs-interfaces"></a><a name="31.1"></a>
 
-- [30.1](#typescript--types-vs-interfaces) Используйте типы для описания данных и операций с ними, функций, "внутреннего" поведения, а интерфейсы - для гарантии реализации "внешнего" поведения и расширения имеющихся типов и интерфейсов. В затруднительных ситуациях предпочтение стоит отдать типам.
+- [31.1](#typescript--types-vs-interfaces) Используйте типы для описания данных и операций с ними, функций, "внутреннего" поведения, а интерфейсы - для гарантии реализации "внешнего" поведения и расширения имеющихся типов и интерфейсов. В затруднительных ситуациях предпочтение стоит отдать типам.
 
   >Почему: типы более понятны, а их возможности шире. Подробнее см. [почему стоит использовать типы вместо интерфейсов](../rationales/types-vs-interfaces.md).
 
