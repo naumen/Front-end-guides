@@ -24,6 +24,7 @@
 1. [Порядок в компоненте](#order-in-component)
 1. [Redux](#redux)
 1. [Утилиты и вспомогательные функции](#utils-and-helpers)
+1. [Тестирование](#testing)
 
 ## Базовые правила <a name="basic-rules"></a>
 
@@ -1190,4 +1191,51 @@
   + утилиты должны быть чистыми функциями;
   + утилиты должны быть переиспользуемыми, но иметь только одну задачу.
 
+**[К содержанию](#table-of-contents)**
+
+## Тестирование <a name="testing"></a>
+
+<a name="testing--data-test-id-name"></a><a name="15.1"></a>
+- [15.1](#testing--data-test-id-name) Для целей тестирования используйте `data`-атрибут `testid` или `test-id` и будьте последовательны: в рамках проекта должно использоваться только одно название `data`-атрибута для тестирования.
+
+  ```jsx
+  // плохо
+  // Component A
+  return <div data-test-id="some-value">...</div>;
+
+  // Component B
+  return <div data-testid="some-value">...</div>;
+
+  // Component C
+  return <div data-test-hook="some-value">...</div>;
+
+  // хорошо
+  // Component A
+  return <div data-test-id="some-value">...</div>;
+
+  // Component B
+  return <div data-test-id="some-value">...</div>;
+
+  // Component C
+  return <div data-test-id="some-value">...</div>;
+  ```
+
+<a name="testing--data-test-id-value"></a><a name="15.2"></a>
+- [15.2](#testing--data-test-id-value) Для составных значений `data`-атрибутов, предназначенных для целей тестирования используйте `camelCase`, `PascalCase`, `snake_case` или любой другой стиль написания составных слов, но будьте последовательны: стиль написания составных значений `data`-атрибутов должен быть единообразным в рамках проекта.
+
+  ```jsx
+  // плохо
+  // Component A
+  return <div data-test-id="ComponentA_SubComponent_UUID">...</div>;
+
+  // Component B
+  return <div data-test-id="ComponentB-SubComponent$UUID">...</div>;
+
+  // хорошо
+  // Component A
+  return <div data-test-id="ComponentA_SubComponent_UUID">...</div>;
+
+  // Component B
+  return <div data-test-id="ComponentB_SubComponent_UUID">...</div>;
+  ```
 **[К содержанию](#table-of-contents)**
